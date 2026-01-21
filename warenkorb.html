@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warenkorb | Sicher zur Kasse | Softcrate</title>
+    <meta name="description"
+        content="Ihr Warenkorb bei Softcrate. Sichere Bezahlung mit PayPal. Sofortige E-Mail-Lieferung nach Zahlungseingang. 100% sichere Transaktion.">
+    <meta name="keywords" content="Warenkorb, Checkout, PayPal Zahlung, Sichere Bezahlung, Software kaufen">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://softcrate.de/warenkorb.html">
+    <meta property="og:title" content="Warenkorb | Sicher zur Kasse | Softcrate">
+    <meta property="og:description"
+        content="Ihr Warenkorb bei Softcrate. Sichere Bezahlung mit PayPal. Sofortige E-Mail-Lieferung nach Zahlungseingang.">
+    <meta property="og:image" content="https://softcrate.de/social-preview.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://softcrate.de/warenkorb.html">
+    <meta property="twitter:title" content="Warenkorb | Sicher zur Kasse | Softcrate">
+    <meta property="twitter:description" content="Ihr Warenkorb bei Softcrate. Sichere Bezahlung mit PayPal.">
+    <meta property="twitter:image" content="https://softcrate.de/social-preview.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --bg-color: #ffffff;
+            --bg-secondary: #f5f5f7;
+            --text-main: #1d1d1f;
+            --text-sub: #86868b;
+            --text-light: #6e6e73;
+            --accent: #0071e3;
+            --card-bg: #ffffff;
+            --border-light: rgba(0, 0, 0, 0.08);
+            --nav-height: 44px;
+        }
+
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-main);
+        }
+
+        .glass-nav {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+            height: var(--nav-height);
+        }
+
+        .premium-card {
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 10px 40px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            padding: 32px;
+        }
+
+        .apple-btn {
+            background: var(--accent);
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 13px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .apple-btn:hover:not(:disabled) {
+            background: #005bb7;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(0, 113, 227, 0.2);
+        }
+
+        .apple-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .qty-pill {
+            display: flex;
+            align-items: center;
+            background: #f5f5f7;
+            border-radius: 99px;
+            padding: 4px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .qty-pill-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: var(--text-main);
+            transition: all 0.2s;
+        }
+
+        .qty-pill-btn:hover {
+            background: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .input-field {
+            background: #f5f5f7;
+            border: 1px solid transparent;
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 15px;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .input-field:focus {
+            background: #ffffff;
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+        }
+
+        .step-bubble {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #e5e5e7;
+            color: #86868b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .step-bubble.active {
+            background: var(--text-main);
+            color: #ffffff;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-entrance {
+            animation: fadeInUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .step-bubble.completed {
+            background: #34C759;
+            color: white;
+        }
+
+        .step-line-active {
+            background: var(--text-main) !important;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav class="glass-nav sticky top-0 w-full z-50 px-5">
+        <div class="max-w-[980px] mx-auto flex justify-between items-center w-full h-full">
+            <div class="flex items-center space-x-10">
+                <a href="index.html" class="text-[21px] font-semibold tracking-tight">Softcrate<span
+                        class="text-blue-600">.</span></a>
+                <div class="hidden md:flex items-center space-x-8 text-[12px] font-normal">
+                    <a href="products.html" class="text-zinc-600 hover:text-black transition-colors">Produkte</a>
+                    <span class="text-zinc-300 select-none">|</span>
+                    <a href="index.html#features" class="text-zinc-600 hover:text-black transition-colors">Vorteile</a>
+                    <a href="support.html" class="text-zinc-600 hover:text-black transition-colors">Support</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-6">
+                <a href="warenkorb.html" class="relative">
+                    <i class="fas fa-shopping-bag text-[17px] text-zinc-600 hover:text-black transition-colors"></i>
+                    <span id="cart-badge"
+                        class="absolute -top-0.5 left-[14px] bg-blue-600 text-white text-[8px] min-w-[14px] h-[14px] flex items-center justify-center rounded-full font-semibold px-0.5"
+                        style="display: none;">0</span>
+                </a>
+
+                <!-- Hamburger Icon -->
+                <button class="md:hidden text-zinc-900 focus:outline-none z-50 relative" onclick="toggleMobileMenu()">
+                    <i id="menu-icon" class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu"
+        class="fixed inset-0 bg-white/95 backdrop-blur-xl z-40 flex flex-col items-center justify-center space-y-8 opacity-0 pointer-events-none transition-all duration-300">
+        <a href="products.html" class="text-2xl font-bold text-zinc-900" onclick="toggleMobileMenu()">Produkte</a>
+        <a href="index.html#features" class="text-2xl font-bold text-zinc-900" onclick="toggleMobileMenu()">Vorteile</a>
+        <a href="support.html" class="text-2xl font-bold text-zinc-900" onclick="toggleMobileMenu()">Support</a>
+        <a href="warenkorb.html" class="text-2xl font-bold text-blue-600" onclick="toggleMobileMenu()">Warenkorb</a>
+    </div>
+
+    <!-- Main Content -->
+    <main class="py-20 px-6 animate-entrance">
+        <div class="max-w-[1000px] mx-auto">
+
+            <!-- Header & Steps Inline -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+                <div>
+                    <h1 class="text-[48px] md:text-[64px] font-black tracking-tight leading-[1] mb-4">Warenkorb</h1>
+                    <p class="text-zinc-500 text-[19px] font-medium leading-relaxed">
+                        Prüfen Sie Ihre Auswahl vor dem Checkout.
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-3 bg-white p-2 rounded-2xl border border-black/[0.04] shadow-sm">
+                    <div class="step-bubble active">1</div>
+                    <div class="w-8 h-[1px] bg-zinc-200"></div>
+                    <div class="step-bubble">2</div>
+                    <div class="w-8 h-[1px] bg-zinc-200"></div>
+                    <div class="step-bubble">3</div>
+                </div>
+            </div>
+
+            <!-- Cart Content -->
+            <div class="grid lg:grid-cols-[1.6fr_1fr] gap-12 items-start">
+
+                <!-- Cart Items Section -->
+                <div class="space-y-6">
+                    <div class="premium-card">
+                        <div class="flex items-center justify-between mb-8 pb-4 border-b border-black/[0.05]">
+                            <h2 class="text-[21px] font-bold tracking-tight">Deine Produkte</h2>
+                            <span id="item-count" class="text-zinc-400 text-sm font-bold uppercase tracking-widest">0
+                                Artikel</span>
+                        </div>
+
+                        <div id="cart-items-container" class="space-y-2">
+                            <!-- Items will be inserted here -->
+                        </div>
+                    </div>
+
+                    <a href="products.html"
+                        class="inline-flex items-center gap-2 text-[14px] font-bold text-zinc-400 hover:text-zinc-950 transition-colors group">
+                        <i class="fas fa-chevron-left text-[10px] group-hover:-translate-x-1 transition-transform"></i>
+                        Zurück zum Katalog
+                    </a>
+                </div>
+
+                <!-- Order Summary Section -->
+                <div class="sticky top-24">
+                    <div class="premium-card">
+                        <h2 class="text-[21px] font-bold tracking-tight mb-8">Zusammenfassung</h2>
+
+                        <div class="space-y-4 mb-8">
+                            <div class="flex justify-between text-[15px] font-medium text-zinc-500">
+                                <span>Zwischensumme</span>
+                                <span id="subtotal">0,00 €</span>
+                            </div>
+                            <div class="flex justify-between text-[15px] font-medium text-zinc-500">
+                                <span>Versand (Digital)</span>
+                                <span class="text-emerald-500 uppercase text-[12px] font-black">Kostenlos</span>
+                            </div>
+                            <div class="pt-4 mt-4 border-t border-black/[0.05] flex justify-between items-baseline">
+                                <span class="text-[17px] font-bold">Gesamtbetrag</span>
+                                <span id="total" class="text-[28px] font-black tracking-tight text-zinc-950">0,00
+                                    €</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-8">
+                            <label
+                                class="text-[11px] font-black text-zinc-400 uppercase tracking-widest mb-3 block">Empfänger
+                                E-Mail</label>
+                            <input type="email" id="checkout-email" placeholder="ihre@adresse.de" class="input-field" />
+                            <p class="text-[11px] text-zinc-400 mt-3 leading-relaxed">
+                                Die Lizenzschlüssel werden unmittelbar nach Zahlung an diese Adresse versendet.
+                            </p>
+                        </div>
+
+                        <button id="checkout-btn" onclick="startCheckout()" class="apple-btn w-full transition-all"
+                            disabled>
+                            Sicher bezahlen
+                        </button>
+
+                        <div class="mt-8 pt-6 border-t border-black/[0.05]">
+                            <div class="grid grid-cols-2 gap-y-4">
+                                <div class="flex items-center gap-2 text-[11px] font-bold text-zinc-400">
+                                    <i class="fas fa-shield-alt text-blue-500"></i>
+                                    KÄUFERSCHUTZ
+                                </div>
+                                <div class="flex items-center gap-2 text-[11px] font-bold text-zinc-400">
+                                    <i class="fas fa-bolt text-blue-500"></i>
+                                    INSTANT DELIVERY
+                                </div>
+                                <div class="flex items-center gap-2 text-[11px] font-bold text-zinc-400">
+                                    <i class="fas fa-headset text-blue-500"></i>
+                                    24/7 SUPPORT
+                                </div>
+                                <div class="flex items-center gap-2 text-[11px] font-bold text-zinc-400">
+                                    <i class="fas fa-certificate text-blue-500"></i>
+                                    ORIGINAL KEY
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="mt-8 flex items-center justify-center gap-4 py-3 bg-zinc-50 rounded-xl border border-black/[0.03]">
+                            <img src="https://i.ibb.co/pB46DMzb/Pay-Pal-logo-2022-redesign-for-US-and-Canada-Europe-1024x576-removebg-preview.png"
+                                alt="PayPal" class="h-5 opacity-40">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay"
+        class="hidden fixed inset-0 bg-black/20 backdrop-blur-sm items-center justify-center z-50">
+        <div class="glass p-10 text-center max-w-sm mx-4">
+            <div class="w-12 h-12 border-4 rounded-full loader mx-auto mb-6"></div>
+            <p class="text-[17px] font-medium mb-2">Checkout wird vorbereitet...</p>
+            <p class="text-zinc-500 text-[14px]">Du wirst gleich zum sicheren Zahlungsfenster weitergeleitet.</p>
+        </div>
+    </div>
+
+    <!-- Professional Footer -->
+    <footer class="pt-24 pb-12 bg-white border-t border-zinc-100">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Grid Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 mb-20 text-left">
+                <!-- Branding & Tagline -->
+                <div class="lg:col-span-4 space-y-8">
+                    <div class="text-2xl font-black text-zinc-950 cursor-pointer" onclick="window.scrollTo(0,0)">
+                        Softcrate<span class="text-blue-600">.</span>
+                    </div>
+                    <p class="text-zinc-500 text-[16px] leading-relaxed max-w-sm">
+                        Automatisierte digitale Auslieferung für Profis, die Wert auf Originalität und rechtliche
+                        Sicherheit legen.
+                    </p>
+                    <div class="space-y-2">
+                        <div class="text-xs font-bold text-zinc-400 uppercase tracking-widest">Kontakt</div>
+                        <a href="mailto:support@softcrate.de"
+                            class="text-zinc-950 font-bold hover:text-blue-600 transition-colors">support@softcrate.de</a>
+                    </div>
+                </div>
+
+                <!-- Product Links -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Produkte</h5>
+                    <ul class="space-y-4">
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Windows
+                                Systeme</a></li>
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Office
+                                Pakete</a></li>
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Adobe
+                                Creative</a></li>
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Server
+                                Solutions</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company Links -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Unternehmen</h5>
+                    <ul class="space-y-4">
+                        <li><a href="index.html#features"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Vorteile</a>
+                        </li>
+                        <li><a href="index.html#faq" class="text-zinc-600 hover:text-zinc-950 transition-colors">Häufige
+                                Fragen</a></li>
+                        <li><a href="support.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Support
+                                Center</a></li>
+                        <li><a href="#" class="text-zinc-600 hover:text-zinc-950 transition-colors">Über Softcrate</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Legal Links -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Rechtliches</h5>
+                    <ul class="space-y-4">
+                        <li><a href="impressum.html"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Impressum</a></li>
+                        <li><a href="datenschutz.html"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Datenschutz</a></li>
+                        <li><a href="agb.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">AGB</a></li>
+                        <li><a href="widerruf.html"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Widerruf</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social/Contact -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Social</h5>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-zinc-600 hover:text-zinc-950 transition-colors">Twitter (X)</a></li>
+                        <li><a href="#" class="text-zinc-600 hover:text-zinc-950 transition-colors">Instagram</a></li>
+                        <li><a href="#" class="text-zinc-600 hover:text-zinc-950 transition-colors">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="pt-12 border-t border-zinc-100 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-8 order-2 md:order-1">
+                    <p class="text-zinc-400 text-sm font-medium">&copy; 2026 Softcrate Digital Solutions. All rights
+                        reserved.</p>
+                </div>
+
+                <div class="flex items-center gap-10 order-1 md:order-2">
+                    <div class="flex items-center gap-6">
+                        <img src="https://i.ibb.co/pB46DMzb/Pay-Pal-logo-2022-redesign-for-US-and-Canada-Europe-1024x576-removebg-preview.png"
+                            alt="PayPal" class="h-6 w-auto opacity-80 hover:opacity-100 transition-all">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast-container"></div>
+
+    <script>
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast-apple';
+            toast.innerHTML = `<i class="fas fa-check-circle text-blue-500"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'toastOut 0.5s cubic-bezier(0.5, 0, 0, 1) forwards';
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+        const API_BASE = '';
+
+        // Format price
+        function formatPrice(price) {
+            return new Intl.NumberFormat('de-DE', {
+                style: 'currency',
+                currency: 'EUR'
+            }).format(price);
+        }
+
+        // Load cart from localStorage
+        function loadCart() {
+            return JSON.parse(localStorage.getItem('cart') || '[]');
+        }
+
+        // Save cart to localStorage
+        function saveCart(cart) {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        // Update cart count
+        function updateCartCount() {
+            const cart = loadCart();
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            const badge = document.getElementById('cart-badge');
+            if (badge) {
+                if (count > 0) {
+                    badge.textContent = count;
+                    badge.style.display = 'flex';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        }
+
+        // Render cart items
+        function renderCart() {
+            const cart = loadCart();
+            const container = document.getElementById('cart-items-container');
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-20 animate-entrance">
+                        <div class="w-24 h-24 bg-zinc-50 rounded-full flex items-center justify-center mx-auto mb-8 border border-black/[0.03]">
+                            <i class="fas fa-shopping-bag text-[32px] text-zinc-300"></i>
+                        </div>
+                        <h3 class="text-[24px] font-black tracking-tight mb-3">Warenkorb leer</h3>
+                        <p class="text-zinc-500 text-[16px] mb-10 max-w-[280px] mx-auto font-medium">Holen Sie sich jetzt Ihre Premium-Lizenzen zum Bestpreis.</p>
+                        <a href="products.html" class="apple-btn inline-flex mx-auto">Zum Shop</a>
+                    </div>
+                `;
+                updateSummary();
+                return;
+            }
+
+            container.innerHTML = cart.map((item, index) => `
+                <div class="cart-item group flex items-center justify-between py-6 border-b border-black/[0.05] last:border-0 hover:bg-zinc-50/50 -mx-4 px-4 rounded-2xl transition-all">
+                    <div class="flex-1">
+                        <h3 class="text-[17px] font-bold tracking-tight mb-1 text-zinc-950">${item.name}</h3>
+                        <p class="text-[13px] text-zinc-400 font-medium">SOFORT VERFÜGBAR · DIGITAL KEY</p>
+                    </div>
+                    
+                    <div class="flex items-center gap-8">
+                        <div class="qty-pill">
+                            <button class="qty-pill-btn" onclick="updateQuantity(${index}, -1)">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <span class="text-[14px] font-bold min-w-[30px] text-center">${item.quantity}</span>
+                            <button class="qty-pill-btn" onclick="updateQuantity(${index}, 1)">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="text-right min-w-[100px]">
+                            <p class="text-[17px] font-bold tracking-tight text-zinc-950">${formatPrice(item.price * item.quantity)}</p>
+                        </div>
+                        
+                        <button onclick="removeItem(${index})" class="text-zinc-300 hover:text-zinc-950 transition-colors">
+                            <i class="fas fa-times text-[14px]"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            updateSummary();
+        }
+
+        // Update quantity
+        function updateQuantity(index, change) {
+            const cart = loadCart();
+            cart[index].quantity = Math.max(1, Math.min(25, cart[index].quantity + change));
+            saveCart(cart);
+            renderCart();
+            updateCartCount();
+        }
+
+        // Remove item
+        function removeItem(index) {
+            const cart = loadCart();
+            cart.splice(index, 1);
+            saveCart(cart);
+            renderCart();
+            updateCartCount();
+        }
+
+        // Update summary
+        function updateSummary() {
+            const cart = loadCart();
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            document.getElementById('total').textContent = formatPrice(total);
+            document.getElementById('subtotal').textContent = formatPrice(total);
+            document.getElementById('item-count').textContent = `${count} ${count === 1 ? 'Artikel' : 'Artikel'}`;
+
+            // Enable/disable checkout button
+            const email = document.getElementById('checkout-email').value;
+            const checkoutBtn = document.getElementById('checkout-btn');
+            checkoutBtn.disabled = cart.length === 0 || !email.includes('@');
+        }
+
+        // Email validation
+        document.getElementById('checkout-email').addEventListener('input', updateSummary);
+
+        // Start checkout
+        async function startCheckout() {
+            const email = document.getElementById('checkout-email').value;
+            const cart = loadCart();
+
+            if (cart.length === 0) {
+                alert('Dein Warenkorb ist leer!');
+                return;
+            }
+
+            if (!email || !email.includes('@')) {
+                alert('Bitte gib eine gültige E-Mail-Adresse ein.');
+                return;
+            }
+
+            // Update progress
+            const bubbles = document.querySelectorAll('.step-bubble');
+            const lines = document.querySelectorAll('.max-w-\\[1000px\\] div div.w-8.h-\\[1px\\]');
+
+            if (bubbles[0]) bubbles[0].classList.add('completed');
+            if (bubbles[1]) bubbles[1].classList.add('active');
+            if (lines[0]) lines[0].classList.add('step-line-active');
+
+            // Show loading
+            document.getElementById('loading-overlay').classList.remove('hidden');
+            document.getElementById('loading-overlay').classList.add('flex');
+
+            try {
+                const response = await fetch(`${API_BASE}/checkout`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email,
+                        returnUrl: window.location.href,
+                        items: cart
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error || 'Checkout fehlgeschlagen');
+                }
+
+                const data = await response.json();
+                if (!data.url) {
+                    throw new Error('Keine Session URL erhalten');
+                }
+
+                // Redirect to payment
+                window.location.href = data.url;
+            } catch (error) {
+                console.error('Checkout fehlgeschlagen', error);
+                alert(`Checkout fehlgeschlagen: ${error.message}`);
+                document.getElementById('loading-overlay').classList.add('hidden');
+                document.getElementById('loading-overlay').classList.remove('flex');
+            }
+        }
+
+        // Initialize
+        updateCartCount();
+
+        // Mobile Menu Logic
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            const body = document.body;
+
+            if (menu.classList.contains('opacity-0')) {
+                // Open
+                menu.classList.remove('opacity-0', 'pointer-events-none');
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+                body.style.overflow = 'hidden';
+            } else {
+                // Close
+                menu.classList.add('opacity-0', 'pointer-events-none');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+                body.style.overflow = '';
+            }
+        }
+
+        // UX Improvements (Cookie & To-Top)
+        function initUX() {
+            // Cookie Banner
+            if (!localStorage.getItem('cookiesAccepted')) {
+                setTimeout(() => {
+                    const banner = document.getElementById('cookie-banner');
+                    if (banner) banner.classList.remove('translate-y-full');
+                }, 1000);
+            }
+
+            // To-Top Button
+            const toTopBtn = document.getElementById('to-top-btn');
+            if (toTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 300) {
+                        toTopBtn.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
+                    } else {
+                        toTopBtn.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
+                    }
+                });
+            }
+        }
+
+        function acceptCookies() {
+            localStorage.setItem('cookiesAccepted', 'true');
+            const banner = document.getElementById('cookie-banner');
+            if (banner) banner.classList.add('translate-y-full');
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.addEventListener('DOMContentLoaded', initUX);
+        renderCart();
+    </script>
+    <!-- Cookie Banner -->
+    <div id="cookie-banner"
+        class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-zinc-200 p-6 z-[60] transform translate-y-full transition-transform duration-500 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <p class="text-sm text-zinc-600 font-medium">Wir nutzen Cookies, um Ihr Einkaufserlebnis zu verbessern.
+                Durch die Nutzung der Seite stimmen Sie dem zu.</p>
+            <div class="flex items-center gap-3">
+                <button onclick="acceptCookies()"
+                    class="bg-zinc-900 text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-black transition-all hover:scale-105 shadow-lg shadow-zinc-900/10">Alles
+                    Akzeptieren</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- To-Top Button -->
+    <button id="to-top-btn" onclick="scrollToTop()"
+        class="fixed bottom-8 right-8 bg-white text-zinc-900 w-12 h-12 rounded-full shadow-lg border border-zinc-100 flex items-center justify-center opacity-0 translate-y-10 pointer-events-none transition-all duration-300 z-50 hover:scale-110 hover:shadow-xl focus:outline-none ring-1 ring-black/5">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+</body>
+
+</html>

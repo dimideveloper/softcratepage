@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Produkte kaufen | Windows, Office & mehr | Softcrate</title>
+    <meta name="description"
+        content="Entdecken Sie unser komplettes Software-Sortiment: Windows 11, Office 2024 LTSC, CapCut Pro und mehr. Sofortige Lieferung per E-Mail. Günstige Preise, 100% Original-Lizenzen.">
+    <meta name="keywords"
+        content="Software kaufen, Windows 11 Pro, Office 2024, CapCut Pro, Software Lizenzen, Produktkatalog, Softcrate Shop">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://softcrate.de/products.html">
+    <meta property="og:title" content="Software Produkte kaufen | Windows, Office & mehr | Softcrate">
+    <meta property="og:description"
+        content="Entdecken Sie unser komplettes Software-Sortiment: Windows 11, Office 2024 LTSC, CapCut Pro und mehr. Sofortige Lieferung per E-Mail.">
+    <meta property="og:image" content="https://softcrate.de/social-preview.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://softcrate.de/products.html">
+    <meta property="twitter:title" content="Software Produkte kaufen | Windows, Office & mehr | Softcrate">
+    <meta property="twitter:description"
+        content="Entdecken Sie unser komplettes Software-Sortiment: Windows 11, Office 2024 LTSC, CapCut Pro und mehr.">
+    <meta property="twitter:image" content="https://softcrate.de/social-preview.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --text-main: #1d1d1f;
+            --text-sub: #6e6e73;
+            --accent: #0071e3;
+            --nav-height: 44px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--text-main);
+            background-color: #ffffff;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .glass-nav {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.18);
+            height: var(--nav-height);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .category-pill {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .category-pill.active {
+            background-color: #18181b;
+            color: #ffffff;
+            border-color: #18181b;
+        }
+
+        .product-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="glass-nav sticky top-0 w-full z-50 px-5">
+        <div class="max-w-[980px] mx-auto flex justify-between items-center w-full h-full">
+            <div class="flex items-center space-x-10">
+                <a href="index.html" class="text-[21px] font-semibold tracking-tight">Softcrate<span
+                        class="text-blue-600">.</span></a>
+                <div class="hidden md:flex items-center space-x-8 text-[12px] font-normal">
+                    <a href="products.html" class="text-black">Produkte</a>
+                    <span class="text-zinc-300 select-none">|</span>
+                    <a href="index.html#features" class="text-zinc-600 hover:text-black transition-colors">Vorteile</a>
+                    <a href="support.html" class="text-zinc-600 hover:text-black transition-colors">Support</a>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-6">
+                <a href="warenkorb.html" class="relative">
+                    <i class="fas fa-shopping-bag text-[17px] text-zinc-600 hover:text-black transition-colors"></i>
+                    <span id="cart-badge"
+                        class="absolute -top-0.5 left-[14px] bg-blue-600 text-white text-[8px] min-w-[14px] h-[14px] flex items-center justify-center rounded-full font-semibold px-0.5"
+                        style="display: none;">0</span>
+                </a>
+
+                <!-- Hamburger Icon -->
+                <button class="md:hidden text-zinc-900 focus:outline-none z-50 relative" onclick="toggleMobileMenu()">
+                    <i id="menu-icon" class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu"
+        class="fixed inset-0 bg-white/95 backdrop-blur-xl z-40 flex flex-col items-center justify-center space-y-8 opacity-0 pointer-events-none transition-all duration-300">
+        <a href="products.html" class="text-2xl font-bold text-zinc-900" onclick="toggleMobileMenu()">Produkte</a>
+        <a href="index.html#features" class="text-2xl font-bold text-zinc-900" onclick="toggleMobileMenu()">Vorteile</a>
+        <a href="support.html" class="text-2xl font-bold text-zinc-900" onclick="toggleMobileMenu()">Support</a>
+        <a href="warenkorb.html" class="text-2xl font-bold text-blue-600" onclick="toggleMobileMenu()">Warenkorb</a>
+    </div>
+
+    <!-- Catalog Header -->
+    <main class="pt-[160px] pb-32">
+        <div class="max-w-[1240px] mx-auto px-6">
+            <div class="max-w-3xl mb-16 reveal">
+                <div
+                    class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-zinc-100 border border-zinc-200 mb-6">
+                    <span class="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span>
+                    <span class="text-[11px] font-bold text-zinc-600 uppercase tracking-widest">Produktkatalog</span>
+                </div>
+                <h1 class="text-[48px] md:text-[72px] font-black tracking-tight leading-[1.05] mb-8">
+                    Premium Software.<br>Fair bepreist.
+                </h1>
+                <p class="text-zinc-500 text-[19px] leading-relaxed max-w-2xl">
+                    Entdecke unsere kuratierte Auswahl an professioneller Software. Alle Lizenzen sind original, sofort
+                    verfügbar und werden direkt nach dem Kauf digital ausgeliefert.
+                </p>
+            </div>
+
+            <!-- Search & Filter Section -->
+            <div class="mb-12 reveal" style="transition-delay: 0.1s;">
+                <!-- Search Bar -->
+                <div class="relative max-w-md mb-8">
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"></i>
+                    <input type="text" id="searchInput" placeholder="Suchen Sie nach Produkten..."
+                        class="w-full pl-12 pr-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all font-medium"
+                        oninput="searchProducts(this.value)">
+                </div>
+
+                <!-- Filters -->
+                <div class="flex flex-wrap gap-2">
+                    <button
+                        class="category-pill active px-6 py-2.5 rounded-full border border-zinc-200 text-sm font-bold hover:border-zinc-400"
+                        onclick="filterProducts('all', this)">Alle Produkte</button>
+                    <button
+                        class="category-pill px-6 py-2.5 rounded-full border border-zinc-200 text-sm font-bold text-zinc-600 hover:border-zinc-400"
+                        onclick="filterProducts('windows', this)">Windows</button>
+                    <button
+                        class="category-pill px-6 py-2.5 rounded-full border border-zinc-200 text-sm font-bold text-zinc-600 hover:border-zinc-400"
+                        onclick="filterProducts('office', this)">Office</button>
+                    <button
+                        class="category-pill px-6 py-2.5 rounded-full border border-zinc-200 text-sm font-bold text-zinc-600 hover:border-zinc-400"
+                        onclick="filterProducts('multimedia', this)">Multimedia</button>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="products-grid">
+
+                <!-- Windows 11 Pro -->
+                <div class="product-card group reveal bg-zinc-50/50 rounded-3xl border border-zinc-100 overflow-hidden flex flex-col"
+                    data-category="windows">
+                    <a href="windows-11-pro.html" class="block aspect-square bg-white relative p-12">
+                        <img src="productcards/windows11pro_card.png" alt="Windows 11 Pro"
+                            class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute top-6 left-6 flex flex-col gap-2">
+                            <span
+                                class="bg-blue-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Bestseller</span>
+                        </div>
+                    </a>
+                    <div class="p-8 flex flex-col flex-grow bg-white border-t border-zinc-100">
+                        <h3 class="text-2xl font-black mb-4 tracking-tight">Windows 11 Pro</h3>
+                        <div class="space-y-2 mb-8 flex-grow">
+                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
+                                <i class="fas fa-check text-blue-600 mr-2 opacity-50"></i> Permanente Aktivierung
+                            </div>
+                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
+                                <i class="fas fa-bolt text-blue-600 mr-2 opacity-50"></i> Digitale Auslieferung
+                            </div>
+                        </div>
+                        <div class="flex items-end justify-between mb-6">
+                            <div>
+                                <span class="block text-zinc-400 text-xs line-through mb-1">UVP 259,00 €</span>
+                                <span class="text-3xl font-black text-zinc-950">14,90 €</span>
+                            </div>
+                            <span class="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Inkl.
+                                MwSt.</span>
+                        </div>
+                        <button onclick="addToCart('Windows 11 Pro', 14.90)"
+                            class="w-full py-4 bg-zinc-950 hover:bg-blue-600 text-white rounded-2xl text-[14px] font-bold transition-all transform active:scale-95">
+                            In den Warenkorb
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Office 2024 Pro -->
+                <div class="product-card group reveal bg-zinc-50/50 rounded-3xl border border-zinc-100 overflow-hidden flex flex-col"
+                    data-category="office" style="transition-delay: 0.1s;">
+                    <a href="office-2024-ltsc.html" class="block aspect-square bg-white relative p-12">
+                        <img src="productcards/office2024_professional.png" alt="Office 2024 Pro"
+                            class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute top-6 left-6">
+                            <span
+                                class="bg-emerald-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">LTSC
+                                Edition</span>
+                        </div>
+                    </a>
+                    <div class="p-8 flex flex-col flex-grow bg-white border-t border-zinc-100">
+                        <h3 class="text-2xl font-black mb-4 tracking-tight">Office 2024 Pro Plus</h3>
+                        <div class="space-y-2 mb-8 flex-grow">
+                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
+                                <i class="fas fa-check text-emerald-600 mr-2 opacity-50"></i> Einmalzahlung, kein Abo
+                            </div>
+                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
+                                <i class="fas fa-bolt text-emerald-600 mr-2 opacity-50"></i> Vollversion LTSC
+                            </div>
+                        </div>
+                        <div class="flex items-end justify-between mb-6">
+                            <div>
+                                <span class="block text-zinc-400 text-xs line-through mb-1">UVP 579,00 €</span>
+                                <span class="text-3xl font-black text-zinc-950">24,90 €</span>
+                            </div>
+                            <span class="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Inkl.
+                                MwSt.</span>
+                        </div>
+                        <button onclick="addToCart('Office 2024 Pro Plus', 24.90)"
+                            class="w-full py-4 bg-zinc-950 hover:bg-emerald-600 text-white rounded-2xl text-[14px] font-bold transition-all transform active:scale-95">
+                            In den Warenkorb
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CapCut Pro -->
+                <div class="product-card group reveal bg-zinc-50/50 rounded-3xl border border-zinc-100 overflow-hidden flex flex-col"
+                    data-category="multimedia" style="transition-delay: 0.2s;">
+                    <a href="#" class="block aspect-square bg-white relative p-12">
+                        <img src="productcards/capcutpro_card.png" alt="CapCut Pro"
+                            class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute top-6 left-6">
+                            <span
+                                class="bg-purple-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Hot</span>
+                        </div>
+                    </a>
+                    <div class="p-8 flex flex-col flex-grow bg-white border-t border-zinc-100">
+                        <h3 class="text-2xl font-black mb-4 tracking-tight">CapCut Pro (1 Jahr)</h3>
+                        <div class="space-y-2 mb-8 flex-grow">
+                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
+                                <i class="fas fa-check text-purple-600 mr-2 opacity-50"></i> Premium AI-Features
+                            </div>
+                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
+                                <i class="fas fa-bolt text-purple-600 mr-2 opacity-50"></i> Desktop & Mobile
+                            </div>
+                        </div>
+                        <div class="flex items-end justify-between mb-6">
+                            <div>
+                                <span class="block text-zinc-400 text-xs line-through mb-1">UVP 119,00 €</span>
+                                <span class="text-3xl font-black text-zinc-950">19,90 €</span>
+                            </div>
+                            <span class="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Inkl.
+                                MwSt.</span>
+                        </div>
+                        <button onclick="addToCart('CapCut Pro (1 Jahr)', 19.90)"
+                            class="w-full py-4 bg-zinc-950 hover:bg-purple-600 text-white rounded-2xl text-[14px] font-bold transition-all transform active:scale-95">
+                            In den Warenkorb
+                        </button>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Professional Footer -->
+    <footer class="pt-24 pb-12 bg-white border-t border-zinc-100">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Grid Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 mb-20 text-left">
+                <!-- Branding & Tagline -->
+                <div class="lg:col-span-4 space-y-8">
+                    <div class="text-2xl font-black text-zinc-950 cursor-pointer" onclick="window.scrollTo(0,0)">
+                        Softcrate<span class="text-blue-600">.</span>
+                    </div>
+                    <p class="text-zinc-500 text-[16px] leading-relaxed max-w-sm">
+                        Automatisierte digitale Auslieferung für Profis, die Wert auf Originalität und rechtliche
+                        Sicherheit legen.
+                    </p>
+                    <div class="space-y-2">
+                        <div class="text-xs font-bold text-zinc-400 uppercase tracking-widest">Kontakt</div>
+                        <a href="mailto:support@softcrate.de"
+                            class="text-zinc-950 font-bold hover:text-blue-600 transition-colors">support@softcrate.de</a>
+                    </div>
+                </div>
+
+                <!-- Product Links -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Produkte</h5>
+                    <ul class="space-y-4">
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Windows
+                                Systeme</a></li>
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Office
+                                Pakete</a></li>
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Adobe
+                                Creative</a></li>
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Server
+                                Solutions</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company Links -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Unternehmen</h5>
+                    <ul class="space-y-4">
+                        <li><a href="index.html#features"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Vorteile</a>
+                        </li>
+                        <li><a href="index.html#faq" class="text-zinc-600 hover:text-zinc-950 transition-colors">Häufige
+                                Fragen</a></li>
+                        <li><a href="index.html#support"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Support
+                                Center</a></li>
+                        <li><a href="#" class="text-zinc-600 hover:text-zinc-950 transition-colors">Über Softcrate</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Legal Links -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Rechtliches</h5>
+                    <ul class="space-y-4">
+                        <li><a href="impressum.html"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Impressum</a></li>
+                        <li><a href="datenschutz.html"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Datenschutz</a></li>
+                        <li><a href="agb.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">AGB</a></li>
+                        <li><a href="widerruf.html"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Widerruf</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social/Contact -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Social</h5>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-zinc-600 hover:text-zinc-950 transition-colors">Twitter (X)</a></li>
+                        <li><a href="#" class="text-zinc-600 hover:text-zinc-950 transition-colors">Instagram</a></li>
+                        <li><a href="#" class="text-zinc-600 hover:text-zinc-950 transition-colors">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="pt-12 border-t border-zinc-100 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-8 order-2 md:order-1">
+                    <p class="text-zinc-400 text-sm font-medium">&copy; 2026 Softcrate Digital Solutions. All rights
+                        reserved.</p>
+                </div>
+
+                <div class="flex items-center gap-10 order-1 md:order-2">
+                    <div class="flex items-center gap-6">
+                        <img src="https://i.ibb.co/pB46DMzb/Pay-Pal-logo-2022-redesign-for-US-and-Canada-Europe-1024x576-removebg-preview.png"
+                            alt="PayPal" class="h-6 w-auto opacity-80 hover:opacity-100 transition-all">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast"
+        class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-zinc-950 text-white px-8 py-4 rounded-2xl text-sm font-bold shadow-2xl transition-all duration-500 opacity-0 translate-y-8 z-[2000] pointer-events-none">
+        Produkt zum Warenkorb hinzugefügt.
+    </div>
+
+    <script>
+        // Reveal Logic
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Filter Logic
+        // Filter Logic
+        let currentCategory = 'all';
+
+        function filterProducts(category, btn) {
+            currentCategory = category;
+
+            // Update buttons
+            const pills = document.querySelectorAll('.category-pill');
+            pills.forEach(pill => {
+                pill.classList.remove('active');
+                pill.classList.add('text-zinc-600');
+            });
+            btn.classList.add('active');
+            btn.classList.remove('text-zinc-600');
+
+            // Apply filter and search
+            applyFilters();
+        }
+
+        function searchProducts(query) {
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const products = document.querySelectorAll('.product-card');
+
+            products.forEach(product => {
+                const category = product.dataset.category;
+                const title = product.querySelector('h3').textContent.toLowerCase();
+
+                const matchesCategory = currentCategory === 'all' || category === currentCategory;
+                const matchesSearch = title.includes(query);
+
+                if (matchesCategory && matchesSearch) {
+                    product.style.display = 'flex';
+                    // Re-trigger animation effectively
+                    product.style.animation = 'none';
+                    product.offsetHeight; /* trigger reflow */
+                    product.style.animation = null;
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+
+        // Cart Logic
+        function addToCart(name, price) {
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const existing = cart.find(i => i.name === name);
+            if (existing) existing.quantity++;
+            else cart.push({ name, price, quantity: 1 });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            showToast();
+        }
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const count = cart.reduce((s, i) => s + i.quantity, 0);
+            const badge = document.getElementById('cart-badge');
+            if (badge) {
+                badge.textContent = count;
+                badge.style.display = count > 0 ? 'flex' : 'none';
+            }
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('opacity-0', 'translate-y-8');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-8');
+            }, 3000);
+        }
+
+        updateCartCount();
+
+        // Mobile Menu Logic
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            const body = document.body;
+
+            if (menu.classList.contains('opacity-0')) {
+                // Open
+                menu.classList.remove('opacity-0', 'pointer-events-none');
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+                body.style.overflow = 'hidden';
+            } else {
+                // Close
+                menu.classList.add('opacity-0', 'pointer-events-none');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+                body.style.overflow = '';
+            }
+        }
+
+        // UX Improvements (Cookie & To-Top)
+        function initUX() {
+            // Cookie Banner
+            if (!localStorage.getItem('cookiesAccepted')) {
+                setTimeout(() => {
+                    const banner = document.getElementById('cookie-banner');
+                    if (banner) banner.classList.remove('translate-y-full');
+                }, 1000);
+            }
+
+            // To-Top Button
+            const toTopBtn = document.getElementById('to-top-btn');
+            if (toTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 300) {
+                        toTopBtn.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
+                    } else {
+                        toTopBtn.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
+                    }
+                });
+            }
+        }
+
+        function acceptCookies() {
+            localStorage.setItem('cookiesAccepted', 'true');
+            const banner = document.getElementById('cookie-banner');
+            if (banner) banner.classList.add('translate-y-full');
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.addEventListener('DOMContentLoaded', initUX);
+    </script>
+    <!-- Cookie Banner -->
+    <div id="cookie-banner"
+        class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-zinc-200 p-6 z-[60] transform translate-y-full transition-transform duration-500 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <p class="text-sm text-zinc-600 font-medium">Wir nutzen Cookies, um Ihr Einkaufserlebnis zu verbessern.
+                Durch die Nutzung der Seite stimmen Sie dem zu.</p>
+            <div class="flex items-center gap-3">
+                <button onclick="acceptCookies()"
+                    class="bg-zinc-900 text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-black transition-all hover:scale-105 shadow-lg shadow-zinc-900/10">Alles
+                    Akzeptieren</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- To-Top Button -->
+    <button id="to-top-btn" onclick="scrollToTop()"
+        class="fixed bottom-8 right-8 bg-white text-zinc-900 w-12 h-12 rounded-full shadow-lg border border-zinc-100 flex items-center justify-center opacity-0 translate-y-10 pointer-events-none transition-all duration-300 z-50 hover:scale-110 hover:shadow-xl focus:outline-none ring-1 ring-black/5">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+</body>
+
+</html>
