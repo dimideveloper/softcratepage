@@ -7,28 +7,33 @@ export async function onRequestPost(context) {
 
         // Check admin password
         if (password !== env.ADMIN_PASSWORD) {
-            return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-                status: 401,
-                headers: { 'Content-Type': 'application/json' }
-            });
+            return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
         }
 
         if (!env.ORDERS) {
-            console.error('KV Error: ORDERS binding missing');
-            throw new Error('ORDERS binding is missing in Cloudflare Pages settings');
+            throw new Error('ORDERS binding is missing');
         }
 
         // Get all orders
-        const ordersList = await env.ORDERS.list();
+        let ordersList;
+        try {
+            ordersList = await env.ORDERS.list();
+        } catch (e) {
+            throw new Error(`Failed to list ORDERS: ${e.message}`);
+        }
+
         const orders = [];
 
-        for (const key of ordersList.keys) {
-            const order = await env.ORDERS.get(key.name, 'json');
-            if (order) {
-                orders.push({
-                    id: key.name,
-                    ...order
-                });
+        if (ordersList && ordersList.keys) {
+            for (const key of ordersList.keys) {
+                try {
+                    const order = await env.ORDERS.get(key.name, 'json');
+                    if (order) {
+                        orders.push({ id: key.name, ...order });
+                    }
+                } catch (e) {
+                    console.error(`Failed to load order ${key.name}:`, e);
+                }
             }
         }
 
@@ -46,13 +51,10 @@ export async function onRequestPost(context) {
         });
 
     } catch (error) {
-        console.error('View Orders Error:', error);
         return new Response(JSON.stringify({
-            error: 'Failed to fetch orders',
-            message: error.message || 'Unknown server error',
-            name: error.name,
-            stack: error.stack,
-            binding_status: !!env.ORDERS ? 'present' : 'missing'
+            error: 'Server Error',
+            message: error.message,
+            stack: error.stack
         }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }
