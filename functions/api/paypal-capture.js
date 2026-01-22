@@ -3,10 +3,17 @@ export async function onRequestPost(context) {
 
     try {
         const body = await request.json();
-        const { orderID } = body;
+        const { orderID, email } = body;
 
         if (!orderID) {
             return new Response(JSON.stringify({ error: 'Missing orderID' }), {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' }
+            });
+        }
+
+        if (!email) {
+            return new Response(JSON.stringify({ error: 'Missing email' }), {
                 status: 400,
                 headers: { 'Content-Type': 'application/json' }
             });
@@ -45,10 +52,9 @@ export async function onRequestPost(context) {
         const captureData = await captureResponse.json();
 
         if (captureData.status === 'COMPLETED') {
-            // Extract customer data from custom_id
-            const customData = JSON.parse(captureData.purchase_units[0].custom_id || '{}');
-            const customerEmail = customData.email;
-            const items = customData.items || [];
+            // Use email from request body
+            const customerEmail = email;
+            const items = captureData.purchase_units[0].items || [];
 
             // Send email with license key via Resend
             if (env.RESEND_API_KEY && customerEmail) {

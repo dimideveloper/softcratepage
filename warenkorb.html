@@ -609,6 +609,9 @@
             document.getElementById('loading-overlay').classList.add('flex');
 
             try {
+                // Store email in localStorage for later use
+                localStorage.setItem('checkout_email', email);
+
                 // Create PayPal order
                 const response = await fetch(`${API_BASE}/api/paypal-checkout`, {
                     method: 'POST',
