@@ -14,8 +14,14 @@ export async function onRequestPost(context) {
         }
 
         // Get all products and their keys
+        // Get all products and their keys
         const products = ['windows-11-pro', 'office-2024-ltsc', 'capcut-pro'];
         const inventory = {};
+
+        if (!env.LICENSE_KEYS) {
+            console.error('KV Error: LICENSE_KEYS binding missing');
+            throw new Error('LICENSE_KEYS binding is missing in Cloudflare Pages settings');
+        }
 
         for (const product of products) {
             const keys = await env.LICENSE_KEYS.get(product, 'json') || [];

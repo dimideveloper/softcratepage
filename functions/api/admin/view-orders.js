@@ -13,6 +13,11 @@ export async function onRequestPost(context) {
             });
         }
 
+        if (!env.ORDERS) {
+            console.error('KV Error: ORDERS binding missing');
+            throw new Error('ORDERS binding is missing in Cloudflare Pages settings');
+        }
+
         // Get all orders
         const ordersList = await env.ORDERS.list();
         const orders = [];
