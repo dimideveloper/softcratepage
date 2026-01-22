@@ -88,8 +88,8 @@ export async function onRequestPost(context) {
                   <div class="license-key">${env.LICENSE_KEY || 'XXXXX-XXXXX-XXXXX-XXXXX'}</div>
                 </div>
 
-                <p><strong>Produkt:</strong> ${items.map(i => i.name).join(', ')}</p>
-                <p><strong>Preis:</strong> ${captureData.purchase_units[0].amount.value} ${captureData.purchase_units[0].amount.currency_code}</p>
+                <p><strong>Produkt:</strong> ${env.PRODUCT_NAME || 'Digitales Produkt'}</p>
+                <p><strong>Preis:</strong> ${env.PRODUCT_PRICE || '0.00'} ${env.PRODUCT_CURRENCY || 'EUR'}</p>
 
                 <p>Bei Fragen stehen wir Ihnen gerne zur Verfügung:</p>
                 <a href="mailto:support@softcrate.de" class="button">Support kontaktieren</a>
