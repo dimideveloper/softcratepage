@@ -19,10 +19,10 @@ export async function onRequestPost(context) {
         // PayPal API credentials
         const PAYPAL_CLIENT_ID = env.PAYPAL_CLIENT_ID;
         const PAYPAL_SECRET = env.PAYPAL_SECRET;
-        const PAYPAL_MODE = env.PAYPAL_MODE || 'sandbox'; // 'sandbox' or 'live'
-        const PAYPAL_API = PAYPAL_MODE === 'live'
-            ? 'https://api-m.paypal.com'
-            : 'https://api-m.sandbox.paypal.com';
+        const PAYPAL_MODE = env.PAYPAL_MODE || 'live'; // Default to live
+        const PAYPAL_API = PAYPAL_MODE === 'sandbox'
+            ? 'https://api-m.sandbox.paypal.com'
+            : 'https://api-m.paypal.com';
 
         // Get PayPal access token
         const authResponse = await fetch(`${PAYPAL_API}/v1/oauth2/token`, {
