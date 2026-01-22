@@ -117,7 +117,7 @@ export async function onRequestPost(context) {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        from: 'Softcrate <onboarding@resend.dev>',
+                        from: 'Softcrate <noreply@softcrate.de>',
                         to: [customerEmail],
                         subject: '🎉 Ihre Softcrate Bestellung - Lizenzschlüssel',
                         html: emailHtml
