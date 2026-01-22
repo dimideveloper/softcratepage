@@ -104,19 +104,38 @@ export async function onRequestPost(context) {
           </html>
         `;
 
-                await fetch('https://api.resend.com/emails', {
+                const emailResponse = await fetch('https://api.resend.com/emails', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${env.RESEND_API_KEY}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        from: 'Softcrate <noreply@resend.dev>',
-                        to: customerEmail,
+                        from: 'Softcrate <onboarding@resend.dev>',
+                        to: [customerEmail],
                         subject: '🎉 Ihre Softcrate Bestellung - Lizenzschlüssel',
                         html: emailHtml
                     })
                 });
+
+                const emailResult = await emailResponse.json();
+
+                if (!emailResponse.ok) {
+                    console.error('Resend API error:', emailResult);
+                    return new Response(JSON.stringify({
+                        status: 'partial_success',
+                        message: 'Payment completed but email failed',
+                        email_error: emailResult
+                    }), {
+                        status: 200,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*'
+                        }
+                    });
+                }
+
+                console.log('Email sent successfully:', emailResult);
             }
 
             return new Response(JSON.stringify({
