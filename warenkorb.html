@@ -609,15 +609,19 @@
             document.getElementById('loading-overlay').classList.add('flex');
 
             try {
-                const response = await fetch(`${API_BASE}/checkout`, {
+                // Create PayPal order
+                const response = await fetch(`${API_BASE}/api/paypal-checkout`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        email,
-                        returnUrl: window.location.href,
-                        items: cart
+                        email: email,
+                        items: cart.map(item => ({
+                            name: item.name,
+                            price: parseFloat(item.price),
+                            quantity: item.quantity
+                        }))
                     })
                 });
 
@@ -627,12 +631,12 @@
                 }
 
                 const data = await response.json();
-                if (!data.url) {
-                    throw new Error('Keine Session URL erhalten');
+                if (!data.approval_url) {
+                    throw new Error('Keine PayPal-URL erhalten');
                 }
 
-                // Redirect to payment
-                window.location.href = data.url;
+                // Redirect to PayPal
+                window.location.href = data.approval_url;
             } catch (error) {
                 console.error('Checkout fehlgeschlagen', error);
                 alert(`Checkout fehlgeschlagen: ${error.message}`);
