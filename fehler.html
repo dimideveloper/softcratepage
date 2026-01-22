@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zahlung fehlgeschlagen | Softcrate</title>
+    <meta name="description" content="Ihre Zahlung konnte nicht abgeschlossen werden. Bitte versuchen Sie es erneut.">
+    <meta name="robots" content="noindex, nofollow">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --bg-color: #ffffff;
+            --text-main: #1d1d1f;
+            --accent: #0071e3;
+            --nav-height: 44px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-h: screen;
+        }
+
+        .glass-nav {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.18);
+            transition: all 0.3s cubic-bezier(0.28, 0.11, 0.32, 1);
+            height: var(--nav-height);
+            display: flex;
+            align-items: center;
+        }
+
+        .error-icon {
+            animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            10%,
+            30%,
+            50%,
+            70%,
+            90% {
+                transform: translateX(-10px);
+            }
+
+            20%,
+            40%,
+            60%,
+            80% {
+                transform: translateX(10px);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="flex flex-col min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="glass-nav fixed w-full z-50 top-0 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 w-full flex justify-between items-center">
+            <a href="index.html"
+                class="text-[21px] font-semibold tracking-tight text-zinc-900 hover:opacity-80 transition-opacity">
+                Softcrate<span class="text-blue-600">.</span>
+            </a>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="index.html"
+                    class="text-[13px] text-zinc-600 font-medium hover:text-blue-600 transition-colors">Startseite</a>
+                <a href="products.html"
+                    class="text-[13px] text-zinc-600 font-medium hover:text-blue-600 transition-colors">Produkte</a>
+                <a href="support.html"
+                    class="text-[13px] text-zinc-600 font-medium hover:text-blue-600 transition-colors">Support</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Error Content -->
+    <main class="flex-grow flex items-center justify-center relative overflow-hidden py-32 px-6">
+        <!-- Background -->
+        <div class="absolute inset-0 bg-white">
+            <div class="absolute top-[20%] left-[20%] w-96 h-96 bg-red-100/40 rounded-full blur-[100px] animate-pulse">
+            </div>
+            <div class="absolute bottom-[20%] right-[20%] w-96 h-96 bg-orange-100/40 rounded-full blur-[100px] animate-pulse"
+                style="animation-delay: 1s;"></div>
+        </div>
+
+        <div class="text-center max-w-2xl mx-auto relative z-10">
+            <!-- Error Icon -->
+            <div class="error-icon mb-8">
+                <div
+                    class="w-24 h-24 mx-auto bg-red-500 rounded-full flex items-center justify-center shadow-2xl shadow-red-500/20">
+                    <i class="fas fa-times text-white text-5xl"></i>
+                </div>
+            </div>
+
+            <div class="fade-in" style="animation-delay: 0.2s;">
+                <h1 class="text-4xl md:text-6xl font-black text-zinc-950 mb-6 tracking-tight">
+                    Zahlung fehlgeschlagen
+                </h1>
+
+                <p class="text-zinc-500 text-lg md:text-xl mb-8 leading-relaxed">
+                    Ihre Zahlung konnte leider nicht abgeschlossen werden. Das kann verschiedene Gründe haben:
+                </p>
+
+                <div class="bg-zinc-50 border border-zinc-200 rounded-2xl p-8 mb-8 text-left">
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-credit-card text-red-500 mt-1"></i>
+                            <span class="text-zinc-700">Unzureichende Deckung oder abgelehnte Karte</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-wifi text-red-500 mt-1"></i>
+                            <span class="text-zinc-700">Verbindungsprobleme während der Zahlung</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-ban text-red-500 mt-1"></i>
+                            <span class="text-zinc-700">Zahlung wurde abgebrochen</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-exclamation-triangle text-red-500 mt-1"></i>
+                            <span class="text-zinc-700">Technischer Fehler beim Zahlungsanbieter</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-orange-50 border border-orange-200 rounded-2xl p-6 mb-8">
+                    <p class="text-orange-900 text-sm">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        <strong>Keine Sorge:</strong> Es wurde kein Geld abgebucht. Sie können den Kauf jederzeit erneut
+                        versuchen.
+                    </p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="warenkorb.html"
+                        class="bg-zinc-900 text-white px-8 py-4 rounded-full text-base font-semibold hover:bg-black transition-all hover:scale-105 shadow-xl shadow-zinc-900/10 w-full sm:w-auto flex items-center justify-center gap-2">
+                        <i class="fas fa-redo"></i> Erneut versuchen
+                    </a>
+                    <a href="support.html"
+                        class="bg-white text-zinc-900 border border-zinc-200 px-8 py-4 rounded-full text-base font-semibold hover:bg-zinc-50 transition-all hover:border-zinc-300 w-full sm:w-auto flex items-center justify-center gap-2">
+                        <i class="fas fa-headset"></i> Support kontaktieren
+                    </a>
+                </div>
+
+                <div class="mt-8">
+                    <a href="index.html" class="text-zinc-500 hover:text-zinc-900 transition-colors text-sm">
+                        <i class="fas fa-arrow-left mr-2"></i>Zurück zur Startseite
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Simple Footer -->
+    <footer class="py-8 bg-white border-t border-zinc-100">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="text-zinc-400 text-sm font-medium">&copy; 2026 Softcrate Digital Solutions. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

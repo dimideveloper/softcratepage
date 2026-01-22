@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vielen Dank für Ihre Bestellung | Softcrate</title>
+    <meta name="description"
+        content="Ihre Bestellung war erfolgreich. Sie erhalten in Kürze eine E-Mail mit Ihrem Lizenzschlüssel.">
+    <meta name="robots" content="noindex, nofollow">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --bg-color: #ffffff;
+            --text-main: #1d1d1f;
+            --accent: #0071e3;
+            --nav-height: 44px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-h: screen;
+        }
+
+        .glass-nav {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.18);
+            transition: all 0.3s cubic-bezier(0.28, 0.11, 0.32, 1);
+            height: var(--nav-height);
+            display: flex;
+            align-items: center;
+        }
+
+        .success-icon {
+            animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes scaleIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="flex flex-col min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="glass-nav fixed w-full z-50 top-0 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 w-full flex justify-between items-center">
+            <a href="index.html"
+                class="text-[21px] font-semibold tracking-tight text-zinc-900 hover:opacity-80 transition-opacity">
+                Softcrate<span class="text-blue-600">.</span>
+            </a>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="index.html"
+                    class="text-[13px] text-zinc-600 font-medium hover:text-blue-600 transition-colors">Startseite</a>
+                <a href="products.html"
+                    class="text-[13px] text-zinc-600 font-medium hover:text-blue-600 transition-colors">Produkte</a>
+                <a href="support.html"
+                    class="text-[13px] text-zinc-600 font-medium hover:text-blue-600 transition-colors">Support</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Success Content -->
+    <main class="flex-grow flex items-center justify-center relative overflow-hidden py-32 px-6">
+        <!-- Background -->
+        <div class="absolute inset-0 bg-white">
+            <div
+                class="absolute top-[20%] left-[20%] w-96 h-96 bg-green-100/40 rounded-full blur-[100px] animate-pulse">
+            </div>
+            <div class="absolute bottom-[20%] right-[20%] w-96 h-96 bg-blue-100/40 rounded-full blur-[100px] animate-pulse"
+                style="animation-delay: 1s;"></div>
+        </div>
+
+        <div class="text-center max-w-2xl mx-auto relative z-10">
+            <!-- Success Icon -->
+            <div class="success-icon mb-8">
+                <div
+                    class="w-24 h-24 mx-auto bg-green-500 rounded-full flex items-center justify-center shadow-2xl shadow-green-500/20">
+                    <i class="fas fa-check text-white text-5xl"></i>
+                </div>
+            </div>
+
+            <div class="fade-in" style="animation-delay: 0.2s;">
+                <h1 class="text-4xl md:text-6xl font-black text-zinc-950 mb-6 tracking-tight">
+                    Vielen Dank für Ihre Bestellung! 🎉
+                </h1>
+
+                <p class="text-zinc-500 text-lg md:text-xl mb-8 leading-relaxed">
+                    Ihre Zahlung war erfolgreich. Sie erhalten in wenigen Minuten eine E-Mail mit:
+                </p>
+
+                <div class="bg-zinc-50 border border-zinc-200 rounded-2xl p-8 mb-8 text-left">
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-key text-blue-600 mt-1"></i>
+                            <span class="text-zinc-700">Ihrem <strong>Lizenzschlüssel</strong></span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-download text-blue-600 mt-1"></i>
+                            <span class="text-zinc-700"><strong>Download-Links</strong> (falls zutreffend)</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-file-invoice text-blue-600 mt-1"></i>
+                            <span class="text-zinc-700">Ihrer <strong>Rechnung</strong></span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-book text-blue-600 mt-1"></i>
+                            <span class="text-zinc-700"><strong>Aktivierungsanleitung</strong></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-8">
+                    <p class="text-blue-900 text-sm">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        <strong>Hinweis:</strong> Bitte prüfen Sie auch Ihren Spam-Ordner, falls die E-Mail nicht
+                        innerhalb von 10 Minuten ankommt.
+                    </p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="index.html"
+                        class="bg-zinc-900 text-white px-8 py-4 rounded-full text-base font-semibold hover:bg-black transition-all hover:scale-105 shadow-xl shadow-zinc-900/10 w-full sm:w-auto flex items-center justify-center gap-2">
+                        <i class="fas fa-home"></i> Zurück zur Startseite
+                    </a>
+                    <a href="support.html"
+                        class="bg-white text-zinc-900 border border-zinc-200 px-8 py-4 rounded-full text-base font-semibold hover:bg-zinc-50 transition-all hover:border-zinc-300 w-full sm:w-auto flex items-center justify-center gap-2">
+                        <i class="fas fa-headset"></i> Support kontaktieren
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Professional Footer -->
+    <footer class="pt-24 pb-12 bg-white border-t border-zinc-100 mt-auto">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 mb-20">
+                <!-- Branding -->
+                <div class="lg:col-span-4 space-y-8">
+                    <div class="text-2xl font-black text-zinc-950 cursor-pointer"
+                        onclick="window.location.href='index.html'">
+                        Softcrate<span class="text-blue-600">.</span>
+                    </div>
+                    <p class="text-zinc-500 text-[16px] leading-relaxed max-w-sm">
+                        Automatisierte digitale Auslieferung für Profis, die Wert auf Originalität und rechtliche
+                        Sicherheit legen.
+                    </p>
+                    <div class="space-y-2">
+                        <div class="text-xs font-bold text-zinc-400 uppercase tracking-widest">Kontakt</div>
+                        <a href="mailto:support@softcrate.de"
+                            class="text-zinc-950 font-bold hover:text-blue-600 transition-colors">support@softcrate.de</a>
+                    </div>
+                </div>
+
+                <!-- Product Links -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Produkte</h5>
+                    <ul class="space-y-4">
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Windows
+                                Systeme</a></li>
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Office
+                                Pakete</a></li>
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Adobe
+                                Creative</a></li>
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Server
+                                Solutions</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company Links -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Unternehmen</h5>
+                    <ul class="space-y-4">
+                        <li><a href="index.html#features"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Vorteile</a></li>
+                        <li><a href="index.html#faq" class="text-zinc-600 hover:text-zinc-950 transition-colors">Häufige
+                                Fragen</a></li>
+                        <li><a href="support.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Support
+                                Center</a></li>
+                        <li><a href="index.html#about" class="text-zinc-600 hover:text-zinc-950 transition-colors">Über
+                                Softcrate</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal Links -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Rechtliches</h5>
+                    <ul class="space-y-4">
+                        <li><a href="impressum.html"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Impressum</a></li>
+                        <li><a href="datenschutz.html"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Datenschutz</a></li>
+                        <li><a href="agb.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">AGB</a></li>
+                        <li><a href="widerruf.html"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Widerruf</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Social</h5>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-zinc-600 hover:text-zinc-950 transition-colors">Twitter (X)</a></li>
+                        <li><a href="#" class="text-zinc-600 hover:text-zinc-950 transition-colors">Instagram</a></li>
+                        <li><a href="#" class="text-zinc-600 hover:text-zinc-950 transition-colors">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="pt-12 border-t border-zinc-100 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-8 order-2 md:order-1">
+                    <p class="text-zinc-400 text-sm font-medium">&copy; 2026 Softcrate Digital Solutions. All rights
+                        reserved.</p>
+                </div>
+                <div class="flex items-center gap-10 order-1 md:order-2">
+                    <div class="flex items-center gap-6">
+                        <img src="https://i.ibb.co/pB46DMzb/Pay-Pal-logo-2022-redesign-for-US-and-Canada-Europe-1024x576-removebg-preview.png"
+                            alt="PayPal" class="h-6 w-auto opacity-80 hover:opacity-100 transition-all">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Center | Hilfe & Anleitungen | Softcrate</title>
+    <meta name="description"
+        content="Brauchen Sie Hilfe? Unser Support Center bietet Anleitungen zu Aktivierung, Versand und technischen Fragen. FAQs, Wiki und direkter Support verfügbar.">
+    <meta name="keywords"
+        content="Softcrate Support, Software Aktivierung, Lizenz Hilfe, FAQ, Technischer Support, Versand Informationen">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://softcrate.de/support.html">
+    <meta property="og:title" content="Support Center | Hilfe & Anleitungen | Softcrate">
+    <meta property="og:description"
+        content="Brauchen Sie Hilfe? Unser Support Center bietet Anleitungen zu Aktivierung, Versand und technischen Fragen.">
+    <meta property="og:image" content="https://softcrate.de/social-preview.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://softcrate.de/support.html">
+    <meta property="twitter:title" content="Support Center | Hilfe & Anleitungen | Softcrate">
+    <meta property="twitter:description"
+        content="Brauchen Sie Hilfe? Unser Support Center bietet Anleitungen zu Aktivierung, Versand und technischen Fragen.">
+    <meta property="twitter:image" content="https://softcrate.de/social-preview.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --bg-secondary: #f5f5f7;
+            --text-main: #1d1d1f;
+            --text-sub: #86868b;
+            --accent: #0071e3;
+            --border-light: rgba(0, 0, 0, 0.08);
+            --nav-height: 44px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--text-main);
+            background: var(--bg-secondary);
+        }
+
+        .glass-nav {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+            height: var(--nav-height);
+            display: flex;
+            align-items: center;
+        }
+
+        .support-hero {
+            background: white;
+            padding: 100px 0 60px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .wiki-card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s;
+            display: block;
+        }
+
+        .wiki-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border-color: var(--accent);
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .faq-trigger {
+            width: 100%;
+            padding: 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 17px;
+            transition: color 0.2s;
+        }
+
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+            opacity: 0;
+        }
+
+        .faq-item.active .faq-content {
+            max-height: 500px;
+            opacity: 1;
+            padding-bottom: 24px;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+            color: var(--accent);
+        }
+
+        .faq-icon {
+            transition: transform 0.3s;
+            color: var(--text-sub);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: #f5f5f7;
+            border-radius: 99px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #34C759;
+        }
+
+        .pulse {
+            width: 8px;
+            height: 8px;
+            background: #34C759;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(52, 199, 89, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+            }
+        }
+
+        .search-bar {
+            background: #f5f5f7;
+            border-radius: 14px;
+            padding: 16px 24px;
+            width: 100%;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            font-size: 17px;
+        }
+
+        .search-bar:focus {
+            background: white;
+            border-color: var(--accent);
+            outline: none;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-entrance {
+            animation: fadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 16px;
+            margin-top: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-light);
+            z-index: 100;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .search-result-item {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-light);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-item:hover {
+            background: #f5f5f7;
+        }
+
+        .search-result-category {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+
+        .search-result-title {
+            font-weight: 600;
+            font-size: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="glass-nav sticky top-0 w-full z-50 px-5">
+        <div class="max-w-[980px] mx-auto flex justify-between items-center w-full h-full">
+            <div class="flex items-center space-x-10">
+                <a href="index.html" class="text-[21px] font-semibold tracking-tight">Softcrate<span
+                        class="text-blue-600">.</span></a>
+                <div class="hidden md:flex items-center space-x-8 text-[12px] font-normal">
+                    <a href="products.html" class="text-zinc-600 hover:text-black transition-colors">Produkte</a>
+                    <span class="text-zinc-300 select-none">|</span>
+                    <a href="index.html#features" class="text-zinc-600 hover:text-black transition-colors">Vorteile</a>
+                    <a href="support.html" class="text-black font-medium">Support</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-6">
+                <a href="warenkorb.html" class="relative">
+                    <i class="fas fa-shopping-bag text-[17px] text-zinc-600"></i>
+                    <span id="cart-badge"
+                        class="absolute -top-1 -right-2 bg-blue-600 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold"
+                        style="display: none;">0</span>
+                </a>
+                <!-- Hamburger Icon -->
+                <button class="md:hidden text-zinc-900 focus:outline-none z-50 relative" onclick="toggleMobileMenu()">
+                    <i id="menu-icon" class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu"
+        class="fixed inset-0 bg-white/95 backdrop-blur-xl z-40 flex flex-col items-center justify-center space-y-8 opacity-0 pointer-events-none transition-all duration-300">
+        <a href="products.html" class="text-2xl font-bold text-zinc-900" onclick="toggleMobileMenu()">Produkte</a>
+        <a href="index.html#features" class="text-2xl font-bold text-zinc-900" onclick="toggleMobileMenu()">Vorteile</a>
+        <a href="support.html" class="text-2xl font-bold text-zinc-900" onclick="toggleMobileMenu()">Support</a>
+        <a href="warenkorb.html" class="text-2xl font-bold text-blue-600" onclick="toggleMobileMenu()">Warenkorb</a>
+    </div>
+
+    <section class="support-hero">
+        <div class="max-w-[980px] mx-auto px-6">
+            <div class="flex items-center justify-between mb-8">
+                <div class="animate-entrance">
+                    <h1 class="text-[40px] md:text-[56px] font-black tracking-tight leading-tight mb-4">Support Center.
+                    </h1>
+                    <p class="text-zinc-500 text-[20px] max-w-xl font-medium">Wählen Sie ein Thema oder suchen Sie
+                        direkt nach einer Lösung.</p>
+                </div>
+                <div class="status-badge hidden md:flex">
+                    <div class="pulse"></div>Systeme Online
+                </div>
+            </div>
+            <div class="relative max-w-2xl">
+                <i class="fas fa-search absolute left-6 top-1/2 -translate-y-1/2 text-zinc-400"></i>
+                <input type="text" id="wiki-search" placeholder="Suche nach Hilfe (z.B. Installation)"
+                    class="search-bar pl-14" autocomplete="off">
+                <div id="search-results" class="search-results"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20">
+        <div class="max-w-[980px] mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+                <a href="support-versand.html" class="wiki-card reveal">
+                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6"><i
+                            class="fas fa-box-open text-xl"></i></div>
+                    <h3 class="text-xl font-bold mb-3">Bestellung & Versand</h3>
+                    <p class="text-zinc-500 text-sm leading-relaxed">Alles zu Zahlung, Lieferung und Key-Erhalt.</p>
+                </a>
+                <a href="support-aktivierung.html" class="wiki-card reveal">
+                    <div
+                        class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-key text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Aktivierung</h3>
+                    <p class="text-zinc-500 text-sm leading-relaxed">Hilfe bei der Aktivierung von Windows & Office.</p>
+                </a>
+                <a href="support-technik.html" class="wiki-card reveal">
+                    <div class="w-12 h-12 bg-zinc-950 text-white rounded-xl flex items-center justify-center mb-6"><i
+                            class="fas fa-tools text-xl"></i></div>
+                    <h3 class="text-xl font-bold mb-3">Technik Support</h3>
+                    <p class="text-zinc-500 text-sm leading-relaxed">Lösungen bei Fehlermeldungen und Installation.</p>
+                </a>
+            </div>
+
+            <div class="bg-white rounded-[32px] p-8 md:p-12 border border-black/[0.05] reveal">
+                <h2 class="text-3xl font-black mb-10">Top Fragen der Woche.</h2>
+                <div id="faq-container" class="space-y-2">
+                    <div class="faq-item">
+                        <button class="faq-trigger" onclick="toggleFaq(this)">Wie schnell wird mein Key geliefert?<i
+                                class="fas fa-plus faq-icon"></i></button>
+                        <div class="faq-content">
+                            <p class="text-zinc-600">Die Auslieferung erfolgt vollautomatisch unmittelbar nach
+                                Zahlungseingang (meist unter 60 Sekunden) per E-Mail.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-trigger" onclick="toggleFaq(this)">Was mache ich bei einer Fehlermeldung?<i
+                                class="fas fa-plus faq-icon"></i></button>
+                        <div class="faq-content">
+                            <p class="text-zinc-600">Bitte fertigen Sie einen Screenshot des Fehlers an und senden Sie
+                                diesen an support@softcrate.de. Wir antworten in der Regel innerhalb von 2 Stunden.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-trigger" onclick="toggleFaq(this)">Sind die Lizenzen dauerhaft gültig?<i
+                                class="fas fa-plus faq-icon"></i></button>
+                        <div class="faq-content">
+                            <p class="text-zinc-600">Ja, alle angebotenen Lizenzen sind Dauer-Lizenzen (Lifetime). Es
+                                gibt keine monatlichen Kosten oder Abonnements.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-20 text-center bg-zinc-950 rounded-[32px] p-12 text-white">
+                <i class="fas fa-envelope-open-text text-4xl mb-6 text-blue-500"></i>
+                <h3 class="text-3xl font-black mb-4">Brauchst du persönliche Hilfe?</h3>
+                <p class="text-zinc-400 mb-8 max-w-md mx-auto">Unser Team steht dir rund um die Uhr zur Verfügung.</p>
+                <a href="mailto:support@softcrate.de"
+                    class="bg-white text-zinc-950 px-8 py-4 rounded-xl font-bold hover:bg-blue-600 hover:text-white transition-all inline-block">support@softcrate.de</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Footer -->
+    <footer class="pt-24 pb-12 bg-white border-t border-zinc-100">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Grid Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 mb-20">
+                <!-- Branding & Tagline -->
+                <div class="lg:col-span-4 space-y-8">
+                    <div class="text-2xl font-black text-zinc-950 cursor-pointer" onclick="window.scrollTo(0,0)">
+                        Softcrate<span class="text-blue-600">.</span>
+                    </div>
+                    <p class="text-zinc-500 text-[16px] leading-relaxed max-w-sm">
+                        Automatisierte digitale Auslieferung für Profis, die Wert auf Originalität und rechtliche
+                        Sicherheit legen.
+                    </p>
+                    <div class="space-y-2">
+                        <div class="text-xs font-bold text-zinc-400 uppercase tracking-widest">Kontakt</div>
+                        <a href="mailto:support@softcrate.de"
+                            class="text-zinc-950 font-bold hover:text-blue-600 transition-colors">support@softcrate.de</a>
+                    </div>
+                </div>
+
+                <!-- Product Links -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Produkte</h5>
+                    <ul class="space-y-4">
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Windows
+                                Systeme</a></li>
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Office
+                                Pakete</a></li>
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Adobe
+                                Creative</a></li>
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Server
+                                Solutions</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company Links -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Unternehmen</h5>
+                    <ul class="space-y-4">
+                        <li><a href="index.html#features"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Vorteile</a>
+                        </li>
+                        <li><a href="index.html#faq" class="text-zinc-600 hover:text-zinc-950 transition-colors">Häufige
+                                Fragen</a></li>
+                        <li><a href="support.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Support
+                                Center</a></li>
+                        <li><a href="#" class="text-zinc-600 hover:text-zinc-950 transition-colors">Über Softcrate</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Legal Links -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Rechtliches</h5>
+                    <ul class="space-y-4">
+                        <li><a href="impressum.html"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Impressum</a></li>
+                        <li><a href="datenschutz.html"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Datenschutz</a></li>
+                        <li><a href="agb.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">AGB</a></li>
+                        <li><a href="widerruf.html"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Widerruf</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social/Contact -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Social</h5>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-zinc-600 hover:text-zinc-950 transition-colors">Twitter (X)</a></li>
+                        <li><a href="#" class="text-zinc-600 hover:text-zinc-950 transition-colors">Instagram</a></li>
+                        <li><a href="#" class="text-zinc-600 hover:text-zinc-950 transition-colors">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="pt-12 border-t border-zinc-100 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-8 order-2 md:order-1">
+                    <p class="text-zinc-400 text-sm font-medium">&copy; 2026 Softcrate Digital Solutions. All rights
+                        reserved.</p>
+                </div>
+
+                <div class="flex items-center gap-10 order-1 md:order-2">
+                    <div class="flex items-center gap-6">
+                        <img src="https://i.ibb.co/pB46DMzb/Pay-Pal-logo-2022-redesign-for-US-and-Canada-Europe-1024x576-removebg-preview.png"
+                            alt="PayPal" class="h-6 w-auto opacity-80 hover:opacity-100 transition-all">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleFaq(btn) {
+            const item = btn.parentElement;
+            const isActive = item.classList.contains('active');
+            document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+            if (!isActive) item.classList.add('active');
+        }
+        const searchData = [
+            { title: "Wie schnell wird mein Key geliefert?", url: "support-versand.html", cat: "Versand" },
+            { title: "Zahlungsmittel & PayPal", url: "support-versand.html", cat: "Zahlung" },
+            { title: "Rechnung erhalten", url: "support-versand.html", cat: "Versand" },
+            { title: "Bestellung stornieren", url: "support-versand.html", cat: "Zahlung" },
+            { title: "Aktivierung von Windows 11", url: "support-aktivierung.html", cat: "Aktivierung" },
+            { title: "Office Aktivierung Anleitung", url: "support-aktivierung.html", cat: "Aktivierung" },
+            { title: "Key bereits verwendet Fehler", url: "support-aktivierung.html", cat: "Technik" },
+            { title: "Installation bricht ab", url: "support-technik.html", cat: "Technik" },
+            { title: "TPM 2.0 Probleme bei Windows 11", url: "support-technik.html", cat: "Technik" },
+            { title: "Office Installation hängt bei 90%", url: "support-technik.html", cat: "Technik" },
+            { title: "Key ungültig Meldung", url: "support-technik.html", cat: "Technik" },
+            { title: "LTSC Versionen erklärt", url: "support-technik.html", cat: "Technik" }
+        ];
+
+        const searchInput = document.getElementById('wiki-search');
+        const resultsContainer = document.getElementById('search-results');
+
+        searchInput.addEventListener('input', function (e) {
+            const term = e.target.value.toLowerCase().trim();
+
+            if (term.length < 2) {
+                resultsContainer.style.display = 'none';
+                return;
+            }
+
+            const matches = searchData.filter(item =>
+                item.title.toLowerCase().includes(term) ||
+                item.cat.toLowerCase().includes(term)
+            );
+
+            if (matches.length > 0) {
+                resultsContainer.innerHTML = matches.map(match => `
+                    <div class="search-result-item" onclick="window.location.href='${match.url}'">
+                        <div class="w-8 h-8 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-400">
+                            <i class="fas ${match.cat === 'Versand' ? 'fa-box' : match.cat === 'Aktivierung' ? 'fa-key' : 'fa-tools'} text-xs"></i>
+                        </div>
+                        <div>
+                            <div class="search-result-category">${match.cat}</div>
+                            <div class="search-result-title">${match.title}</div>
+                        </div>
+                    </div>
+                `).join('');
+                resultsContainer.style.display = 'block';
+            } else {
+                resultsContainer.innerHTML = `
+                    <div class="p-8 text-center text-zinc-500 text-sm">
+                        Keine Ergebnisse für "${term}" gefunden.
+                    </div>
+                `;
+                resultsContainer.style.display = 'block';
+            }
+        });
+
+        // Close search on click outside
+        document.addEventListener('click', function (e) {
+            if (!searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
+                resultsContainer.style.display = 'none';
+            }
+        });
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const count = cart.reduce((s, i) => s + i.quantity, 0);
+            const badge = document.getElementById('cart-badge');
+            if (badge) {
+                badge.textContent = count;
+                badge.style.display = count > 0 ? 'flex' : 'none';
+            }
+        }
+        updateCartBadge();
+        window.addEventListener('storage', updateCartBadge);
+
+        // Mobile Menu Logic
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            const body = document.body;
+
+            if (menu.classList.contains('opacity-0')) {
+                // Open
+                menu.classList.remove('opacity-0', 'pointer-events-none');
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+                body.style.overflow = 'hidden';
+            } else {
+                // Close
+                menu.classList.add('opacity-0', 'pointer-events-none');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+                body.style.overflow = '';
+            }
+        }
+
+        // UX Improvements (Cookie & To-Top)
+        function initUX() {
+            // Cookie Banner
+            if (!localStorage.getItem('cookiesAccepted')) {
+                setTimeout(() => {
+                    const banner = document.getElementById('cookie-banner');
+                    if (banner) banner.classList.remove('translate-y-full');
+                }, 1000);
+            }
+
+            // To-Top Button
+            const toTopBtn = document.getElementById('to-top-btn');
+            if (toTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 300) {
+                        toTopBtn.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
+                    } else {
+                        toTopBtn.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
+                    }
+                });
+            }
+        }
+
+        function acceptCookies() {
+            localStorage.setItem('cookiesAccepted', 'true');
+            const banner = document.getElementById('cookie-banner');
+            if (banner) banner.classList.add('translate-y-full');
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.addEventListener('DOMContentLoaded', initUX);
+    </script>
+    <!-- Cookie Banner -->
+    <div id="cookie-banner"
+        class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-zinc-200 p-6 z-[60] transform translate-y-full transition-transform duration-500 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <p class="text-sm text-zinc-600 font-medium">Wir nutzen Cookies, um Ihr Einkaufserlebnis zu verbessern.
+                Durch die Nutzung der Seite stimmen Sie dem zu.</p>
+            <div class="flex items-center gap-3">
+                <button onclick="acceptCookies()"
+                    class="bg-zinc-900 text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-black transition-all hover:scale-105 shadow-lg shadow-zinc-900/10">Alles
+                    Akzeptieren</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- To-Top Button -->
+    <button id="to-top-btn" onclick="scrollToTop()"
+        class="fixed bottom-8 right-8 bg-white text-zinc-900 w-12 h-12 rounded-full shadow-lg border border-zinc-100 flex items-center justify-center opacity-0 translate-y-10 pointer-events-none transition-all duration-300 z-50 hover:scale-110 hover:shadow-xl focus:outline-none ring-1 ring-black/5">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+</body>
+
+</html>

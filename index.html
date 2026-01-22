@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Softcrate | Premium Software-Zugang zum Bestpreis</title>
+    <meta name="description"
+        content="Softcrate ist Ihr zuverlässiger Partner für originale Software-Keys. Windows, Office & mehr zum Bestpreis. Sofortige E-Mail-Lieferung & 24/7 Support.">
+    <meta name="keywords"
+        content="Software Keys kaufen, Windows 11 Key, Office 2024 LTSC, CapCut Pro Abo, Günstige Lizenzen, Softcrate">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://softcrate.de/">
+    <meta property="og:title" content="Softcrate | Originale Software-Keys zum Bestpreis">
+    <meta property="og:description"
+        content="Kaufen Sie Windows, Office und mehr bei Softcrate. Sofort-Versand per E-Mail, 100% Sicher.">
+    <meta property="og:image" content="https://softcrate.de/social-preview.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://softcrate.de/">
+    <meta property="twitter:title" content="Softcrate | Originale Software-Keys zum Bestpreis">
+    <meta property="twitter:description"
+        content="Kaufen Sie Windows, Office und mehr bei Softcrate. Sofort-Versand per E-Mail, 100% Sicher.">
+    <meta property="twitter:image" content="https://softcrate.de/social-preview.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --bg-color: #ffffff;
+            --bg-secondary: #fafafa;
+            --text-main: #1d1d1f;
+            --text-sub: #86868b;
+            --text-light: #6e6e73;
+            --accent: #0071e3;
+            --card-bg: #fbfbfd;
+            --border-light: #d2d2d7;
+            --nav-height: 44px;
+        }
+
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: var(--nav-height);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            font-size: 17px;
+            line-height: 1.47059;
+        }
+
+        strong {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .glass-nav {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.18);
+            transition: all 0.3s cubic-bezier(0.28, 0.11, 0.32, 1);
+            height: var(--nav-height);
+            display: flex;
+            align-items: center;
+        }
+
+        .glass-nav.scrolled {
+            background: rgba(251, 251, 253, 0.72);
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        /* Typography */
+        .hero-title {
+            background: linear-gradient(180deg, #1d1d1f 0%, #35353a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.015em;
+            font-weight: 700;
+        }
+
+        /* Cards */
+        .card-apple {
+            background: #ffffff;
+            border-radius: 50px;
+            transition: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: 0.5px solid rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-apple:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .product-image-container {
+            background: linear-gradient(135deg, #fafafa 0%, #f5f5f7 100%);
+            height: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image-container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(0, 113, 227, 0.03) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .card-apple:hover .product-image-container::before {
+            opacity: 1;
+        }
+
+        .product-image-container svg {
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.08));
+        }
+
+        .card-apple:hover .product-image-container svg {
+            transform: scale(1.08) translateY(-4px);
+        }
+
+        /* Buttons */
+        .apple-btn {
+            background: var(--text-main);
+            color: #ffffff;
+            border-radius: 980px;
+            padding: 12px 22px;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: none;
+            cursor: pointer;
+        }
+
+        .apple-btn:hover {
+            transform: scale(1.02);
+            background: #000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .apple-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* FAQ */
+        .faq-item {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            padding: 8px 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .faq-item:hover {
+            background: rgba(0, 0, 0, 0.005);
+        }
+
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s ease;
+            color: #6e6e73;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .faq-item.open .faq-content {
+            max-height: 500px;
+            padding-top: 10px;
+            padding-bottom: 24px;
+        }
+
+        .faq-content p {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .faq-item.open .faq-content p {
+            opacity: 1;
+            transform: translateY(0);
+            animation: motion-blur 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes motion-blur {
+            0% {
+                filter: blur(12px);
+                transform: translateX(-10px);
+                opacity: 0;
+            }
+
+            100% {
+                filter: blur(0);
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .faq-icon {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
+            color: #86868b;
+            font-size: 16px;
+        }
+
+        .faq-item.open .faq-icon {
+            transform: rotate(45deg);
+            color: #000;
+        }
+
+        /* Feature Icons */
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--card-bg);
+            border: 0.5px solid rgba(0, 0, 0, 0.04);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-icon:hover {
+            background: #f5f5f7;
+            transform: translateY(-2px);
+        }
+
+        /* Badge */
+        .badge-premium {
+            background: #0071e3;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 980px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            box-shadow: 0 4px 12px rgba(0, 113, 227, 0.2);
+        }
+
+        .hero-mesh {
+            background-image:
+                radial-gradient(at 0% 0%, hsla(210, 100%, 15%, 1) 0, transparent 50%),
+                radial-gradient(at 50% 0%, hsla(220, 100%, 10%, 1) 0, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(240, 100%, 15%, 1) 0, transparent 50%);
+        }
+
+        .bento-card {
+            transition: all 0.4s cubic-bezier(0.5, 0, 0, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .bento-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        @keyframes step-highlight {
+
+            0%,
+            33.33% {
+                color: #2563eb;
+            }
+
+            35%,
+            100% {
+                color: inherit;
+            }
+        }
+
+        @keyframes card-glow {
+
+            0%,
+            33.33% {
+                background-color: white;
+                box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.08);
+                border-color: rgba(59, 130, 246, 0.2);
+            }
+
+            35%,
+            100% {
+                background-color: transparent;
+                box-shadow: none;
+                border-color: rgba(244, 244, 245, 1);
+            }
+        }
+
+        .animate-chaser-1 {
+            animation: step-highlight 4.5s infinite;
+        }
+
+        .animate-chaser-2 {
+            animation: step-highlight 4.5s infinite 1.5s;
+        }
+
+        .animate-chaser-3 {
+            animation: step-highlight 4.5s infinite 3s;
+        }
+
+        .animate-card-1 {
+            animation: card-glow 4.5s infinite;
+        }
+
+        .animate-card-2 {
+            animation: card-glow 4.5s infinite 1.5s;
+        }
+
+        .animate-card-3 {
+            animation: card-glow 4.5s infinite 3s;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav class="glass-nav sticky top-0 w-full z-50 px-5">
+        <div class="max-w-[980px] mx-auto flex justify-between items-center w-full">
+            <div class="flex items-center space-x-10">
+                <div class="text-[21px] font-semibold tracking-tight cursor-pointer" onclick="window.scrollTo(0,0)">
+                    Softcrate<span class="text-blue-600">.</span></div>
+                <div class="hidden md:flex items-center space-x-8 text-[12px] font-normal">
+                    <a href="products.html" class="text-zinc-600 hover:text-black transition-colors">Produkte</a>
+                    <span class="text-zinc-300 select-none">|</span>
+                    <a href="#features" class="text-zinc-600 hover:text-black transition-colors">Vorteile</a>
+                    <a href="support.html" class="text-zinc-600 hover:text-black transition-colors">Support</a>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-6">
+                <a href="warenkorb.html" class="relative">
+                    <i class="fas fa-shopping-bag text-[17px] text-zinc-600 hover:text-black transition-colors"></i>
+                    <span id="cart-badge"
+                        class="absolute -top-0.5 left-[14px] bg-blue-600 text-white text-[8px] min-w-[14px] h-[14px] flex items-center justify-center rounded-full font-semibold px-0.5"
+                        style="display: none;">0</span>
+                </a>
+
+                <!-- Hamburger Icon -->
+                <button class="md:hidden text-zinc-900 focus:outline-none z-50 relative" onclick="toggleMobileMenu()">
+                    <i id="menu-icon" class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu"
+        class="fixed inset-0 bg-white/95 backdrop-blur-xl z-40 flex flex-col items-center justify-center space-y-8 opacity-0 pointer-events-none transition-all duration-300">
+        <a href="products.html" class="text-2xl font-bold text-zinc-900" onclick="toggleMobileMenu()">Produkte</a>
+        <a href="index.html#features" class="text-2xl font-bold text-zinc-900" onclick="toggleMobileMenu()">Vorteile</a>
+        <a href="support.html" class="text-2xl font-bold text-zinc-900" onclick="toggleMobileMenu()">Support</a>
+        <a href="warenkorb.html" class="text-2xl font-bold text-blue-600" onclick="toggleMobileMenu()">Warenkorb</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section
+        class="min-h-[90vh] flex flex-col items-center justify-center text-center px-6 relative overflow-hidden bg-gradient-to-b from-white via-white to-zinc-50">
+        <div class="absolute inset-0 opacity-[0.4]"
+            style="background-image: radial-gradient(#e5e7eb 0.5px, transparent 0.5px); background-size: 24px 24px;">
+        </div>
+
+        <div class="relative z-10 space-y-8 max-w-[980px] pt-20 pb-24">
+            <div
+                class="inline-flex items-center space-x-3 bg-zinc-100 text-zinc-900 px-5 py-2 rounded-full mt-10 reveal border border-zinc-200 backdrop-blur-md">
+                <span
+                    class="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Neu</span>
+                <span class="text-[13px] font-medium tracking-wide">Office 2024 LTSC jetzt verfügbar</span>
+            </div>
+
+            <h1 class="text-zinc-950 text-6xl md:text-[88px] font-bold leading-[1.02] tracking-tight reveal"
+                style="transition-delay: 0.1s;">
+                Master Your<br><span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Digital
+                    World.</span>
+            </h1>
+
+            <p class="max-w-2xl mx-auto text-[20px] md:text-[23px] text-zinc-500 font-normal leading-relaxed reveal"
+                style="transition-delay: 0.2s;">
+                Originale Software-Lizenzen für Profis. <span class="text-zinc-950 font-bold">Sofortige
+                    Lieferung.</span><br>Garantierte Aktivierung oder Geld zurück.
+            </p>
+
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-center gap-5 reveal"
+                style="transition-delay: 0.3s;">
+                <a href="#store"
+                    class="bg-zinc-950 text-white px-8 py-4 rounded-full text-[17px] font-semibold hover:bg-zinc-800 transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-zinc-950/10">Jetzt
+                    Entdecken</a>
+                <a href="#features"
+                    class="text-zinc-600 hover:text-zinc-950 text-[17px] font-medium flex items-center transition-colors px-8 py-4">Vorteile
+                    ansehen <i class="fas fa-arrow-right ml-2 text-sm"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Stats Bar -->
+    <section class="py-12 bg-white border-b border-zinc-100">
+        <div class="max-w-[980px] mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="text-center reveal">
+                <div class="text-[32px] font-bold text-zinc-950 mb-0.5 tracking-tight">50.000+</div>
+                <div class="text-[11px] text-zinc-500 uppercase font-bold tracking-widest">Kunden</div>
+            </div>
+            <div class="text-center reveal" style="transition-delay: 0.05s;">
+                <div class="text-[32px] font-bold text-zinc-950 mb-0.5 tracking-tight">Instant</div>
+                <div class="text-[11px] text-zinc-500 uppercase font-bold tracking-widest">E-Mail Versand</div>
+            </div>
+            <div class="text-center reveal" style="transition-delay: 0.1s;">
+                <div class="text-[32px] font-bold text-zinc-950 mb-0.5 tracking-tight">100%</div>
+                <div class="text-[11px] text-zinc-500 uppercase font-bold tracking-widest">Original-Lizenz</div>
+            </div>
+            <div class="text-center reveal" style="transition-delay: 0.15s;">
+                <div class="text-[32px] font-bold text-zinc-950 mb-0.5 tracking-tight">24/7</div>
+                <div class="text-[11px] text-zinc-500 uppercase font-bold tracking-widest">Premium Support</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bento Category Grid -->
+    <section class="py-24 bg-zinc-50">
+        <div class="max-w-[980px] mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- OS Card -->
+                <div
+                    class="md:col-span-2 bento-card p-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[32px] text-white overflow-hidden relative group">
+                    <i
+                        class="fab fa-windows absolute -right-16 -bottom-16 text-[320px] opacity-[0.15] group-hover:scale-105 group-hover:-rotate-6 transition-all duration-1000 pointer-events-none"></i>
+                    <div class="relative z-10 max-w-[300px]">
+                        <span
+                            class="text-blue-200 text-xs font-bold uppercase tracking-widest mb-4 block">Essentials</span>
+                        <h3 class="text-3xl font-bold mb-4">Systeme & Performance</h3>
+                        <p class="text-blue-100 mb-8 leading-relaxed opacity-90">Die Basis für Ihre Arbeit. Windows 11
+                            in allen Editionen mit sofortiger Aktivierung.</p>
+                        <a href="products.html"
+                            class="inline-flex items-center text-sm font-semibold bg-white/20 hover:bg-white/30 px-5 py-2.5 rounded-full backdrop-blur-md transition-all">Ansehen
+                            <i class="fas fa-arrow-right ml-2 text-xs"></i></a>
+                    </div>
+                </div>
+                <!-- Creative Card -->
+                <div class="bento-card p-10 bg-zinc-900 rounded-[32px] text-white overflow-hidden relative group">
+                    <i
+                        class="fas fa-video absolute -right-10 -bottom-10 text-[200px] opacity-[0.15] group-hover:rotate-12 group-hover:scale-110 transition-all duration-1000 pointer-events-none"></i>
+                    <div class="relative z-10">
+                        <span
+                            class="text-white/40 text-xs font-bold uppercase tracking-widest mb-4 block">Content</span>
+                        <h3 class="text-2xl font-bold mb-4">Creative<br>Studio</h3>
+                        <p class="text-white/60 text-sm mb-8 leading-relaxed">Tools für Profis. CapCut Pro und mehr.</p>
+                        <a href="products.html"
+                            class="inline-flex items-center text-sm font-semibold text-white/90 hover:text-white transition-colors">Entdecken
+                            →</a>
+                    </div>
+                </div>
+                <!-- Office Card -->
+                <div
+                    class="bento-card p-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-[32px] md:col-span-3 overflow-hidden relative shadow-lg group min-h-[340px] flex items-center text-white">
+                    <i
+                        class="fas fa-box-open absolute -right-10 -bottom-10 text-[280px] text-white opacity-50 group-hover:scale-110 transition-all duration-1000 pointer-events-none"></i>
+                    <div
+                        class="relative z-10 w-full flex flex-col md:flex-row items-start md:items-center justify-between gap-12">
+                        <div class="max-w-[480px]">
+                            <div class="flex items-center gap-3 mb-10">
+                                <span class="text-emerald-100 text-[12px] font-bold uppercase tracking-[0.2em]">Work
+                                    Studio</span>
+                                <div
+                                    class="w-10 h-10 bg-white/20 text-white rounded-xl flex items-center justify-center text-lg backdrop-blur-md">
+                                    <i class="fas fa-file-invoice"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-[42px] md:text-[52px] font-black mb-4 tracking-tighter leading-[0.95]">
+                                Office <span class="text-emerald-200">All-In</span></h3>
+                            <p class="text-emerald-50 mb-10 leading-relaxed font-medium opacity-90 text-[19px]">Keine
+                                Abos mehr. Word, Excel & Co. dauerhaft nutzen.</p>
+                            <a href="products.html"
+                                class="inline-flex items-center bg-white text-emerald-600 px-10 py-4.5 rounded-2xl text-[16px] font-bold transition-all transform hover:scale-[1.02] active:scale-95 shadow-xl">
+                                Jetzt Entdecken <i class="fas fa-arrow-right ml-3 text-sm"></i>
+                            </a>
+                        </div>
+                        <div class="hidden lg:block w-1/3 text-right">
+                            <!-- Optional: Placeholder for additional visual element if needed -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Section -->
+    <section id="store" class="py-20 px-6 max-w-[980px] mx-auto">
+        <!-- Bestseller Selection -->
+        <section class="py-24 bg-zinc-50 border-t border-zinc-100">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 reveal">
+                    <div>
+                        <span class="text-blue-600 font-bold uppercase tracking-[0.2em] text-[11px] mb-4 block">Store
+                            Highlights</span>
+                        <h2 class="text-[42px] md:text-[56px] font-black leading-[0.95] tracking-tighter text-zinc-950">
+                            Meistgekaufte<br><span class="text-zinc-400">Software-Lizenzen.</span></h2>
+                    </div>
+                    <div class="mt-8 md:mt-0 max-w-xs">
+                        <p class="text-zinc-500 font-medium leading-relaxed">Entdecken Sie unsere kuratierte Auswahl an
+                            Premium-Lizenzen für maximale Produktivität.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Product 1 -->
+                    <div class="card-apple bento-card reveal bg-white">
+                        <a href="windows-11-pro.html" class="product-image-container block relative group">
+                            <img src="productcards/windows11pro_card.png" alt="Windows 11 Professional"
+                                class="w-full h-full object-contain p-8 group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute top-4 left-4 flex flex-col gap-2">
+                                <span class="badge-premium bg-blue-600">Bestseller</span>
+                                <span
+                                    class="bg-zinc-900 text-white text-[9px] font-bold px-2 py-1 rounded-full uppercase tracking-tighter shadow-lg">64-Bit
+                                    Ready</span>
+                            </div>
+                        </a>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <div class="mb-6">
+                                <a href="windows-11-pro.html" class="block group">
+                                    <h3 class="text-2xl font-bold mb-3 group-hover:text-blue-600 transition-colors">
+                                        Windows 11
+                                        Professional</h3>
+                                    <div class="space-y-2 mb-4">
+                                        <div class="flex items-center text-xs text-zinc-500">
+                                            <i class="fas fa-check text-blue-500 mr-2"></i> Unlimitierte Gültigkeit
+                                        </div>
+                                        <div class="flex items-center text-xs text-zinc-500">
+                                            <i class="fas fa-bolt text-blue-500 mr-2"></i> Sofort-Download
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="mt-auto">
+                                <div class="flex items-end justify-between mb-6">
+                                    <div class="flex flex-col">
+                                        <span class="text-zinc-400 line-through text-[11px] font-medium">UVP 259,00
+                                            €</span>
+                                        <span class="text-3xl font-black tracking-tighter">14,90 €</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-[9px] text-zinc-400 block uppercase font-bold">Inkl.
+                                            MwSt.</span>
+                                    </div>
+                                </div>
+                                <button onclick="addToCart('Windows 11 Professional', 14.90)"
+                                    class="w-full py-4 bg-zinc-950 text-white rounded-2xl text-[15px] font-bold hover:bg-zinc-800 transition-all transform hover:shadow-xl active:scale-95 flex items-center justify-center space-x-2">
+                                    <i class="fas fa-shopping-cart text-blue-400"></i>
+                                    <span>In den Warenkorb</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="card-apple bento-card reveal bg-white" style="transition-delay: 0.1s;">
+                        <a href="office-2024-ltsc.html" class="product-image-container block relative group">
+                            <img src="productcards/office2024_professional.png" alt="Office 2024 Professional Plus LTSC"
+                                class="w-full h-full object-contain p-8 group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute top-4 left-4 flex flex-col gap-2">
+                                <span
+                                    class="badge-premium bg-emerald-600 border-none shadow-emerald-500/20">Neuheit</span>
+                                <span
+                                    class="bg-zinc-900 text-white text-[9px] font-bold px-2 py-1 rounded-full uppercase tracking-tighter shadow-lg">Vollversion</span>
+                            </div>
+                        </a>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <div class="mb-6">
+                                <a href="office-2024-ltsc.html" class="block group">
+                                    <h3 class="text-2xl font-bold mb-3 group-hover:text-blue-600 transition-colors">
+                                        Office 2024
+                                        Pro Plus LTSC</h3>
+                                    <div class="space-y-2 mb-4">
+                                        <div class="flex items-center text-xs text-zinc-500">
+                                            <i class="fas fa-check text-emerald-500 mr-2"></i> Kein Abo notwendig
+                                        </div>
+                                        <div class="flex items-center text-xs text-zinc-500">
+                                            <i class="fas fa-bolt text-emerald-500 mr-2"></i> Sofort-Aktivierung
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="mt-auto">
+                                <div class="flex items-end justify-between mb-6">
+                                    <div class="flex flex-col">
+                                        <span class="text-zinc-400 line-through text-[11px] font-medium">UVP 579,00
+                                            €</span>
+                                        <span class="text-3xl font-black tracking-tighter">24,90 €</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span
+                                            class="text-[9px] text-zinc-400 block uppercase font-bold">Einmalzahlung</span>
+                                    </div>
+                                </div>
+                                <button onclick="addToCart('Office 2024 Professional Plus LTSC', 24.90)"
+                                    class="w-full py-4 bg-zinc-950 text-white rounded-2xl text-[15px] font-bold hover:bg-zinc-800 transition-all transform hover:shadow-xl active:scale-95 flex items-center justify-center space-x-2">
+                                    <i class="fas fa-shopping-cart text-emerald-400"></i>
+                                    <span>In den Warenkorb</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="card-apple bento-card reveal bg-white flex flex-col h-full"
+                        style="transition-delay: 0.2s;">
+                        <a href="capcut-pro.html" class="product-image-container block relative group">
+                            <img src="productcards/capcutpro_card.png" alt="CapCut Pro (12 Monate)"
+                                class="w-full h-full object-contain p-8 group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute top-4 left-4 flex flex-col gap-2">
+                                <span class="badge-premium bg-purple-600 border-none shadow-purple-500/20">Hot</span>
+                                <span
+                                    class="bg-zinc-900 text-white text-[9px] font-bold px-2 py-1 rounded-full uppercase tracking-tighter shadow-lg">12
+                                    Monate</span>
+                            </div>
+                        </a>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <div class="mb-6">
+                                <a href="capcut-pro.html" class="block group">
+                                    <h3 class="text-2xl font-bold mb-3 group-hover:text-blue-600 transition-colors">
+                                        CapCut Pro
+                                        (1 Jahr)</h3>
+                                    <div class="space-y-2 mb-4">
+                                        <div class="flex items-center text-xs text-zinc-500">
+                                            <i class="fas fa-check text-purple-500 mr-2"></i> Alle Pro-Features
+                                        </div>
+                                        <div class="flex items-center text-xs text-zinc-500">
+                                            <i class="fas fa-bolt text-purple-500 mr-2"></i> Eigener Account
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="mt-auto">
+                                <div class="flex items-end justify-between mb-6">
+                                    <div class="flex flex-col">
+                                        <span class="text-zinc-400 line-through text-[11px] font-medium">UVP 119,00
+                                            €</span>
+                                        <span class="text-3xl font-black tracking-tighter">19,90 €</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-[9px] text-zinc-400 block uppercase font-bold">Begrenztes
+                                            Angebot</span>
+                                    </div>
+                                </div>
+                                <button onclick="addToCart('CapCut Pro (12 Monate)', 19.90)"
+                                    class="w-full py-4 bg-zinc-950 text-white rounded-2xl text-[15px] font-bold hover:bg-zinc-800 transition-all transform hover:shadow-xl active:scale-95 flex items-center justify-center space-x-2">
+                                    <i class="fas fa-shopping-cart text-purple-400"></i>
+                                    <span>In den Warenkorb</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- More Products CTA - Full Width -->
+                <div class="mt-12 reveal" style="transition-delay: 0.3s;">
+                    <a href="products.html"
+                        class="group relative flex items-center justify-center gap-4 bg-zinc-950 text-white w-full py-6 rounded-[24px] text-lg font-bold transition-all hover:scale-[1.01] hover:shadow-2xl active:scale-95 overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <span class="relative z-10 text-[16px] uppercase tracking-widest font-black">Alle Produkte
+                            ansehen</span>
+                        <i
+                            class="fas fa-arrow-right relative z-10 text-sm group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </section>
+    </section>
+
+    <!-- Authentic Feature Section -->
+    <section id="features" class="py-32 bg-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-20 items-center">
+                <div class="lg:col-span-6 reveal">
+                    <span class="text-blue-600 font-bold uppercase tracking-[0.3em] text-[10px] mb-6 block">Standard
+                        Operating Procedure</span>
+                    <h2
+                        class="text-[48px] md:text-[68px] font-black leading-[0.95] text-zinc-950 mb-8 tracking-tighter">
+                        Präzision.<br><span class="text-zinc-400">Keine Kompromisse.</span>
+                    </h2>
+                    <p class="text-zinc-500 text-lg md:text-xl font-normal mb-16 max-w-xl leading-relaxed">
+                        Wir haben den Prozess des Softwarekaufs dekonstruiert und auf das Wesentliche optimiert:
+                        Verifizierte Lizenzen, sofortige Verfügbarkeit und maximale Sicherheit.
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
+                        <!-- Stat 1 -->
+                        <div>
+                            <div class="text-[32px] font-black text-zinc-950 tracking-tighter mb-1">60s</div>
+                            <div class="text-[11px] font-bold text-blue-600 uppercase tracking-widest mb-3">Delivery
+                                Velocity</div>
+                            <p class="text-zinc-500 text-sm leading-relaxed">Vollautomatisierte Auslieferung direkt nach
+                                Zahlungseingang.</p>
+                        </div>
+                        <!-- Stat 2 -->
+                        <div>
+                            <div class="text-[32px] font-black text-zinc-950 tracking-tighter mb-1">100%</div>
+                            <div class="text-[11px] font-bold text-blue-600 uppercase tracking-widest mb-3">Audit-Safe
+                            </div>
+                            <p class="text-zinc-500 text-sm leading-relaxed">Jede Lizenz ist rechtlich geprüft und voll
+                                aktivierungsfähig.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 reveal" style="transition-delay: 0.2s;">
+                    <div class="space-y-4">
+                        <!-- Process Card 1 -->
+                        <div
+                            class="group p-8 bg-zinc-50 border border-zinc-100 rounded-3xl hover:bg-white hover:shadow-2xl hover:shadow-blue-500/5 transition-all duration-500 animate-card-1">
+                            <div class="flex items-center gap-6">
+                                <span
+                                    class="text-4xl font-black text-zinc-400 group-hover:text-blue-600 transition-colors duration-300 animate-chaser-1">01</span>
+                                <div>
+                                    <h4
+                                        class="font-bold text-lg text-zinc-950 group-hover:text-blue-600 transition-colors duration-300 mb-1 animate-chaser-1">
+                                        Instant Activation</h4>
+                                    <p class="text-zinc-500 text-sm">Keine Wartezeiten. Der Key wird in Echtzeit
+                                        generiert und versendet.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Process Card 2 -->
+                        <div
+                            class="group p-8 bg-zinc-50 border border-zinc-100 rounded-3xl hover:bg-white hover:shadow-2xl hover:shadow-blue-500/5 transition-all duration-500 animate-card-2">
+                            <div class="flex items-center gap-6">
+                                <span
+                                    class="text-4xl font-black text-zinc-400 group-hover:text-blue-600 transition-colors duration-300 animate-chaser-2">02</span>
+                                <div>
+                                    <h4
+                                        class="font-bold text-lg text-zinc-950 group-hover:text-blue-600 transition-colors duration-300 mb-1 animate-chaser-2">
+                                        Verified Authenticity</h4>
+                                    <p class="text-zinc-500 text-sm">Direkte Sourcing-Pfade garantieren unberührte
+                                        Original-Lizenzen.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Process Card 3 -->
+                        <div
+                            class="group p-8 bg-zinc-50 border border-zinc-100 rounded-3xl hover:bg-white hover:shadow-2xl hover:shadow-blue-500/5 transition-all duration-500 animate-card-3">
+                            <div class="flex items-center gap-6">
+                                <span
+                                    class="text-4xl font-black text-zinc-400 group-hover:text-blue-600 transition-colors duration-300 animate-chaser-3">03</span>
+                                <div>
+                                    <h4
+                                        class="font-bold text-lg text-zinc-950 group-hover:text-blue-600 transition-colors duration-300 mb-1 animate-chaser-3">
+                                        Life-Long Support</h4>
+                                    <p class="text-zinc-500 text-sm">Wir stehen hinter unseren Produkten – auch Jahre
+                                        nach dem Kauf.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-32 max-w-4xl mx-auto px-6">
+        <div class="mb-20 reveal">
+            <h2 class="text-[44px] md:text-[56px] font-black text-zinc-950 mb-6 tracking-tighter leading-[1.1]">
+                Klarheit.<br><span class="text-zinc-400">Ohne Umwege.</span>
+            </h2>
+            <p class="text-zinc-500 text-lg md:text-xl font-normal max-w-xl">Häufige Fragen zu unseren Lizenzen und dem
+                automatisierten Bestellablauf.</p>
+        </div>
+
+        <div class="space-y-4 reveal">
+            <!-- FAQ 1 -->
+            <div class="faq-item group cursor-pointer" onclick="toggleFaq(this)">
+                <div class="flex justify-between items-center py-6">
+                    <h4
+                        class="text-lg md:text-[19px] font-bold text-zinc-950 group-hover:text-blue-600 transition-colors">
+                        Warum sind die Lizenzen so günstig?</h4>
+                    <div class="faq-icon"><i class="fas fa-plus"></i></div>
+                </div>
+                <div class="faq-content">
+                    <p>Wir nutzen Marktüberschüsse und optimierte Beschaffungswege für unsere Lizenzen. Da die Software
+                        rein digital ausgeliefert wird, entfallen enorme Kosten für Logistik, Lagerung und
+                        Zwischenhändler. Diesen Vorteil geben wir direkt an unsere Kunden weiter.</p>
+                </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="faq-item group cursor-pointer" onclick="toggleFaq(this)">
+                <div class="flex justify-between items-center py-6">
+                    <h4
+                        class="text-lg md:text-[19px] font-bold text-zinc-950 group-hover:text-blue-600 transition-colors">
+                        Ist die Nutzung legal und sicher?</h4>
+                    <div class="faq-icon"><i class="fas fa-plus"></i></div>
+                </div>
+                <div class="faq-content">
+                    <p>Ja. Der Handel mit Softwarelizenzen innerhalb der EU ist rechtlich abgesichert. Sie erhalten von
+                        uns eine gültige Lizenz, die eine offizielle Aktivierung bei den Herstellern ermöglicht.
+                        Sicherheit und Legalität haben für uns oberste Priorität.</p>
+                </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="faq-item group cursor-pointer" onclick="toggleFaq(this)">
+                <div class="flex justify-between items-center py-6">
+                    <h4
+                        class="text-lg md:text-[19px] font-bold text-zinc-950 group-hover:text-blue-600 transition-colors">
+                        Was passiert, wenn eine Lizenz nicht funktioniert?</h4>
+                    <div class="faq-icon"><i class="fas fa-plus"></i></div>
+                </div>
+                <div class="faq-content">
+                    <p>Wir garantieren die Funktionsfähigkeit jeder verkauften Lizenz. Sollte es Probleme bei der
+                        Aktivierung geben, steht Ihnen unser Support sofort zur Seite. In solchen Fällen tauschen wir
+                        die Lizenz umgehend und unkompliziert aus.</p>
+                </div>
+            </div>
+
+            <!-- FAQ 4 -->
+            <div class="faq-item group cursor-pointer" onclick="toggleFaq(this)">
+                <div class="flex justify-between items-center py-6">
+                    <h4
+                        class="text-lg md:text-[19px] font-bold text-zinc-950 group-hover:text-blue-600 transition-colors">
+                        Erhalte ich Unterstützung bei der Installation?</h4>
+                    <div class="faq-icon"><i class="fas fa-plus"></i></div>
+                </div>
+                <div class="faq-content">
+                    <p>Absolut. Unser technischer Support steht Ihnen bei Fragen zur Installation oder Aktivierung
+                        jederzeit zur Verfügung. Wir bieten detaillierte Anleitungen und unterstützen Sie im Bedarfsfall
+                        auch persönlich via E-Mail.</p>
+                </div>
+            </div>
+
+            <!-- FAQ 5 -->
+            <div class="faq-item group cursor-pointer" onclick="toggleFaq(this)">
+                <div class="flex justify-between items-center py-6">
+                    <h4
+                        class="text-lg md:text-[19px] font-bold text-zinc-950 group-hover:text-blue-600 transition-colors">
+                        Wird die Software physisch per Post versendet?</h4>
+                    <div class="faq-icon"><i class="fas fa-plus"></i></div>
+                </div>
+                <div class="faq-content">
+                    <p>Nein, wir setzen auf maximale Geschwindigkeit. Um Ihnen die Lizenzen zum Bestpreis und in
+                        Echtzeit anbieten zu können, erfolgt der Versand ausschließlich digital per E-Mail unmittelbar
+                        nach dem Zahlungseingang.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Direct Support Section -->
+    <section id="support" class="py-32 bg-zinc-50 border-t border-zinc-100">
+        <div class="max-w-4xl mx-auto px-6 text-center reveal">
+            <span class="text-blue-600 font-bold uppercase tracking-[0.3em] text-[10px] mb-6 block">Support
+                Center</span>
+            <h2 class="text-[44px] md:text-[56px] font-black text-zinc-950 mb-8 tracking-tighter leading-[1.1]">
+                Hilfe & Lösungen.<br><span class="text-zinc-400">Sofort verfügbar.</span>
+            </h2>
+            <p class="text-zinc-500 text-lg md:text-xl font-normal mb-12 max-w-2xl mx-auto leading-relaxed">
+                Nutzen Sie unser automatisiertes Support Center für Aktivierungshilfen und FAQs oder sprechen Sie direkt
+                mit unseren Experten.
+            </p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+                <a href="support.html"
+                    class="bg-blue-600 text-white px-10 py-5 rounded-full text-[17px] font-semibold hover:bg-blue-700 transition-all transform hover:scale-105 active:scale-95 shadow-xl shadow-blue-600/20">Zum
+                    Support Center</a>
+                <a href="mailto:support@softcrate.de"
+                    class="bg-zinc-950 text-white px-10 py-5 rounded-full text-[17px] font-semibold hover:bg-zinc-800 transition-all transform hover:scale-105 active:scale-95 shadow-xl shadow-zinc-950/10">Support
+                    kontaktieren</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Footer -->
+    <footer class="pt-24 pb-12 bg-white border-t border-zinc-100">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Grid Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 mb-20">
+                <!-- Branding & Tagline -->
+                <div class="lg:col-span-4 space-y-8">
+                    <div class="text-2xl font-black text-zinc-950 cursor-pointer" onclick="window.scrollTo(0,0)">
+                        Softcrate<span class="text-blue-600">.</span>
+                    </div>
+                    <p class="text-zinc-500 text-[16px] leading-relaxed max-w-sm">
+                        Automatisierte digitale Auslieferung für Profis, die Wert auf Originalität und rechtliche
+                        Sicherheit legen.
+                    </p>
+                    <div class="space-y-2">
+                        <div class="text-xs font-bold text-zinc-400 uppercase tracking-widest">Kontakt</div>
+                        <a href="mailto:support@softcrate.de"
+                            class="text-zinc-950 font-bold hover:text-blue-600 transition-colors">support@softcrate.de</a>
+                    </div>
+                </div>
+
+                <!-- Product Links -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Produkte</h5>
+                    <ul class="space-y-4">
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Windows
+                                Systeme</a></li>
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Office
+                                Pakete</a></li>
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Adobe
+                                Creative</a></li>
+                        <li><a href="products.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Server
+                                Solutions</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company Links -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Unternehmen</h5>
+                    <ul class="space-y-4">
+                        <li><a href="#features" class="text-zinc-600 hover:text-zinc-950 transition-colors">Vorteile</a>
+                        </li>
+                        <li><a href="#faq" class="text-zinc-600 hover:text-zinc-950 transition-colors">Häufige
+                                Fragen</a></li>
+                        <li><a href="support.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">Support
+                                Center</a></li>
+                        <li><a href="#" class="text-zinc-600 hover:text-zinc-950 transition-colors">Über Softcrate</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Legal Links -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Rechtliches</h5>
+                    <ul class="space-y-4">
+                        <li><a href="impressum.html"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Impressum</a></li>
+                        <li><a href="datenschutz.html"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Datenschutz</a></li>
+                        <li><a href="agb.html" class="text-zinc-600 hover:text-zinc-950 transition-colors">AGB</a></li>
+                        <li><a href="widerruf.html"
+                                class="text-zinc-600 hover:text-zinc-950 transition-colors">Widerruf</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social/Contact -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h5 class="text-[13px] font-bold text-zinc-400 uppercase tracking-widest">Social</h5>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-zinc-600 hover:text-zinc-950 transition-colors">Twitter (X)</a></li>
+                        <li><a href="#" class="text-zinc-600 hover:text-zinc-950 transition-colors">Instagram</a></li>
+                        <li><a href="#" class="text-zinc-600 hover:text-zinc-950 transition-colors">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="pt-12 border-t border-zinc-100 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-8 order-2 md:order-1">
+                    <p class="text-zinc-400 text-sm font-medium">&copy; 2026 Softcrate Digital Solutions. All rights
+                        reserved.</p>
+                </div>
+
+                <div class="flex items-center gap-10 order-1 md:order-2">
+                    <div class="flex items-center gap-6">
+                        <img src="https://i.ibb.co/pB46DMzb/Pay-Pal-logo-2022-redesign-for-US-and-Canada-Europe-1024x576-removebg-preview.png"
+                            alt="PayPal" class="h-6 w-auto opacity-80 hover:opacity-100 transition-all">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll handling for all internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 72, // Substract nav height for perfect alignment
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        function toggleFaq(element) {
+            const isOpen = element.classList.contains('open');
+            document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('open'));
+            if (!isOpen) element.classList.add('open');
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.glass-nav');
+            if (window.scrollY > 50) {
+                nav.style.boxShadow = '0 10px 30px rgba(0,0,0,0.03)';
+            } else {
+                nav.style.boxShadow = 'none';
+            }
+        });
+
+        // Update cart badge
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const badge = document.getElementById('cart-badge');
+            if (badge) {
+                if (count > 0) {
+                    badge.textContent = count;
+                    badge.style.display = 'flex';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        }
+
+        // Update on load
+        updateCartBadge();
+
+        // Listen for storage changes
+        window.addEventListener('storage', updateCartBadge);
+
+        // Mobile Menu Logic
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            const body = document.body;
+
+            if (menu.classList.contains('opacity-0')) {
+                // Open
+                menu.classList.remove('opacity-0', 'pointer-events-none');
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+                body.style.overflow = 'hidden';
+            } else {
+                // Close
+                menu.classList.add('opacity-0', 'pointer-events-none');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+                body.style.overflow = '';
+            }
+        }
+
+        // UX Improvements (Cookie & To-Top)
+        function initUX() {
+            // Cookie Banner
+            if (!localStorage.getItem('cookiesAccepted')) {
+                setTimeout(() => {
+                    const banner = document.getElementById('cookie-banner');
+                    if (banner) banner.classList.remove('translate-y-full');
+                }, 1000);
+            }
+
+            // To-Top Button
+            const toTopBtn = document.getElementById('to-top-btn');
+            if (toTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 300) {
+                        toTopBtn.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
+                    } else {
+                        toTopBtn.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
+                    }
+                });
+            }
+        }
+
+        function acceptCookies() {
+            localStorage.setItem('cookiesAccepted', 'true');
+            const banner = document.getElementById('cookie-banner');
+            if (banner) banner.classList.add('translate-y-full');
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.addEventListener('DOMContentLoaded', initUX);
+    </script>
+    <!-- Cookie Banner -->
+    <div id="cookie-banner"
+        class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-zinc-200 p-6 z-[60] transform translate-y-full transition-transform duration-500 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <p class="text-sm text-zinc-600 font-medium">Wir nutzen Cookies, um Ihr Einkaufserlebnis zu verbessern.
+                Durch die Nutzung der Seite stimmen Sie dem zu.</p>
+            <div class="flex items-center gap-3">
+                <button onclick="acceptCookies()"
+                    class="bg-zinc-900 text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-black transition-all hover:scale-105 shadow-lg shadow-zinc-900/10">Alles
+                    Akzeptieren</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- To-Top Button -->
+    <button id="to-top-btn" onclick="scrollToTop()"
+        class="fixed bottom-8 right-8 bg-white text-zinc-900 w-12 h-12 rounded-full shadow-lg border border-zinc-100 flex items-center justify-center opacity-0 translate-y-10 pointer-events-none transition-all duration-300 z-50 hover:scale-110 hover:shadow-xl focus:outline-none ring-1 ring-black/5">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+</body>
+
+</html>
