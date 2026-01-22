@@ -54,7 +54,44 @@ export async function onRequestPost(context) {
         if (captureData.status === 'COMPLETED') {
             // Use email from request body
             const customerEmail = email;
-            const items = captureData.purchase_units[0].items || [];
+
+            // Determine product from cart (you can enhance this logic)
+            const productSlug = env.PRODUCT_SLUG || 'windows-11-pro';
+
+            // Get available keys from KV
+            const availableKeys = await env.LICENSE_KEYS.get(productSlug, 'json') || [];
+
+            if (availableKeys.length === 0) {
+                // No keys available - send error email or notification
+                return new Response(JSON.stringify({
+                    error: 'out_of_stock',
+                    message: 'No license keys available. Please contact support.'
+                }), {
+                    status: 500,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                });
+            }
+
+            // Take first key and remove from available pool
+            const assignedKey = availableKeys.shift();
+            await env.LICENSE_KEYS.put(productSlug, JSON.stringify(availableKeys));
+
+            // Save order to KV
+            const orderId = `order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            await env.ORDERS.put(orderId, JSON.stringify({
+                email: customerEmail,
+                product: env.PRODUCT_NAME || 'Digital Product',
+                product_slug: productSlug,
+                license_key: assignedKey,
+                paypal_transaction_id: orderID,
+                amount: env.PRODUCT_PRICE || '0.00',
+                currency: env.PRODUCT_CURRENCY || 'EUR',
+                timestamp: new Date().toISOString(),
+                status: 'completed'
+            }));
 
             // Send email with license key via Resend
             if (env.RESEND_API_KEY && customerEmail) {
@@ -85,7 +122,7 @@ export async function onRequestPost(context) {
                 
                 <div class="license-box">
                   <div style="font-size: 14px; color: #86868b; margin-bottom: 10px;">Ihr Lizenzschlüssel</div>
-                  <div class="license-key">${env.LICENSE_KEY || 'XXXXX-XXXXX-XXXXX-XXXXX'}</div>
+                  <div class="license-key">${assignedKey}</div>
                 </div>
 
                 <p><strong>Produkt:</strong> ${env.PRODUCT_NAME || 'Digitales Produkt'}</p>
