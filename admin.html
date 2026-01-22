@@ -274,8 +274,7 @@
             const data = await response.json();
 
             if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                const errorMessage = errorData.message || errorData.error || 'Unbekannter Fehler';
+                const errorMessage = data.message || data.error || 'Unbekannter Fehler';
                 document.getElementById('orders-display').innerHTML = `
                     <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
                         <div class="flex">
@@ -286,13 +285,15 @@
                                 <p class="text-sm text-red-700">
                                     Fehler beim Laden der Bestellungen: <span class="font-bold">${errorMessage}</span>
                                 </p>
+                                ${data.binding_status === 'missing' ?
+                        `<p class="text-xs text-red-600 mt-1">Hinweis: KV Bindings fehlen in Cloudflare Settings!</p>` : ''}
                             </div>
                         </div>
                     </div>`;
                 return;
             }
 
-            const ordersData = await response.json();
+            const ordersData = data;
 
             if (!ordersData.orders || ordersData.orders.length === 0) {
                 document.getElementById('orders-display').innerHTML = '<p class="text-gray-600">Keine Bestellungen vorhanden</p>';
