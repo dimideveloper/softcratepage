@@ -265,8 +265,9 @@
         (async function () {
             const urlParams = new URLSearchParams(window.location.search);
             const token = urlParams.get('token');
+            const email = localStorage.getItem('checkout_email');
 
-            if (token) {
+            if (token && email) {
                 try {
                     // Capture the payment
                     const response = await fetch('/api/paypal-capture', {
@@ -275,20 +276,26 @@
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            orderID: token
+                            orderID: token,
+                            email: email
                         })
                     });
 
+                    const result = await response.json();
+
                     if (response.ok) {
-                        console.log('Payment captured and email sent!');
-                        // Clear cart
+                        console.log('Payment captured and email sent!', result);
+                        // Clear cart and email
                         localStorage.removeItem('cart');
+                        localStorage.removeItem('checkout_email');
                     } else {
-                        console.error('Failed to capture payment');
+                        console.error('Failed to capture payment:', result);
                     }
                 } catch (error) {
                     console.error('Error capturing payment:', error);
                 }
+            } else {
+                console.warn('Missing token or email for payment capture. Token:', token, 'Email:', email);
             }
         })();
     </script>
