@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Softcrate Product</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=EUR"></script>
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #fafafa;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .hero-pattern {
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen text-zinc-900 hero-pattern selection:bg-black selection:text-white">
+
+    <!-- Nav -->
+    <nav class="fixed w-full z-50 transition-all duration-300 border-b border-transparent bg-white/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="/" class="text-2xl font-black tracking-tighter">Softcrate<span class="text-blue-600">.</span></a>
+            <a href="products.html" class="text-sm font-bold hover:text-blue-600 transition">Zurück zum Shop</a>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <main class="pt-32 pb-20 px-6 max-w-7xl mx-auto" id="product-container">
+        <!-- Loading State -->
+        <div class="flex flex-col items-center justify-center py-20">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-black mb-4"></div>
+            <p class="text-zinc-500 font-medium">Lade Produkt...</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-zinc-200 py-12 mt-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="text-zinc-400 text-sm">© 2026 Softcrate Digital Solutions</p>
+            <div class="mt-4 space-x-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">
+                <a href="impressum.html" class="hover:text-black transition">Impressum</a>
+                <a href="datenschutz.html" class="hover:text-black transition">Datenschutz</a>
+                <a href="agb.html" class="hover:text-black transition">AGB</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeCheckout()"></div>
+        <div
+            class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden animate-spring">
+            <div class="p-8">
+                <!-- Header -->
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-zinc-900">Checkout</h3>
+                        <p class="text-sm text-zinc-500 mt-1">Sichere SSL-Verbindung</p>
+                    </div>
+                    <button onclick="closeCheckout()" class="p-2 hover:bg-zinc-100 rounded-full transition-colors">
+                        <i class="fas fa-times text-zinc-400"></i>
+                    </button>
+                </div>
+
+                <!-- Product Summary -->
+                <div class="flex items-center gap-4 p-4 bg-zinc-50 rounded-2xl mb-6 border border-zinc-100">
+                    <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center text-xl">🚀
+                    </div>
+                    <div>
+                        <h4 id="checkout-product-name" class="font-bold text-zinc-900 text-sm">Produkt</h4>
+                        <p id="checkout-product-price" class="text-blue-600 font-bold text-sm">0.00 €</p>
+                    </div>
+                </div>
+
+                <!-- Email Input -->
+                <div class="space-y-4 mb-6">
+                    <div>
+                        <label class="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Deine E-Mail
+                            Adresse</label>
+                        <div class="relative">
+                            <i
+                                class="fas fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-400"></i>
+                            <input type="email" id="customer-email" placeholder="name@beispiel.de"
+                                class="w-full pl-11 pr-4 py-3 bg-zinc-50 border-2 border-zinc-100 rounded-xl focus:border-blue-600 focus:bg-white outline-none transition-all font-medium">
+                        </div>
+                        <p class="text-[10px] text-zinc-400 mt-2 ml-1">Der Lizenzschlüssel wird an diese Adresse
+                            gesendet.</p>
+                    </div>
+                </div>
+
+                <!-- T&C Checkbox (NEW) -->
+                <div class="mb-6 bg-yellow-50 border border-yellow-100 p-3 rounded-xl">
+                    <label class="flex items-start gap-3 cursor-pointer">
+                        <input type="checkbox" id="terms-checkbox" onchange="togglePayButton()"
+                            class="mt-1 w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+                        <span class="text-xs text-zinc-600 leading-snug">
+                            Ich akzeptiere die <a href="agb.html" target="_blank" class="underline font-bold">AGB</a>
+                            und <a href="widerruf.html" target="_blank"
+                                class="underline font-bold">Widerrufsbelehrung</a>.
+                            <span class="block mt-1 font-medium text-yellow-800">Hinweis: Bei hoher Nachfrage kann sich
+                                die Lieferung um bis zu 24h verzögern.</span>
+                        </span>
+                    </label>
+                </div>
+
+                <!-- PayPal Button -->
+                <div id="paypal-button-container" class="opacity-50 pointer-events-none transition-opacity"></div>
+
+            </div>
+            <div class="bg-zinc-50 px-8 py-4 text-center border-t border-zinc-100">
+                <p class="text-[10px] text-zinc-400 flex items-center justify-center gap-2">
+                    <i class="fas fa-lock"></i> 100% Sicher & Verschlüsselt
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logic -->
+    <script>
+        // Check local or prod for PayPal
+        // Note: For now assuming Sandbox from script tag. In real prod dynamic switching.
+
+        async function loadProduct() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const slug = urlParams.get('product');
+
+            if (!slug) {
+                document.getElementById('product-container').innerHTML = '<div class="text-center py-20"><h1 class="text-2xl font-bold">Produkt nicht gefunden</h1><a href="products.html" class="text-blue-600 underline mt-4 block">Zum Shop</a></div>';
+                return;
+            }
+
+            try {
+                // Fetch ALL products and find match
+                const response = await fetch('/api/products');
+                const products = await response.json();
+                const product = products.find(p => p.slug === slug);
+
+                if (!product) {
+                    throw new Error('Product not found');
+                }
+
+                renderProduct(product);
+            } catch (error) {
+                console.error(error);
+                document.getElementById('product-container').innerHTML = '<div class="text-center py-20"><h1 class="text-2xl font-bold">Fehler beim Laden</h1><p>Bitte versuche es später erneut.</p></div>';
+            }
+        }
+
+        function renderProduct(product) {
+            const container = document.getElementById('product-container');
+
+            // Format Price
+            const priceFormatted = parseFloat(product.price).toFixed(2).replace('.', ',') + ' ' + (product.currency === 'USD' ? '$' : '€');
+
+            // --- HERO SECTION ---
+            let html = `
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center fade-in mb-24">
+                    <div class="order-2 lg:order-1 relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+                        <div class="relative bg-white rounded-3xl p-12 shadow-2xl border border-zinc-100 aspect-square flex items-center justify-center">
+                            <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-full object-contain drop-shadow-lg transform transition duration-700 hover:scale-110">
+                        </div>
+                    </div>
+                    <div class="order-1 lg:order-2 space-y-8">
+                         <div class="inline-flex items-center space-x-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest">
+                            <i class="fas fa-check-circle"></i> <span>Sofort verfügbar</span>
+                        </div>
+                        <h1 class="text-6xl font-black tracking-tight leading-tighter text-zinc-900">${product.name}</h1>
+                        <p class="text-xl text-zinc-500 font-medium leading-relaxed">${product.description || 'Premium Software Lizenz.'}</p>
+                        
+                        <div class="flex items-center gap-6 py-6 border-y border-zinc-100">
+                            <div>
+                                <span class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-1">Preis</span>
+                                <span class="text-4xl font-black text-zinc-900">${priceFormatted}</span>
+                            </div>
+                            <!-- Tags -->
+                            <div class="flex gap-2">
+                                <span class="px-3 py-1 bg-zinc-100 rounded-lg text-xs font-bold text-zinc-600">Digital Key</span>
+                                <span class="px-3 py-1 bg-zinc-100 rounded-lg text-xs font-bold text-zinc-600">Lifetime</span>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button onclick="openCheckout('${product.name}', ${product.price}, '${product.slug}')" class="flex-1 bg-zinc-900 text-white py-5 px-8 rounded-2xl font-bold text-lg hover:bg-blue-600 hover:scale-[1.02] transition-all shadow-xl shadow-blue-500/10 flex items-center justify-center gap-3">
+                                <span>Jetzt Kaufen</span> <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="flex items-center gap-6 text-xs font-bold text-zinc-400">
+                             <span class="flex items-center gap-2"><i class="fas fa-shield-alt text-blue-500"></i> Sichere Zahlung</span>
+                             <span class="flex items-center gap-2"><i class="fas fa-bolt text-yellow-500"></i> Sofort-Versand</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // --- BUILDER TEMPLATES ---
+            if (product.content_sections && product.content_sections.length > 0) {
+                product.content_sections.forEach(section => {
+                    if (section.template === 'feature-grid') {
+                        html += `
+                            <div class="fade-in py-16 border-t border-zinc-100">
+                                <div class="max-w-3xl mb-12">
+                                    <h2 class="text-4xl font-black mb-4 tracking-tight">${section.headline || 'Features'}</h2>
+                                    <p class="text-lg text-zinc-500 font-medium leading-relaxed">${section.intro || ''}</p>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    ${section.features.map(f => `
+                                    <div class="bg-white p-8 rounded-3xl border border-zinc-100 shadow-sm hover:shadow-md transition">
+                                        <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl mb-6">
+                                            <i class="fas fa-${f.icon || 'star'}"></i>
+                                        </div>
+                                        <h3 class="text-xl font-bold mb-3 text-zinc-900">${f.title}</h3>
+                                        <p class="text-zinc-500 leading-relaxed font-medium">${f.text}</p>
+                                    </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            }
+
+            container.innerHTML = html;
+        }
+
+        // Checkout Logic
+        let currentProduct = null;
+
+        function openCheckout(name, price, slug) {
+            currentProduct = { name, price, slug };
+            document.getElementById('checkout-product-name').textContent = name;
+            document.getElementById('checkout-product-price').textContent = price.toFixed(2) + ' €';
+            document.getElementById('checkout-modal').classList.remove('hidden');
+
+            // Render PayPal Button disabled initially
+            togglePayButton();
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+            document.getElementById('terms-checkbox').checked = false;
+        }
+
+        function togglePayButton() {
+            const isChecked = document.getElementById('terms-checkbox').checked;
+            const container = document.getElementById('paypal-button-container');
+
+            if (isChecked) {
+                container.classList.remove('opacity-50', 'pointer-events-none');
+
+                // Init PayPal if empty
+                if (!container.innerHTML) {
+                    paypal.Buttons({
+                        createOrder: function (data, actions) {
+                            return actions.order.create({
+                                purchase_units: [{
+                                    amount: { value: currentProduct.price.toString() },
+                                    description: currentProduct.slug // Pass slug as metadata/desc
+                                }]
+                            });
+                        },
+                        onApprove: function (data, actions) {
+                            return actions.order.capture().then(function (details) {
+                                // Call backend
+                                handlePurchase(details, currentProduct.slug);
+                            });
+                        }
+                    }).render('#paypal-button-container');
+                }
+            } else {
+                container.classList.add('opacity-50', 'pointer-events-none');
+            }
+        }
+
+        async function handlePurchase(details, productSlug) {
+            const email = document.getElementById('customer-email').value || details.payer.email_address;
+            // Here we would call the verification/delivery API
+            // For now, redirect to success
+            window.location.href = `danke.html?email=${encodeURIComponent(email)}&product=${productSlug}`;
+        }
+
+        loadProduct();
+    </script>
+</body>
+
+</html>

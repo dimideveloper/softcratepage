@@ -20,24 +20,20 @@ export async function onRequestPost(context) {
       });
     }
 
-    if (!env.ORDERS) {
-      throw new Error('ORDERS binding missing');
+    if (!env.ORDERS || !env.LICENSE_KEYS) {
+      throw new Error('KV bindings (ORDERS or LICENSE_KEYS) missing');
     }
 
-    // 1. Fetch ALL orders (limitation of KV list, ideally use D1 or proper DB for scale, but manageable for small shop)
-    // Note: efficiently we should store waiting orders in a separate list, but for now we scan.
-    // Better approach for KV: Store "waiting_orders_PRODUCT" list.
-    // Let's assume we scan recent orders or use a separate key for waiting list. 
-    // For simplicity and speed in this artifact without major refactor:
-    // We will scan the last 1000 orders.
-
+    // 1. Fetch ALL orders
     const ordersList = await env.ORDERS.list({ limit: 1000 });
     let waitingOrders = [];
 
-    for (const key of ordersList.keys) {
-      const orderData = await env.ORDERS.get(key.name, 'json');
-      if (orderData && orderData.product_slug === product && orderData.status === 'waiting_for_stock') {
-        waitingOrders.push({ ...orderData, key: key.name });
+    if (ordersList && ordersList.keys) {
+      for (const key of ordersList.keys) {
+        const orderData = await env.ORDERS.get(key.name, 'json');
+        if (orderData && orderData.product_slug === product && orderData.status === 'waiting_for_stock') {
+          waitingOrders.push({ ...orderData, key: key.name });
+        }
       }
     }
 

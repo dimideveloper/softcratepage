@@ -7,127 +7,173 @@
     <title>Admin Dashboard | Softcrate</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="favicon.png">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f3f4f6;
         }
 
         .glass {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(229, 231, 235, 0.5);
+        }
+
+        .sidebar-link.active {
+            background-color: #eff6ff;
+            color: #2563eb;
+            border-right: 3px solid #2563eb;
+        }
+
+        .builder-card {
+            border: 2px dashed #e5e7eb;
+            transition: all 0.2s;
+        }
+
+        .builder-card:hover {
+            border-color: #2563eb;
+            background-color: #f8fafc;
         }
     </style>
 </head>
 
-<body class="min-h-screen bg-[#eef2f6] text-[#1e293b]">
+<body class="bg-gray-50 text-slate-800">
 
-    <!-- Login Section -->
-    <div id="login-section" class="flex items-center justify-center min-h-screen p-4">
-        <div class="glass w-full max-w-md p-8 rounded-2xl shadow-2xl transform transition-all hover:scale-[1.01]">
+    <!-- Login Overlay -->
+    <div id="login-section" class="fixed inset-0 z-[100] bg-gray-50 flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-xl border border-gray-100">
             <div class="text-center mb-8">
                 <div
                     class="w-16 h-16 bg-blue-600 rounded-2xl mx-auto flex items-center justify-center mb-4 shadow-lg shadow-blue-500/30">
                     <i class="fas fa-shield-alt text-2xl text-white"></i>
                 </div>
-                <h1 class="text-3xl font-extrabold text-[#0f172a] tracking-tight">Admin Login</h1>
-                <p class="text-gray-500 mt-2 text-sm">Bitte authentifizieren Sie sich</p>
+                <h1 class="text-2xl font-bold tracking-tight">Admin Login</h1>
             </div>
-
-            <div class="space-y-6">
-                <div>
-                    <input type="password" id="admin-password" placeholder="••••••••"
-                        class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 bg-gray-50 text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all text-lg"
-                        onkeypress="if(event.key === 'Enter') login()">
-                </div>
+            <div class="space-y-4">
+                <input type="password" id="admin-password" placeholder="Passwort"
+                    class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all"
+                    onkeypress="if(event.key === 'Enter') login()">
                 <button onclick="login()"
-                    class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/30 transform hover:-translate-y-0.5">
-                    <i class="fas fa-lock-open mr-2"></i> Dashboard öffnen
+                    class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20">
+                    Dashboard öffnen
                 </button>
             </div>
             <div id="login-error"
-                class="hidden mt-4 p-4 bg-red-50 text-red-600 rounded-xl text-center text-sm font-medium border border-red-100 animate-pulse">
-            </div>
+                class="hidden mt-4 p-3 bg-red-50 text-red-600 rounded-lg text-center text-sm font-medium"></div>
         </div>
     </div>
 
-    <!-- Dashboard Section -->
-    <div id="dashboard" class="hidden min-h-screen pb-20">
-        <!-- Top Nav -->
-        <div class="bg-white border-b border-gray-200 sticky top-0 z-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center h-20">
-                    <div class="flex items-center">
-                        <i class="fas fa-key text-blue-600 text-2xl mr-3"></i>
-                        <span class="font-extrabold text-xl text-gray-900">Admin Dashboard</span>
-                        <span
-                            class="ml-4 text-xs bg-gray-100 text-gray-500 px-3 py-1 rounded-full uppercase tracking-wider font-semibold">Softcrate
-                            Lizenzschlüssel-Verwaltung</span>
-                    </div>
-                    <div>
-                        <button onclick="logout()"
-                            class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
-                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                        </button>
-                    </div>
-                </div>
+    <!-- App Container -->
+    <div id="dashboard" class="hidden flex h-screen overflow-hidden">
+
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white border-r border-gray-200 flex flex-col z-20">
+            <div class="h-16 flex items-center px-6 border-b border-gray-100">
+                <div class="text-xl font-black tracking-tight text-blue-600">Softcrate<span
+                        class="text-gray-900">.</span></div>
             </div>
-        </div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="flex flex-col gap-6">
+            <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+                <button onclick="switchView('overview')" id="nav-overview"
+                    class="sidebar-link active w-full flex items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                    <i class="fas fa-home w-6"></i> Übersicht
+                </button>
+                <button onclick="switchView('editor')" id="nav-editor"
+                    class="sidebar-link w-full flex items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                    <i class="fas fa-pen-nib w-6"></i> Produkt Editor
+                </button>
+                <button onclick="switchView('keys')" id="nav-keys"
+                    class="sidebar-link w-full flex items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                    <i class="fas fa-key w-6"></i> Lager & Keys
+                </button>
+                <button onclick="switchView('orders')" id="nav-orders"
+                    class="sidebar-link w-full flex items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                    <i class="fas fa-shopping-bag w-6"></i> Bestellungen
+                </button>
+            </nav>
 
-                <!-- Stats Cards -->
+            <div class="p-4 border-t border-gray-100">
+                <button onclick="logout()"
+                    class="w-full flex items-center px-4 py-2 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 transition-colors">
+                    <i class="fas fa-sign-out-alt w-6"></i> Abmelden
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto bg-gray-50/50 relative">
+
+            <!-- View: Overview -->
+            <div id="view-overview" class="p-8 max-w-7xl mx-auto">
+                <h2 class="text-2xl font-bold mb-6">Dashboard Übersicht</h2>
                 <div id="stats-cards" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"></div>
 
-                <!-- Create Product (Advanced) -->
-                <div class="glass rounded-2xl shadow-xl p-8 mb-8">
-                    <h2 class="text-2xl font-bold mb-8 flex items-center">
-                        <i class="fas fa-magic text-indigo-600 mr-3"></i> Produkt erstellen
-                    </h2>
+                <!-- Quick Inventory List -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-bold text-gray-900">Aktueller Lagerbestand</h3>
+                        <button onclick="viewKeys()" class="text-blue-600 hover:text-blue-700 text-sm font-medium"><i
+                                class="fas fa-sync-alt mr-1"></i> Refresh</button>
+                    </div>
+                    <div id="keys-display-quick" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                </div>
+            </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                        <!-- Form -->
-                        <div class="space-y-6">
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Produkt Name</label>
-                                <input type="text" id="new-product-name" oninput="updatePreview()"
-                                    placeholder="z.B. Super Game 2026"
-                                    class="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-indigo-600 focus:outline-none transition-colors">
-                            </div>
+            <!-- View: Editor (Builder) -->
+            <div id="view-editor" class="hidden p-8 max-w-7xl mx-auto">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-bold flex items-center"><i class="fas fa-magic text-indigo-600 mr-3"></i>
+                        Produkt erstellen</h2>
+                </div>
 
-                            <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Left: Editor Controls -->
+                    <div class="lg:col-span-2 space-y-6">
+
+                        <!-- Tabs -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-1 flex space-x-1 mb-6">
+                            <button onclick="setTab('details')" id="tab-btn-details"
+                                class="flex-1 py-2 rounded-lg text-sm font-bold bg-gray-100 text-gray-900">Details</button>
+                            <button onclick="setTab('builder')" id="tab-btn-builder"
+                                class="flex-1 py-2 rounded-lg text-sm font-bold text-gray-500 hover:bg-gray-50">Shop
+                                Builder</button>
+                        </div>
+
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+
+                            <!-- Tab Content: Details -->
+                            <div id="tab-details" class="space-y-6">
                                 <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-2">Slug (ID)</label>
-                                    <input type="text" id="new-product-slug" placeholder="super-game-2026"
-                                        class="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-indigo-600 focus:outline-none transition-colors font-mono text-sm">
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Produkt Name</label>
+                                    <input type="text" id="new-product-name" oninput="updatePreview()"
+                                        placeholder="z.B. Super Game 2026"
+                                        class="w-full border-2 border-gray-100 p-3 rounded-xl focus:border-blue-500 outline-none transition-colors">
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-bold text-gray-700 mb-2">Slug (ID)</label>
+                                        <input type="text" id="new-product-slug" placeholder="super-game-2026"
+                                            class="w-full border-2 border-gray-100 p-3 rounded-xl focus:border-blue-500 outline-none transition-colors font-mono text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-bold text-gray-700 mb-2">Preis (€)</label>
+                                        <input type="number" id="new-product-price" oninput="updatePreview()"
+                                            placeholder="19.99" step="0.01"
+                                            class="w-full border-2 border-gray-100 p-3 rounded-xl focus:border-blue-500 outline-none transition-colors">
+                                    </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-2">Preis (€)</label>
-                                    <input type="number" id="new-product-price" oninput="updatePreview()"
-                                        placeholder="19.99" step="0.01"
-                                        class="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-indigo-600 focus:outline-none transition-colors">
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Bild URL*</label>
+                                    <input type="url" id="new-product-image" oninput="updatePreview()"
+                                        placeholder="https://..."
+                                        class="w-full border-2 border-gray-100 p-3 rounded-xl focus:border-blue-500 outline-none transition-colors">
                                 </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Bild URL <span
-                                        class="text-red-500">*</span></label>
-                                <input type="url" id="new-product-image" oninput="updatePreview()"
-                                    placeholder="https://..."
-                                    class="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-indigo-600 focus:outline-none transition-colors">
-                                <p class="text-xs text-gray-500 mt-2">Nutze einen externen Hoster wie imgur.com</p>
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-2">Kategorie</label>
                                     <select id="new-product-category" onchange="updatePreview()"
-                                        class="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-indigo-600 focus:outline-none bg-white">
+                                        class="w-full border-2 border-gray-100 p-3 rounded-xl focus:border-blue-500 outline-none bg-white">
                                         <option value="windows">Windows</option>
                                         <option value="office">Office</option>
                                         <option value="multimedia">Multimedia</option>
@@ -135,40 +181,86 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-2">Währung</label>
-                                    <select id="new-product-currency"
-                                        class="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-indigo-600 focus:outline-none bg-white">
-                                        <option value="EUR">EUR (€)</option>
-                                        <option value="USD">USD ($)</option>
-                                    </select>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Kurz-Features
+                                        (Liste)</label>
+                                    <input type="text" id="new-product-desc" oninput="updatePreview()"
+                                        placeholder="Feature 1 | Feature 2 | Feature 3"
+                                        class="w-full border-2 border-gray-100 p-3 rounded-xl focus:border-blue-500 outline-none transition-colors">
                                 </div>
                             </div>
 
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Kurzbeschreibung
-                                    (Features)</label>
-                                <input type="text" id="new-product-desc" oninput="updatePreview()"
-                                    placeholder="z.B. Premium Features | Sofortlieferung"
-                                    class="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-indigo-600 focus:outline-none transition-colors">
+                            <!-- Tab Content: Builder -->
+                            <div id="tab-builder" class="hidden space-y-8">
+                                <div class="bg-blue-50 text-blue-800 p-4 rounded-xl text-sm mb-4">
+                                    <i class="fas fa-info-circle mr-2"></i> Hier kannst du zusätzliche Sektionen für die
+                                    Produktseite bauen.
+                                </div>
+
+                                <!-- Template: Feature Grid -->
+                                <div class="border border-gray-200 rounded-xl p-6 relative group">
+                                    <div
+                                        class="absolute top-4 right-4 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                                        Template: Feature Grid</div>
+                                    <h3 class="font-bold text-lg mb-4">Feature Grid Sektion</h3>
+
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label
+                                                class="block text-xs font-bold text-gray-500 mb-1">Überschrift</label>
+                                            <input type="text" id="tpl-grid-headline"
+                                                placeholder="Perfekt für Business & Home"
+                                                class="w-full border border-gray-200 p-2 rounded-lg text-sm">
+                                        </div>
+                                        <div>
+                                            <label
+                                                class="block text-xs font-bold text-gray-500 mb-1">Einleitungstext</label>
+                                            <textarea id="tpl-grid-intro" rows="2"
+                                                placeholder="Windows 11 Pro bietet alles..."
+                                                class="w-full border border-gray-200 p-2 rounded-lg text-sm"></textarea>
+                                        </div>
+
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div class="p-3 bg-gray-50 rounded-lg">
+                                                <label class="block text-xs font-bold text-gray-500 mb-2">Feature
+                                                    1</label>
+                                                <input type="text" id="tpl-grid-f1-title"
+                                                    placeholder="Titel (z.B. Sicherheit)"
+                                                    class="w-full border border-gray-200 p-2 rounded-lg text-sm mb-2">
+                                                <textarea id="tpl-grid-f1-text" rows="2" placeholder="Beschreibung..."
+                                                    class="w-full border border-gray-200 p-2 rounded-lg text-sm"></textarea>
+                                            </div>
+                                            <div class="p-3 bg-gray-50 rounded-lg">
+                                                <label class="block text-xs font-bold text-gray-500 mb-2">Feature
+                                                    2</label>
+                                                <input type="text" id="tpl-grid-f2-title"
+                                                    placeholder="Titel (z.B. Multitasking)"
+                                                    class="w-full border border-gray-200 p-2 rounded-lg text-sm mb-2">
+                                                <textarea id="tpl-grid-f2-text" rows="2" placeholder="Beschreibung..."
+                                                    class="w-full border border-gray-200 p-2 rounded-lg text-sm"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <button onclick="createProduct()"
-                                class="w-full bg-indigo-600 text-white px-6 py-4 rounded-xl text-lg font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 hover:shadow-xl transform hover:-translate-y-0.5">
-                                <i class="fas fa-rocket mr-2"></i> Produkt Veröffentlichen
-                            </button>
-                            <div id="create-product-result" class="mt-4"></div>
                         </div>
 
-                        <!-- Preview -->
-                        <div
-                            class="flex flex-col items-center justify-center bg-gray-50 rounded-2xl p-8 border-2 border-dashed border-gray-200">
-                            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">Live Vorschau
-                            </h3>
+                        <button onclick="createProduct()"
+                            class="w-full bg-indigo-600 text-white px-6 py-4 rounded-xl text-lg font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 hover:shadow-xl">
+                            <i class="fas fa-rocket mr-2"></i> Produkt Veröffentlichen
+                        </button>
+                        <div id="create-product-result" class="mt-4"></div>
+                    </div>
 
+                    <!-- Right: Live Preview -->
+                    <div class="lg:col-span-1">
+                        <div class="sticky top-8">
+                            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Live Vorschau
+                                (Card)</h3>
                             <!-- Card Preview -->
                             <div
-                                class="w-full max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden transform transition-all hover:scale-105 duration-500">
-                                <div class="aspect-square bg-white relative p-12 flex items-center justify-center">
+                                class="w-full bg-white rounded-3xl shadow-xl overflow-hidden transform transition-all hover:scale-105 duration-500 border border-gray-100">
+                                <div class="aspect-square bg-white relative p-8 flex items-center justify-center">
                                     <img id="preview-image" src="https://via.placeholder.com/300?text=No+Image"
                                         class="w-full h-full object-contain">
                                     <div class="absolute top-6 left-6">
@@ -176,103 +268,105 @@
                                             class="bg-black text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Neu</span>
                                     </div>
                                 </div>
-                                <div class="p-8 bg-white border-t border-gray-100">
-                                    <h3 id="preview-title"
-                                        class="text-2xl font-black mb-4 tracking-tight text-gray-900">Produkt Name</h3>
-                                    <div class="space-y-2 mb-8">
-                                        <div class="flex items-center text-[13px] text-gray-500 font-medium">
+                                <div class="p-6 bg-white border-t border-gray-50">
+                                    <h3 id="preview-title" class="text-xl font-black mb-3 tracking-tight text-gray-900">
+                                        Produkt Name</h3>
+                                    <div class="space-y-2 mb-6">
+                                        <div class="flex items-center text-[12px] text-gray-500 font-medium">
                                             <i class="fas fa-check text-blue-600 mr-2 opacity-50"></i> <span
                                                 id="preview-desc">Features</span>
                                         </div>
-                                        <div class="flex items-center text-[13px] text-gray-500 font-medium">
-                                            <i class="fas fa-bolt text-blue-600 mr-2 opacity-50"></i> Digitale
-                                            Auslieferung
-                                        </div>
                                     </div>
-                                    <div class="flex items-end justify-between mb-6">
-                                        <div>
-                                            <span class="text-3xl font-black text-gray-900" id="preview-price">19.99
-                                                €</span>
-                                        </div>
+                                    <div class="flex items-end justify-between mb-4">
+                                        <span class="text-2xl font-black text-gray-900" id="preview-price">19.99
+                                            €</span>
                                     </div>
-                                    <button class="w-full py-4 bg-black text-white rounded-2xl text-[14px] font-bold">
-                                        In den Warenkorb
-                                    </button>
+                                    <button class="w-full py-3 bg-black text-white rounded-xl text-[13px] font-bold">In
+                                        den Warenkorb</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Add Keys -->
-                <div class="glass rounded-2xl shadow-xl p-8 mb-8">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center">
-                        <i class="fas fa-plus-circle text-green-600 mr-3"></i> Keys hinzufügen
-                    </h2>
-                    <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-4 text-sm text-yellow-800">
-                        <i class="fas fa-info-circle mr-1"></i> Keys werden zuerst verwendet, um wartende Bestellungen
-                        (Backlog) zu erfüllen. Der Rest wird dem Lagerbestand hinzugefügt.
-                    </div>
+            <!-- View: Keys -->
+            <div id="view-keys" class="hidden p-8 max-w-7xl mx-auto">
+                <h2 class="text-2xl font-bold mb-6">Keys Verwalten</h2>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-8">
+                    <h3 class="font-bold mb-4 flex items-center"><i class="fas fa-plus-circle text-green-600 mr-2"></i>
+                        Keys hinzufügen</h3>
                     <select id="product-select"
-                        class="border-2 border-gray-200 p-4 rounded-lg w-full mb-4 focus:border-blue-600 focus:outline-none">
-                        <!-- Populated dynamically -->
-                    </select>
-                    <textarea id="keys-input"
-                        placeholder="Keys (einer pro Zeile)&#10;Beispiel:&#10;XXXXX-XXXXX-XXXXX&#10;YYYYY-YYYYY-YYYYY"
-                        class="border-2 border-gray-200 p-4 rounded-lg w-full h-40 mb-4 font-mono text-sm focus:border-blue-600 focus:outline-none"></textarea>
+                        class="border-2 border-gray-100 p-3 rounded-lg w-full mb-4 bg-white"></select>
+                    <textarea id="keys-input" placeholder="Keys (einer pro Zeile)"
+                        class="border-2 border-gray-100 p-4 rounded-lg w-full h-32 mb-4 font-mono text-sm focus:border-green-500 outline-none"></textarea>
                     <button onclick="addKeys()"
-                        class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition shadow-lg">
-                        <i class="fas fa-upload mr-2"></i> Keys hochladen
-                    </button>
+                        class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition font-bold"><i
+                            class="fas fa-upload mr-2"></i> Hochladen</button>
                     <div id="add-result" class="mt-4"></div>
                 </div>
 
-                <!-- View Keys -->
-                <div class="glass rounded-2xl shadow-xl p-8 mb-8">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center">
-                        <i class="fas fa-database text-blue-600 mr-3"></i> Verfügbare Keys
-                    </h2>
-                    <button onclick="viewKeys()"
-                        class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 mb-6 transition shadow-lg">
-                        <i class="fas fa-sync-alt mr-2"></i> Aktualisieren
-                    </button>
-                    <div id="keys-display"></div>
-                </div>
-
-                <!-- View Orders -->
-                <div class="glass rounded-2xl shadow-xl p-8">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center">
-                        <i class="fas fa-shopping-cart text-purple-600 mr-3"></i> Bestellungen
-                    </h2>
-                    <button onclick="viewOrders()"
-                        class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 mb-6 transition shadow-lg">
-                        <i class="fas fa-list mr-2"></i> Bestellungen laden
-                    </button>
-                    <div id="orders-display"></div>
-                </div>
+                <div id="keys-display" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             </div>
-        </div>
+
+            <!-- View: Orders -->
+            <div id="view-orders" class="hidden p-8 max-w-7xl mx-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">Bestellungen</h2>
+                    <button onclick="viewOrders()"
+                        class="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-bold"><i
+                            class="fas fa-sync mr-2"></i> Refresh</button>
+                </div>
+                <div id="orders-display" class="bg-white rounded-2xl shadow-sm border border-gray-200"></div>
+            </div>
+
+        </main>
     </div>
 
+    <!-- JS Logic -->
     <script>
         let password = '';
-        let loginAttempts = 0;
-        const MAX_ATTEMPTS = 5;
+        let currentTab = 'details';
 
+        // Navigation
+        function switchView(viewName) {
+            // Hide all views
+            ['overview', 'editor', 'keys', 'orders'].forEach(v => {
+                document.getElementById('view-' + v).classList.add('hidden');
+                document.getElementById('nav-' + v).classList.remove('active');
+            });
+
+            // Show new view
+            const view = document.getElementById('view-' + viewName);
+            if (view) view.classList.remove('hidden');
+
+            const nav = document.getElementById('nav-' + viewName);
+            if (nav) nav.classList.add('active');
+
+            // Refresh data if needed
+            if (viewName === 'keys' || viewName === 'overview') viewKeys();
+            if (viewName === 'orders') viewOrders();
+        }
+
+        // Tabs in Editor
+        function setTab(tabName) {
+            currentTab = tabName;
+            document.getElementById('tab-details').classList.add('hidden');
+            document.getElementById('tab-builder').classList.add('hidden');
+            document.getElementById('tab-btn-details').classList.remove('bg-gray-100', 'text-gray-900');
+            document.getElementById('tab-btn-details').classList.add('text-gray-500');
+            document.getElementById('tab-btn-builder').classList.remove('bg-gray-100', 'text-gray-900');
+            document.getElementById('tab-btn-builder').classList.add('text-gray-500');
+
+            document.getElementById('tab-' + tabName).classList.remove('hidden');
+            document.getElementById('tab-btn-' + tabName).classList.remove('text-gray-500');
+            document.getElementById('tab-btn-' + tabName).classList.add('bg-gray-100', 'text-gray-900');
+        }
+
+        // Auth
         async function login() {
-            if (loginAttempts >= MAX_ATTEMPTS) {
-                showError('Zu viele Fehlversuche. Bitte warten Sie 5 Minuten.');
-                return;
-            }
-
             password = document.getElementById('admin-password').value;
-
-            if (!password) {
-                showError('Bitte Passwort eingeben');
-                return;
-            }
-
-            // Test password with a simple API call
             const response = await fetch('/api/admin/view-keys', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -282,77 +376,136 @@
             if (response.ok) {
                 document.getElementById('login-section').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
-                loadDashboard();
+                switchView('overview');
+                viewKeys(); // Init data
             } else {
-                loginAttempts++;
-                showError(`Falsches Passwort (${loginAttempts}/${MAX_ATTEMPTS})`);
-                document.getElementById('admin-password').value = '';
+                document.getElementById('login-error').textContent = 'Falsches Passwort';
+                document.getElementById('login-error').classList.remove('hidden');
             }
-        }
-
-        function showError(message) {
-            const errorDiv = document.getElementById('login-error');
-            errorDiv.textContent = message;
-            errorDiv.classList.remove('hidden');
-            setTimeout(() => errorDiv.classList.add('hidden'), 5000);
         }
 
         function logout() {
-            password = '';
-            document.getElementById('dashboard').classList.add('hidden');
-            document.getElementById('login-section').classList.remove('hidden');
-            document.getElementById('admin-password').value = '';
+            location.reload();
         }
 
-        async function loadDashboard() {
-            await viewKeys(); // This populates dropdowns too now
-            await viewOrders();
+        // --- CORE FUNCTIONS (Refactored) ---
+
+        // View Keys & Inventory
+        async function viewKeys() {
+            const response = await fetch('/api/admin/view-keys', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password })
+            });
+            const inventory = await response.json();
+
+            // Render 2 places: Main Keys View AND Quick Overview
+            renderKeysGrid(inventory, 'keys-display');
+            renderKeysGrid(inventory, 'keys-display-quick', true); // Quick view logic might differ if needed
+            updateStats(inventory);
+
+            // Populate Dropdown
+            const select = document.getElementById('product-select');
+            let opts = '';
+            for (const [slug, data] of Object.entries(inventory)) {
+                opts += `<option value="${slug}">${data.name || slug} (${data.available})</option>`;
+            }
+            select.innerHTML = opts;
         }
 
+        function renderKeysGrid(inventory, elementId, simple = false) {
+            let html = '';
+            const defaultProducts = ['windows-11-pro', 'office-2024-ltsc', 'capcut-pro'];
+
+            for (const [slug, data] of Object.entries(inventory)) {
+                const color = data.available > 10 ? 'green' : data.available > 0 ? 'yellow' : 'red';
+                const name = data.name || slug;
+                const isCustom = !defaultProducts.includes(slug);
+
+                const deleteBtn = (isCustom && !simple) ?
+                    `<button onclick="deleteProduct('${slug}')" class="absolute top-4 right-4 text-gray-300 hover:text-red-500 transition-colors p-2"><i class="fas fa-trash"></i></button>` : '';
+
+                html += `
+                    <div class="relative border border-gray-200 bg-white p-6 rounded-xl group hover:border-blue-300 transition-all">
+                        ${deleteBtn}
+                        <div class="flex items-center justify-between mb-2">
+                             <h3 class="font-bold text-gray-700 text-sm">${name}</h3>
+                             <span class="w-2 h-2 rounded-full bg-${color}-500"></span>
+                        </div>
+                        <p class="text-3xl font-black text-gray-900 mb-1">${data.available}</p>
+                        <p class="text-xs text-gray-400 font-mono">${slug}</p>
+                    </div>
+                `;
+            }
+            document.getElementById(elementId).innerHTML = html;
+        }
+
+        function updateStats(inventory) {
+            const total = Object.values(inventory).reduce((sum, data) => sum + data.available, 0);
+            const products = Object.keys(inventory).length;
+            document.getElementById('stats-cards').innerHTML = `
+                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+                    <div><p class="text-gray-500 text-xs font-bold uppercase">Gesamt Keys</p><p class="text-3xl font-black text-gray-900">${total}</p></div>
+                    <i class="fas fa-key text-blue-100 text-2xl p-3 bg-blue-50 rounded-lg"></i>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+                    <div><p class="text-gray-500 text-xs font-bold uppercase">Produkte</p><p class="text-3xl font-black text-gray-900">${products}</p></div>
+                    <i class="fas fa-box text-green-100 text-2xl p-3 bg-green-50 rounded-lg"></i>
+                </div>
+                 <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+                    <div><p class="text-gray-500 text-xs font-bold uppercase">Status</p><p class="text-xl font-bold text-green-600">Online</p></div>
+                    <i class="fas fa-wifi text-purple-100 text-2xl p-3 bg-purple-50 rounded-lg"></i>
+                </div>
+            `;
+        }
+
+        // Create Product
         async function createProduct() {
             const name = document.getElementById('new-product-name').value;
             const slug = document.getElementById('new-product-slug').value;
-
-            if (!name || !slug) {
-                document.getElementById('create-product-result').innerHTML = '<div class="text-red-600 font-bold p-4 bg-red-100 rounded-xl">❌ Bitte Name und Slug eingeben</div>';
-                return;
-            }
-
             const price = document.getElementById('new-product-price').value;
             const imageUrl = document.getElementById('new-product-image').value;
             const category = document.getElementById('new-product-category').value;
-            const currency = document.getElementById('new-product-currency').value;
             const desc = document.getElementById('new-product-desc').value;
+
+            if (!name || !slug || !imageUrl) {
+                alert('Bitte Name, Slug und Bild ausfüllen!');
+                return;
+            }
+
+            // Builder Data
+            const builderData = {
+                template: 'feature-grid',
+                headline: document.getElementById('tpl-grid-headline').value,
+                intro: document.getElementById('tpl-grid-intro').value,
+                features: [
+                    { title: document.getElementById('tpl-grid-f1-title').value, text: document.getElementById('tpl-grid-f1-text').value, icon: 'shield-alt' },
+                    { title: document.getElementById('tpl-grid-f2-title').value, text: document.getElementById('tpl-grid-f2-text').value, icon: 'layer-group' }
+                ]
+            };
 
             const response = await fetch('/api/admin/create-product', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    password,
-                    name,
-                    slug,
-                    price,
-                    imageUrl,
-                    category,
-                    currency,
-                    description: desc
+                    password, name, slug, price, imageUrl, category, description: desc,
+                    content_sections: [builderData] // Save template data!
                 })
             });
 
-            const result = await response.json();
             if (response.ok) {
-                document.getElementById('create-product-result').innerHTML = `<div class="text-green-600 font-bold p-4 bg-green-100 rounded-xl">✅ Produkt "${result.product.name}" erstellt!</div>`;
+                alert('Produkt erfolgreich erstellt!');
+                // Clear Inputs (Simple reset)
                 document.getElementById('new-product-name').value = '';
                 document.getElementById('new-product-slug').value = '';
-                document.getElementById('new-product-price').value = '';
-                document.getElementById('new-product-image').value = '';
-                updatePreview();
-                await viewKeys(); // Refresh lists
+                viewKeys();
             } else {
-                document.getElementById('create-product-result').innerHTML = `<div class="text-red-600 font-bold p-4 bg-red-100 rounded-xl">❌ Fehler: ${result.error}</div>`;
+                const res = await response.json();
+                alert('Fehler: ' + res.error);
             }
         }
 
+        // updatePreview, addKeys, deleteProduct, viewOrders (Standard implementations)
         function updatePreview() {
             const name = document.getElementById('new-product-name').value || 'Produkt Name';
             const price = document.getElementById('new-product-price').value || '19.99';
@@ -364,220 +517,46 @@
             document.getElementById('preview-desc').textContent = desc;
 
             const imgEl = document.getElementById('preview-image');
-            if (image) {
-                imgEl.src = image;
-                imgEl.onerror = () => { imgEl.src = 'https://via.placeholder.com/300?text=Invalid+Image'; };
-            } else {
-                imgEl.src = 'https://via.placeholder.com/300?text=No+Image';
-            }
+            if (image) imgEl.src = image;
+            else imgEl.src = 'https://via.placeholder.com/300?text=No+Image';
         }
 
         async function addKeys() {
             const product = document.getElementById('product-select').value;
-            const keysText = document.getElementById('keys-input').value;
-            const keys = keysText.split('\n').filter(k => k.trim());
-
-            if (keys.length === 0) {
-                document.getElementById('add-result').innerHTML = '<div class="text-red-600 bg-red-50 p-4 rounded-lg">❌ Keine Keys eingegeben</div>';
-                return;
-            }
+            const keys = document.getElementById('keys-input').value.split('\n').filter(k => k.trim());
+            if (keys.length === 0) return alert('Keine Keys eingegeben');
 
             const response = await fetch('/api/admin/add-keys', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password, product, keys })
+                method: 'POST', body: JSON.stringify({ password, product, keys })
             });
-
-            const result = await response.json();
-
-            let message = '';
-            if (response.ok) {
-                message = `<div class="text-green-700 bg-green-50 p-4 rounded-lg border border-green-200">
-                    <p class="font-bold">✅ Erfolgreich!</p>
-                    <ul class="list-disc pl-5 mt-2">
-                        <li>Dem Lager hinzugefügt: <strong>${result.added_to_stock}</strong></li>
-                        <li>Wartende Bestellungen erfüllt: <strong>${result.fulfilled_backorders}</strong></li>
-                        <li>Neuer Gesamtbestand: <strong>${result.total_stock}</strong></li>
-                    </ul>
-                </div>`;
-                document.getElementById('keys-input').value = '';
-                await viewKeys();
-            } else {
-                message = `<div class="text-red-700 bg-red-50 p-4 rounded-lg border border-red-200">❌ Fehler: ${result.error}</div>`;
-            }
-
-            document.getElementById('add-result').innerHTML = message;
+            const res = await response.json();
+            if (response.ok) { alert(`Erfolg! ${res.added_to_stock} Keys hinzugefügt.`); viewKeys(); document.getElementById('keys-input').value = ''; }
+            else alert('Fehler: ' + res.error);
         }
 
         async function deleteProduct(slug) {
-            if (!confirm(`Möchtest du das Produkt "${slug}" wirklich löschen? Dies kann nicht rückgängig gemacht werden.`)) {
-                return;
-            }
-
+            if (!confirm(`Produkt ${slug} wirklich löschen?`)) return;
             const response = await fetch('/api/admin/delete-product', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password, slug })
+                method: 'POST', body: JSON.stringify({ password, slug })
             });
-
-            const result = await response.json();
-            if (response.ok) {
-                await viewKeys(); // Refresh
-                // update dropdown implies viewKeys ran, but viewKeys only populates defaults? No, viewKeys() updates dropdown too.
-                // Just to be sure the select blank is cleaner:
-                const select = document.getElementById('product-select');
-                if (select) select.value = '';
-                alert('Produkt gelöscht.');
-            } else {
-                alert('Fehler beim Löschen: ' + result.error);
-            }
-        }
-
-        async function viewKeys() {
-            const response = await fetch('/api/admin/view-keys', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password })
-            });
-
-            const inventory = await response.json();
-            let html = '<div class="grid grid-cols-1 md:grid-cols-3 gap-6">';
-            let selectHtml = '';
-
-            // Hardcoded products that cannot be deleted
-            const defaultProducts = ['windows-11-pro', 'office-2024-ltsc', 'capcut-pro'];
-
-            for (const [slug, data] of Object.entries(inventory)) {
-                // Determine color
-                const color = data.available > 10 ? 'green' : data.available > 0 ? 'yellow' : 'red';
-                const name = data.name || slug; // Use dynamic name if available
-
-                // Add delete button for non-default products
-                const isCustom = !defaultProducts.includes(slug);
-                const deleteBtn = isCustom ?
-                    `<button onclick="deleteProduct('${slug}')" class="absolute top-4 right-4 text-red-300 hover:text-red-500 transition-colors z-20 p-2" title="Produkt löschen"><i class="fas fa-trash"></i></button>`
-                    : '';
-
-                html += `
-                    <div class="relative border-2 border-${color}-200 bg-${color}-50 p-6 rounded-xl group">
-                        ${deleteBtn}
-                        <h3 class="font-bold text-gray-700 mb-2 pr-8">${name}</h3>
-                        <p class="text-4xl font-bold text-${color}-600">${data.available}</p>
-                        <p class="text-gray-600 text-sm mt-1">verfügbar</p>
-                        <div class="mt-2 text-xs text-gray-400 font-mono">${slug}</div>
-                    </div>
-                `;
-
-                selectHtml += `<option value="${slug}">${name} (${data.available})</option>`;
-            }
-            html += '</div>';
-
-            document.getElementById('keys-display').innerHTML = html;
-            document.getElementById('product-select').innerHTML = selectHtml;
-
-            // Update stats cards based on aggregate
-            updateStatsCards(inventory);
-        }
-
-        function updateStatsCards(inventory) {
-            const total = Object.values(inventory).reduce((sum, data) => sum + data.available, 0);
-            const products = Object.keys(inventory).length;
-
-            document.getElementById('stats-cards').innerHTML = `
-                <div class="glass rounded-xl p-6 border-l-4 border-blue-600">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-600 text-sm font-semibold">Gesamt Keys</p>
-                            <p class="text-3xl font-bold text-gray-900">${total}</p>
-                        </div>
-                        <i class="fas fa-key text-blue-600 text-4xl"></i>
-                    </div>
-                </div>
-                <div class="glass rounded-xl p-6 border-l-4 border-green-600">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-600 text-sm font-semibold">Produkte</p>
-                            <p class="text-3xl font-bold text-gray-900">${products}</p>
-                        </div>
-                        <i class="fas fa-box text-green-600 text-4xl"></i>
-                    </div>
-                </div>
-                <div class="glass rounded-xl p-6 border-l-4 border-purple-600">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-600 text-sm font-semibold">Status</p>
-                            <p class="text-xl font-bold text-green-600">✓ Online</p>
-                        </div>
-                        <i class="fas fa-check-circle text-purple-600 text-4xl"></i>
-                    </div>
-                </div>
-            `;
+            if (response.ok) { alert('Gelöscht.'); viewKeys(); }
+            else alert('Fehler.');
         }
 
         async function viewOrders() {
             const response = await fetch('/api/admin/view-orders', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password })
+                method: 'POST', body: JSON.stringify({ password })
             });
-
             const data = await response.json();
+            if (!response.ok) return;
 
-            if (!response.ok) {
-                // Error handling currently simplistic, reuse existing
-                const errorMessage = data.message || data.error || 'Unbekannter Fehler';
-                document.getElementById('orders-display').innerHTML = `<p class="text-red-500">Error: ${errorMessage}</p>`;
-                return;
-            }
-
-            const ordersData = data;
-
-            if (!ordersData.orders || ordersData.orders.length === 0) {
-                document.getElementById('orders-display').innerHTML = '<p class="text-gray-600">Keine Bestellungen vorhanden</p>';
-                return;
-            }
-
-            let html = `<p class="mb-6 font-bold text-lg">📊 Total: ${ordersData.total} Bestellungen</p>`;
-            html += '<div class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">';
-            html += '<table class="w-full border-collapse text-sm text-left">';
-            html += '<thead class="bg-gray-50 text-gray-500 font-medium border-b border-gray-200"><tr><th class="p-3 md:p-4 whitespace-nowrap">Datum</th><th class="p-3 md:p-4 whitespace-nowrap">Status</th><th class="p-3 md:p-4 whitespace-nowrap">E-Mail</th><th class="p-3 md:p-4 whitespace-nowrap">Produkt</th><th class="p-3 md:p-4 whitespace-nowrap">Key</th><th class="p-3 md:p-4 whitespace-nowrap">Betrag</th></tr></thead><tbody class="divide-y divide-gray-100">';
-
-            ordersData.orders.forEach((order, index) => {
-                const date = new Date(order.timestamp).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' });
-
-                let statusBadge = '';
-                if (order.status === 'completed') {
-                    statusBadge = '<span class="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded">Erledigt</span>';
-                } else if (order.status === 'waiting_for_stock') {
-                    statusBadge = '<span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2 py-1 rounded">Wartet auf Key</span>';
-                } else {
-                    statusBadge = `<span class="bg-gray-100 text-gray-800 text-xs font-semibold px-2 py-1 rounded">${order.status || 'Unbekannt'}</span>`;
-                }
-
-                html += `
-                    <tr class="hover:bg-blue-50 transition bg-white">
-                        <td class="p-3 md:p-4 whitespace-nowrap text-gray-600">${date}</td>
-                        <td class="p-3 md:p-4 whitespace-nowrap">${statusBadge}</td>
-                        <td class="p-3 md:p-4 whitespace-nowrap font-medium text-gray-900">${order.email}</td>
-                        <td class="p-3 md:p-4 whitespace-nowrap text-gray-600">${order.product}</td>
-                        <td class="p-3 md:p-4 whitespace-nowrap"><code class="bg-gray-100 text-blue-600 px-2 py-1 rounded text-xs font-mono select-all">${order.license_key || '-'}</code></td>
-                        <td class="p-3 md:p-4 whitespace-nowrap font-bold text-green-600">${order.amount} ${order.currency}</td>
-                    </tr>
-                `;
+            let html = '<table class="w-full text-sm text-left"><thead class="bg-gray-50 text-gray-500"><tr><th class="p-3">Datum</th><th class="p-3">Status</th><th class="p-3">Email</th><th class="p-3">Produkt</th><th class="p-3">Key</th></tr></thead><tbody>';
+            (data.orders || []).forEach(o => {
+                html += `<tr class="border-b border-gray-100 hover:bg-gray-50 py-2"><td class="p-3">${new Date(o.timestamp).toLocaleDateString()}</td><td class="p-3">${o.status}</td><td class="p-3 font-medium">${o.email}</td><td class="p-3">${o.product}</td><td class="p-3 font-mono text-xs">${o.license_key || '-'}</td></tr>`;
             });
-
-            html += '</tbody></table></div>';
-            document.getElementById('orders-display').innerHTML = html;
+            html += '</tbody></table>';
+            document.getElementById('orders-display').innerHTML = (data.orders && data.orders.length) ? html : '<p class="p-4 text-gray-500">Keine Bestellungen</p>';
         }
-
-        // Auto-logout after 30 minutes of inactivity
-        let inactivityTimer;
-        function resetInactivityTimer() {
-            clearTimeout(inactivityTimer);
-            inactivityTimer = setTimeout(logout, 30 * 60 * 1000);
-        }
-        document.addEventListener('click', resetInactivityTimer);
-        document.addEventListener('keypress', resetInactivityTimer);
     </script>
 </body>
 

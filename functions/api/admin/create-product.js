@@ -3,7 +3,7 @@ export async function onRequestPost(context) {
 
     try {
         const body = await request.json();
-        const { password, name, slug, price, currency, imageUrl, category, description } = body;
+        const { password, name, slug, price, currency, imageUrl, category, description, content_sections } = body;
 
         // Check admin password
         if (password !== env.ADMIN_PASSWORD) {
@@ -41,6 +41,7 @@ export async function onRequestPost(context) {
             imageUrl: imageUrl,
             category: category || 'other',
             description: description || '',
+            content_sections: content_sections || [], // Save templates
             createdAt: new Date().toISOString()
         };
 
