@@ -324,13 +324,37 @@
 
                     <button
                         onclick="addToCart('Windows 11 Professional', 14.90, parseInt(document.getElementById('quantity-input').value))"
-                        class="apple-btn w-full md:w-auto text-[17px] font-medium px-12 py-4">
-                        In den Warenkorb
+                        class="apple-btn w-full md:w-auto text-[17px] font-medium px-12 py-4 shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 transition-shadow">
+                        <i class="fas fa-shopping-bag mr-2"></i> In den Warenkorb
                     </button>
 
-                    <p class="text-[11px] text-zinc-400 mt-6">
+                    <p class="text-[11px] text-zinc-400 mt-6 mb-8 text-center md:text-left">
                         Alle Preise inkl. MwSt. gemäß §19 UStG (Kleinunternehmer)
                     </p>
+
+                    <!-- Trust Badges -->
+                    <div class="grid grid-cols-2 gap-4 pt-8 border-t border-zinc-100">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-green-600">
+                                <i class="fas fa-shield-alt text-lg"></i>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-[13px] font-bold text-zinc-900">Sichere Zahlung</span>
+                                <span class="text-[11px] text-zinc-500">SSL-Verschlüsselt</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                                <i class="fas fa-undo text-lg"></i>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-[13px] font-bold text-zinc-900">Geld-zurück</span>
+                                <span class="text-[11px] text-zinc-500">Garantie</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
