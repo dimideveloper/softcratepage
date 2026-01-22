@@ -1,70 +1,70 @@
 export async function onRequestPost(context) {
-    const { request, env } = context;
+  const { request, env } = context;
 
-    try {
-        const body = await request.json();
-        const { password, product, keys } = body;
+  try {
+    const body = await request.json();
+    const { password, product, keys } = body;
 
-        // Check admin password
-        if (password !== env.ADMIN_PASSWORD) {
-            return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-                status: 401,
-                headers: { 'Content-Type': 'application/json' }
-            });
-        }
+    // Check admin password
+    if (password !== env.ADMIN_PASSWORD) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
 
-        if (!product || !keys || !Array.isArray(keys)) {
-            return new Response(JSON.stringify({ error: 'Invalid request. Need product and keys array' }), {
-                status: 400,
-                headers: { 'Content-Type': 'application/json' }
-            });
-        }
+    if (!product || !keys || !Array.isArray(keys)) {
+      return new Response(JSON.stringify({ error: 'Invalid request. Need product and keys array' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
 
-        if (!env.ORDERS) {
-            throw new Error('ORDERS binding missing');
-        }
+    if (!env.ORDERS) {
+      throw new Error('ORDERS binding missing');
+    }
 
-        // 1. Fetch ALL orders (limitation of KV list, ideally use D1 or proper DB for scale, but manageable for small shop)
-        // Note: efficiently we should store waiting orders in a separate list, but for now we scan.
-        // Better approach for KV: Store "waiting_orders_PRODUCT" list.
-        // Let's assume we scan recent orders or use a separate key for waiting list. 
-        // For simplicity and speed in this artifact without major refactor:
-        // We will scan the last 1000 orders.
+    // 1. Fetch ALL orders (limitation of KV list, ideally use D1 or proper DB for scale, but manageable for small shop)
+    // Note: efficiently we should store waiting orders in a separate list, but for now we scan.
+    // Better approach for KV: Store "waiting_orders_PRODUCT" list.
+    // Let's assume we scan recent orders or use a separate key for waiting list. 
+    // For simplicity and speed in this artifact without major refactor:
+    // We will scan the last 1000 orders.
 
-        const ordersList = await env.ORDERS.list({ limit: 1000 });
-        let waitingOrders = [];
+    const ordersList = await env.ORDERS.list({ limit: 1000 });
+    let waitingOrders = [];
 
-        for (const key of ordersList.keys) {
-            const orderData = await env.ORDERS.get(key.name, 'json');
-            if (orderData && orderData.product_slug === product && orderData.status === 'waiting_for_stock') {
-                waitingOrders.push({ ...orderData, key: key.name });
-            }
-        }
+    for (const key of ordersList.keys) {
+      const orderData = await env.ORDERS.get(key.name, 'json');
+      if (orderData && orderData.product_slug === product && orderData.status === 'waiting_for_stock') {
+        waitingOrders.push({ ...orderData, key: key.name });
+      }
+    }
 
-        // Sort FIFO (Oldest first)
-        waitingOrders.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    // Sort FIFO (Oldest first)
+    waitingOrders.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
-        let keysUsed = 0;
-        let fulfilledOrders = 0;
-        let keysArray = [...keys]; // Copy
+    let keysUsed = 0;
+    let fulfilledOrders = 0;
+    let keysArray = [...keys]; // Copy
 
-        // 2. Fulfill Waiting Orders
-        for (const order of waitingOrders) {
-            if (keysArray.length === 0) break; // No more keys
+    // 2. Fulfill Waiting Orders
+    for (const order of waitingOrders) {
+      if (keysArray.length === 0) break; // No more keys
 
-            const assignKey = keysArray.shift(); // Take first key
-            keysUsed++;
-            fulfilledOrders++;
+      const assignKey = keysArray.shift(); // Take first key
+      keysUsed++;
+      fulfilledOrders++;
 
-            // Update Order
-            order.license_key = assignKey;
-            order.status = 'completed';
-            order.fulfillment_date = new Date().toISOString();
+      // Update Order
+      order.license_key = assignKey;
+      order.status = 'completed';
+      order.fulfillment_date = new Date().toISOString();
 
-            // Save updated order
-            await env.ORDERS.put(order.key, JSON.stringify(order));
+      // Save updated order
+      await env.ORDERS.put(order.key, JSON.stringify(order));
 
-            const emailHtml = `
+      const emailHtml = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -140,63 +140,62 @@ export async function onRequestPost(context) {
 </html>
                 `;
 
-            try {
-                await fetch('https://api.resend.com/emails', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${env.RESEND_API_KEY}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        from: 'Softcrate <noreply@softcrate.de>',
-                        to: [order.email],
-                        subject: '🌟 Ihr Lizenzschlüssel ist da! (Softcrate Nachlieferung)',
-                        html: emailHtml
-                    })
-                });
-            } catch (e) {
-                console.error('Failed to send fulfillment email', e);
-            }
-        }
+      try {
+        await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            from: 'Softcrate <noreply@softcrate.de>',
+            to: [order.email],
+            subject: '🌟 Ihr Lizenzschlüssel ist da! (Softcrate Nachlieferung)',
+            html: emailHtml
+          })
+        });
+      } catch (e) {
+        console.error('Failed to send fulfillment email', e);
+      }
     }
 
-        // 3. Add remaining keys to stock
-        const existingKeys = await env.LICENSE_KEYS.get(product, 'json') || [];
+    // 3. Add remaining keys to stock
+    const existingKeys = await env.LICENSE_KEYS.get(product, 'json') || [];
     const updatedKeys = [...existingKeys, ...keysArray];
     await env.LICENSE_KEYS.put(product, JSON.stringify(updatedKeys));
 
     return new Response(JSON.stringify({
-        success: true,
-        product: product,
-        added_to_stock: keysArray.length,
-        fulfilled_backorders: fulfilledOrders,
-        total_stock: updatedKeys.length
+      success: true,
+      product: product,
+      added_to_stock: keysArray.length,
+      fulfilled_backorders: fulfilledOrders,
+      total_stock: updatedKeys.length
     }), {
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-        }
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
     });
 
-} catch (error) {
+  } catch (error) {
     return new Response(JSON.stringify({
-        error: 'Failed to add keys',
-        message: error.message
+      error: 'Failed to add keys',
+      message: error.message
     }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
     });
-}
+  }
 }
 
 export async function onRequestOptions() {
-    return new Response(null, {
-        status: 204,
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type',
-            'Access-Control-Max-Age': '86400'
-        }
-    });
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Max-Age': '86400'
+    }
+  });
 }
