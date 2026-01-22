@@ -8,53 +8,106 @@
     <meta name="robots" content="noindex, nofollow">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+    </style>
 </head>
 
-<body class="bg-gray-50">
-    <div class="min-h-screen p-8">
-        <div class="max-w-6xl mx-auto">
-            <h1 class="text-4xl font-bold mb-8">🔑 Softcrate Admin Dashboard</h1>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div class="min-h-screen p-4 md:p-8">
+        <div class="max-w-7xl mx-auto">
 
-            <!-- Login -->
-            <div id="login-section" class="bg-white rounded-lg shadow p-8 mb-8">
-                <h2 class="text-2xl font-bold mb-4">Login</h2>
-                <input type="password" id="admin-password" placeholder="Admin Password"
-                    class="border p-3 rounded w-full mb-4">
-                <button onclick="login()"
-                    class="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700">Login</button>
+            <!-- Login Section -->
+            <div id="login-section" class="flex items-center justify-center min-h-screen">
+                <div class="glass rounded-2xl shadow-2xl p-8 md:p-12 w-full max-w-md">
+                    <div class="text-center mb-8">
+                        <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-lock text-white text-3xl"></i>
+                        </div>
+                        <h1 class="text-3xl font-bold text-gray-900">Admin Login</h1>
+                        <p class="text-gray-600 mt-2">Softcrate Dashboard</p>
+                    </div>
+                    <div id="login-error"
+                        class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4"></div>
+                    <input type="password" id="admin-password" placeholder="Admin Passwort"
+                        class="border-2 border-gray-200 p-4 rounded-lg w-full mb-4 focus:border-blue-600 focus:outline-none transition"
+                        onkeypress="if(event.key==='Enter') login()">
+                    <button onclick="login()"
+                        class="bg-blue-600 text-white px-6 py-4 rounded-lg hover:bg-blue-700 w-full font-semibold transition shadow-lg hover:shadow-xl">
+                        <i class="fas fa-sign-in-alt mr-2"></i> Anmelden
+                    </button>
+                </div>
             </div>
 
             <!-- Dashboard (hidden until login) -->
             <div id="dashboard" class="hidden">
+                <!-- Header -->
+                <div class="glass rounded-2xl shadow-xl p-6 mb-8">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h1 class="text-3xl font-bold text-gray-900">🔑 Admin Dashboard</h1>
+                            <p class="text-gray-600">Softcrate Lizenzschlüssel-Verwaltung</p>
+                        </div>
+                        <button onclick="logout()"
+                            class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div id="stats-cards" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"></div>
+
                 <!-- Add Keys -->
-                <div class="bg-white rounded-lg shadow p-8 mb-8">
-                    <h2 class="text-2xl font-bold mb-4">📦 Keys hinzufügen</h2>
-                    <select id="product-select" class="border p-3 rounded w-full mb-4">
+                <div class="glass rounded-2xl shadow-xl p-8 mb-8">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-plus-circle text-green-600 mr-3"></i> Keys hinzufügen
+                    </h2>
+                    <select id="product-select"
+                        class="border-2 border-gray-200 p-4 rounded-lg w-full mb-4 focus:border-blue-600 focus:outline-none">
                         <option value="windows-11-pro">Windows 11 Pro</option>
                         <option value="office-2024-ltsc">Office 2024 LTSC</option>
                         <option value="capcut-pro">CapCut Pro</option>
                     </select>
-                    <textarea id="keys-input" placeholder="Keys (einer pro Zeile)"
-                        class="border p-3 rounded w-full h-32 mb-4"></textarea>
+                    <textarea id="keys-input"
+                        placeholder="Keys (einer pro Zeile)&#10;Beispiel:&#10;XXXXX-XXXXX-XXXXX&#10;YYYYY-YYYYY-YYYYY"
+                        class="border-2 border-gray-200 p-4 rounded-lg w-full h-40 mb-4 font-mono text-sm focus:border-blue-600 focus:outline-none"></textarea>
                     <button onclick="addKeys()"
-                        class="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700">Keys hinzufügen</button>
+                        class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition shadow-lg">
+                        <i class="fas fa-upload mr-2"></i> Keys hochladen
+                    </button>
                     <div id="add-result" class="mt-4"></div>
                 </div>
 
                 <!-- View Keys -->
-                <div class="bg-white rounded-lg shadow p-8 mb-8">
-                    <h2 class="text-2xl font-bold mb-4">📊 Verfügbare Keys</h2>
+                <div class="glass rounded-2xl shadow-xl p-8 mb-8">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-database text-blue-600 mr-3"></i> Verfügbare Keys
+                    </h2>
                     <button onclick="viewKeys()"
-                        class="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 mb-4">Keys anzeigen</button>
+                        class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 mb-6 transition shadow-lg">
+                        <i class="fas fa-sync-alt mr-2"></i> Aktualisieren
+                    </button>
                     <div id="keys-display"></div>
                 </div>
 
                 <!-- View Orders -->
-                <div class="bg-white rounded-lg shadow p-8">
-                    <h2 class="text-2xl font-bold mb-4">📋 Bestellungen</h2>
+                <div class="glass rounded-2xl shadow-xl p-8">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-shopping-cart text-purple-600 mr-3"></i> Bestellungen
+                    </h2>
                     <button onclick="viewOrders()"
-                        class="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 mb-4">Bestellungen
-                        anzeigen</button>
+                        class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 mb-6 transition shadow-lg">
+                        <i class="fas fa-list mr-2"></i> Bestellungen laden
+                    </button>
                     <div id="orders-display"></div>
                 </div>
             </div>
@@ -63,17 +116,68 @@
 
     <script>
         let password = '';
+        let loginAttempts = 0;
+        const MAX_ATTEMPTS = 5;
 
-        function login() {
+        async function login() {
+            if (loginAttempts >= MAX_ATTEMPTS) {
+                showError('Zu viele Fehlversuche. Bitte warten Sie 5 Minuten.');
+                return;
+            }
+
             password = document.getElementById('admin-password').value;
-            document.getElementById('login-section').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
+
+            if (!password) {
+                showError('Bitte Passwort eingeben');
+                return;
+            }
+
+            // Test password with a simple API call
+            const response = await fetch('/api/admin/view-keys', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password })
+            });
+
+            if (response.ok) {
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                loadDashboard();
+            } else {
+                loginAttempts++;
+                showError(`Falsches Passwort (${loginAttempts}/${MAX_ATTEMPTS})`);
+                document.getElementById('admin-password').value = '';
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('login-error');
+            errorDiv.textContent = message;
+            errorDiv.classList.remove('hidden');
+            setTimeout(() => errorDiv.classList.add('hidden'), 5000);
+        }
+
+        function logout() {
+            password = '';
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('login-section').classList.remove('hidden');
+            document.getElementById('admin-password').value = '';
+        }
+
+        async function loadDashboard() {
+            await viewKeys();
+            await viewOrders();
         }
 
         async function addKeys() {
             const product = document.getElementById('product-select').value;
             const keysText = document.getElementById('keys-input').value;
             const keys = keysText.split('\n').filter(k => k.trim());
+
+            if (keys.length === 0) {
+                document.getElementById('add-result').innerHTML = '<div class="text-red-600 bg-red-50 p-4 rounded-lg">❌ Keine Keys eingegeben</div>';
+                return;
+            }
 
             const response = await fetch('/api/admin/add-keys', {
                 method: 'POST',
@@ -83,10 +187,13 @@
 
             const result = await response.json();
             document.getElementById('add-result').innerHTML = response.ok
-                ? `<div class="text-green-600">✅ ${result.added} Keys hinzugefügt! Total: ${result.total}</div>`
-                : `<div class="text-red-600">❌ Fehler: ${result.error}</div>`;
+                ? `<div class="text-green-700 bg-green-50 p-4 rounded-lg border border-green-200">✅ ${result.added} Keys hinzugefügt! Gesamt: ${result.total}</div>`
+                : `<div class="text-red-700 bg-red-50 p-4 rounded-lg border border-red-200">❌ Fehler: ${result.error}</div>`;
 
-            document.getElementById('keys-input').value = '';
+            if (response.ok) {
+                document.getElementById('keys-input').value = '';
+                await viewKeys();
+            }
         }
 
         async function viewKeys() {
@@ -97,18 +204,64 @@
             });
 
             const inventory = await response.json();
-            let html = '<div class="grid grid-cols-1 md:grid-cols-3 gap-4">';
+            let html = '<div class="grid grid-cols-1 md:grid-cols-3 gap-6">';
+
+            const productNames = {
+                'windows-11-pro': 'Windows 11 Pro',
+                'office-2024-ltsc': 'Office 2024 LTSC',
+                'capcut-pro': 'CapCut Pro'
+            };
 
             for (const [product, data] of Object.entries(inventory)) {
+                const color = data.available > 10 ? 'green' : data.available > 0 ? 'yellow' : 'red';
                 html += `
-                    <div class="border p-4 rounded">
-                        <h3 class="font-bold mb-2">${product}</h3>
-                        <p class="text-2xl font-bold text-blue-600">${data.available} verfügbar</p>
+                    <div class="border-2 border-${color}-200 bg-${color}-50 p-6 rounded-xl">
+                        <h3 class="font-bold text-gray-700 mb-2">${productNames[product] || product}</h3>
+                        <p class="text-4xl font-bold text-${color}-600">${data.available}</p>
+                        <p class="text-gray-600 text-sm mt-1">verfügbar</p>
                     </div>
                 `;
             }
             html += '</div>';
             document.getElementById('keys-display').innerHTML = html;
+
+            // Update stats cards
+            updateStatsCards(inventory);
+        }
+
+        function updateStatsCards(inventory) {
+            const total = Object.values(inventory).reduce((sum, data) => sum + data.available, 0);
+            const products = Object.keys(inventory).length;
+
+            document.getElementById('stats-cards').innerHTML = `
+                <div class="glass rounded-xl p-6 border-l-4 border-blue-600">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600 text-sm font-semibold">Gesamt Keys</p>
+                            <p class="text-3xl font-bold text-gray-900">${total}</p>
+                        </div>
+                        <i class="fas fa-key text-blue-600 text-4xl"></i>
+                    </div>
+                </div>
+                <div class="glass rounded-xl p-6 border-l-4 border-green-600">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600 text-sm font-semibold">Produkte</p>
+                            <p class="text-3xl font-bold text-gray-900">${products}</p>
+                        </div>
+                        <i class="fas fa-box text-green-600 text-4xl"></i>
+                    </div>
+                </div>
+                <div class="glass rounded-xl p-6 border-l-4 border-purple-600">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600 text-sm font-semibold">Status</p>
+                            <p class="text-xl font-bold text-green-600">✓ Online</p>
+                        </div>
+                        <i class="fas fa-check-circle text-purple-600 text-4xl"></i>
+                    </div>
+                </div>
+            `;
         }
 
         async function viewOrders() {
@@ -119,19 +272,26 @@
             });
 
             const data = await response.json();
-            let html = `<p class="mb-4 font-bold">Total: ${data.total} Bestellungen</p>`;
-            html += '<div class="overflow-x-auto"><table class="w-full border-collapse border">';
-            html += '<thead><tr class="bg-gray-100"><th class="border p-2">Datum</th><th class="border p-2">E-Mail</th><th class="border p-2">Produkt</th><th class="border p-2">Key</th><th class="border p-2">Betrag</th></tr></thead><tbody>';
 
-            data.orders.forEach(order => {
+            if (!data.orders) {
+                document.getElementById('orders-display').innerHTML = '<p class="text-gray-600">Keine Bestellungen vorhanden</p>';
+                return;
+            }
+
+            let html = `<p class="mb-6 font-bold text-lg">📊 Total: ${data.total} Bestellungen</p>`;
+            html += '<div class="overflow-x-auto"><table class="w-full border-collapse">';
+            html += '<thead><tr class="bg-gray-100 border-b-2 border-gray-300"><th class="p-3 text-left">Datum</th><th class="p-3 text-left">E-Mail</th><th class="p-3 text-left">Produkt</th><th class="p-3 text-left">Key</th><th class="p-3 text-left">Betrag</th></tr></thead><tbody>';
+
+            data.orders.forEach((order, index) => {
                 const date = new Date(order.timestamp).toLocaleString('de-DE');
+                const bgColor = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
                 html += `
-                    <tr>
-                        <td class="border p-2">${date}</td>
-                        <td class="border p-2">${order.email}</td>
-                        <td class="border p-2">${order.product}</td>
-                        <td class="border p-2 font-mono text-sm">${order.license_key}</td>
-                        <td class="border p-2">${order.amount} ${order.currency}</td>
+                    <tr class="${bgColor} border-b border-gray-200 hover:bg-blue-50 transition">
+                        <td class="p-3">${date}</td>
+                        <td class="p-3">${order.email}</td>
+                        <td class="p-3 font-semibold">${order.product}</td>
+                        <td class="p-3 font-mono text-xs bg-gray-100 rounded px-2 py-1">${order.license_key}</td>
+                        <td class="p-3 font-bold text-green-600">${order.amount} ${order.currency}</td>
                     </tr>
                 `;
             });
@@ -139,6 +299,15 @@
             html += '</tbody></table></div>';
             document.getElementById('orders-display').innerHTML = html;
         }
+
+        // Auto-logout after 30 minutes of inactivity
+        let inactivityTimer;
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(logout, 30 * 60 * 1000);
+        }
+        document.addEventListener('click', resetInactivityTimer);
+        document.addEventListener('keypress', resetInactivityTimer);
     </script>
 </body>
 
