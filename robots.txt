@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin.html
+Disallow: /api/
+Disallow: /functions/
+Allow: /
+
+Sitemap: https://softcrate.de/sitemap.xml
