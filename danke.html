@@ -260,6 +260,39 @@
         </div>
     </footer>
 
+    <script>
+        // Capture PayPal payment and send email
+        (async function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+
+            if (token) {
+                try {
+                    // Capture the payment
+                    const response = await fetch('/api/paypal-capture', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            orderID: token
+                        })
+                    });
+
+                    if (response.ok) {
+                        console.log('Payment captured and email sent!');
+                        // Clear cart
+                        localStorage.removeItem('cart');
+                    } else {
+                        console.error('Failed to capture payment');
+                    }
+                } catch (error) {
+                    console.error('Error capturing payment:', error);
+                }
+            }
+        })();
+    </script>
+
 </body>
 
 </html>
