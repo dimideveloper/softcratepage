@@ -67,16 +67,36 @@
                 <!-- Stats Cards -->
                 <div id="stats-cards" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"></div>
 
+                <!-- Create Product -->
+                <div class="glass rounded-2xl shadow-xl p-8 mb-8">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-plus-square text-indigo-600 mr-3"></i> Produkt erstellen
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <input type="text" id="new-product-name" placeholder="Produkt Name (z.B. New Software 2024)"
+                            class="border-2 border-gray-200 p-4 rounded-lg focus:border-indigo-600 focus:outline-none">
+                        <input type="text" id="new-product-slug" placeholder="Slug / ID (z.B. new-software-2024)"
+                            class="border-2 border-gray-200 p-4 rounded-lg focus:border-indigo-600 focus:outline-none">
+                    </div>
+                    <button onclick="createProduct()"
+                        class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition shadow-lg w-full md:w-auto">
+                        <i class="fas fa-save mr-2"></i> Produkt erstellen
+                    </button>
+                    <div id="create-product-result" class="mt-4"></div>
+                </div>
+
                 <!-- Add Keys -->
                 <div class="glass rounded-2xl shadow-xl p-8 mb-8">
                     <h2 class="text-2xl font-bold mb-6 flex items-center">
                         <i class="fas fa-plus-circle text-green-600 mr-3"></i> Keys hinzufügen
                     </h2>
+                    <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-4 text-sm text-yellow-800">
+                        <i class="fas fa-info-circle mr-1"></i> Keys werden zuerst verwendet, um wartende Bestellungen
+                        (Backlog) zu erfüllen. Der Rest wird dem Lagerbestand hinzugefügt.
+                    </div>
                     <select id="product-select"
                         class="border-2 border-gray-200 p-4 rounded-lg w-full mb-4 focus:border-blue-600 focus:outline-none">
-                        <option value="windows-11-pro">Windows 11 Pro</option>
-                        <option value="office-2024-ltsc">Office 2024 LTSC</option>
-                        <option value="capcut-pro">CapCut Pro</option>
+                        <!-- Populated dynamically -->
                     </select>
                     <textarea id="keys-input"
                         placeholder="Keys (einer pro Zeile)&#10;Beispiel:&#10;XXXXX-XXXXX-XXXXX&#10;YYYYY-YYYYY-YYYYY"
@@ -166,8 +186,34 @@
         }
 
         async function loadDashboard() {
-            await viewKeys();
+            await viewKeys(); // This populates dropdowns too now
             await viewOrders();
+        }
+
+        async function createProduct() {
+            const name = document.getElementById('new-product-name').value;
+            const slug = document.getElementById('new-product-slug').value;
+
+            if (!name || !slug) {
+                document.getElementById('create-product-result').innerHTML = '<div class="text-red-600">Bitte Name und Slug eingeben</div>';
+                return;
+            }
+
+            const response = await fetch('/api/admin/create-product', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password, name, slug })
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                document.getElementById('create-product-result').innerHTML = `<div class="text-green-600">✅ Produkt "${result.product.name}" erstellt!</div>`;
+                document.getElementById('new-product-name').value = '';
+                document.getElementById('new-product-slug').value = '';
+                await viewKeys(); // Refresh lists
+            } else {
+                document.getElementById('create-product-result').innerHTML = `<div class="text-red-600">❌ Fehler: ${result.error}</div>`;
+            }
         }
 
         async function addKeys() {
@@ -187,14 +233,24 @@
             });
 
             const result = await response.json();
-            document.getElementById('add-result').innerHTML = response.ok
-                ? `<div class="text-green-700 bg-green-50 p-4 rounded-lg border border-green-200">✅ ${result.added} Keys hinzugefügt! Gesamt: ${result.total}</div>`
-                : `<div class="text-red-700 bg-red-50 p-4 rounded-lg border border-red-200">❌ Fehler: ${result.error}</div>`;
 
+            let message = '';
             if (response.ok) {
+                message = `<div class="text-green-700 bg-green-50 p-4 rounded-lg border border-green-200">
+                    <p class="font-bold">✅ Erfolgreich!</p>
+                    <ul class="list-disc pl-5 mt-2">
+                        <li>Dem Lager hinzugefügt: <strong>${result.added_to_stock}</strong></li>
+                        <li>Wartende Bestellungen erfüllt: <strong>${result.fulfilled_backorders}</strong></li>
+                        <li>Neuer Gesamtbestand: <strong>${result.total_stock}</strong></li>
+                    </ul>
+                </div>`;
                 document.getElementById('keys-input').value = '';
                 await viewKeys();
+            } else {
+                message = `<div class="text-red-700 bg-red-50 p-4 rounded-lg border border-red-200">❌ Fehler: ${result.error}</div>`;
             }
+
+            document.getElementById('add-result').innerHTML = message;
         }
 
         async function viewKeys() {
@@ -206,27 +262,30 @@
 
             const inventory = await response.json();
             let html = '<div class="grid grid-cols-1 md:grid-cols-3 gap-6">';
+            let selectHtml = '';
 
-            const productNames = {
-                'windows-11-pro': 'Windows 11 Pro',
-                'office-2024-ltsc': 'Office 2024 LTSC',
-                'capcut-pro': 'CapCut Pro'
-            };
-
-            for (const [product, data] of Object.entries(inventory)) {
+            for (const [slug, data] of Object.entries(inventory)) {
+                // Determine color
                 const color = data.available > 10 ? 'green' : data.available > 0 ? 'yellow' : 'red';
+                const name = data.name || slug; // Use dynamic name if available
+
                 html += `
                     <div class="border-2 border-${color}-200 bg-${color}-50 p-6 rounded-xl">
-                        <h3 class="font-bold text-gray-700 mb-2">${productNames[product] || product}</h3>
+                        <h3 class="font-bold text-gray-700 mb-2">${name}</h3>
                         <p class="text-4xl font-bold text-${color}-600">${data.available}</p>
                         <p class="text-gray-600 text-sm mt-1">verfügbar</p>
+                        <div class="mt-2 text-xs text-gray-400 font-mono">${slug}</div>
                     </div>
                 `;
+
+                selectHtml += `<option value="${slug}">${name} (${data.available})</option>`;
             }
             html += '</div>';
-            document.getElementById('keys-display').innerHTML = html;
 
-            // Update stats cards
+            document.getElementById('keys-display').innerHTML = html;
+            document.getElementById('product-select').innerHTML = selectHtml;
+
+            // Update stats cards based on aggregate
             updateStatsCards(inventory);
         }
 
@@ -275,22 +334,9 @@
             const data = await response.json();
 
             if (!response.ok) {
+                // Error handling currently simplistic, reuse existing
                 const errorMessage = data.message || data.error || 'Unbekannter Fehler';
-                document.getElementById('orders-display').innerHTML = `
-                    <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
-                        <div class="flex">
-                            <div class="flex-shrink-0">
-                                <i class="fas fa-exclamation-circle text-red-500"></i>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm text-red-700">
-                                    Fehler beim Laden der Bestellungen: <span class="font-bold">${errorMessage}</span>
-                                </p>
-                                ${data.binding_status === 'missing' ?
-                        `<p class="text-xs text-red-600 mt-1">Hinweis: KV Bindings fehlen in Cloudflare Settings!</p>` : ''}
-                            </div>
-                        </div>
-                    </div>`;
+                document.getElementById('orders-display').innerHTML = `<p class="text-red-500">Error: ${errorMessage}</p>`;
                 return;
             }
 
@@ -304,16 +350,27 @@
             let html = `<p class="mb-6 font-bold text-lg">📊 Total: ${ordersData.total} Bestellungen</p>`;
             html += '<div class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">';
             html += '<table class="w-full border-collapse text-sm text-left">';
-            html += '<thead class="bg-gray-50 text-gray-500 font-medium border-b border-gray-200"><tr><th class="p-3 md:p-4 whitespace-nowrap">Datum</th><th class="p-3 md:p-4 whitespace-nowrap">E-Mail</th><th class="p-3 md:p-4 whitespace-nowrap">Produkt</th><th class="p-3 md:p-4 whitespace-nowrap">Key</th><th class="p-3 md:p-4 whitespace-nowrap">Betrag</th></tr></thead><tbody class="divide-y divide-gray-100">';
+            html += '<thead class="bg-gray-50 text-gray-500 font-medium border-b border-gray-200"><tr><th class="p-3 md:p-4 whitespace-nowrap">Datum</th><th class="p-3 md:p-4 whitespace-nowrap">Status</th><th class="p-3 md:p-4 whitespace-nowrap">E-Mail</th><th class="p-3 md:p-4 whitespace-nowrap">Produkt</th><th class="p-3 md:p-4 whitespace-nowrap">Key</th><th class="p-3 md:p-4 whitespace-nowrap">Betrag</th></tr></thead><tbody class="divide-y divide-gray-100">';
 
             ordersData.orders.forEach((order, index) => {
                 const date = new Date(order.timestamp).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' });
+
+                let statusBadge = '';
+                if (order.status === 'completed') {
+                    statusBadge = '<span class="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded">Erledigt</span>';
+                } else if (order.status === 'waiting_for_stock') {
+                    statusBadge = '<span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2 py-1 rounded">Wartet auf Key</span>';
+                } else {
+                    statusBadge = `<span class="bg-gray-100 text-gray-800 text-xs font-semibold px-2 py-1 rounded">${order.status || 'Unbekannt'}</span>`;
+                }
+
                 html += `
                     <tr class="hover:bg-blue-50 transition bg-white">
                         <td class="p-3 md:p-4 whitespace-nowrap text-gray-600">${date}</td>
+                        <td class="p-3 md:p-4 whitespace-nowrap">${statusBadge}</td>
                         <td class="p-3 md:p-4 whitespace-nowrap font-medium text-gray-900">${order.email}</td>
                         <td class="p-3 md:p-4 whitespace-nowrap text-gray-600">${order.product}</td>
-                        <td class="p-3 md:p-4 whitespace-nowrap"><code class="bg-gray-100 text-blue-600 px-2 py-1 rounded text-xs font-mono select-all">${order.license_key}</code></td>
+                        <td class="p-3 md:p-4 whitespace-nowrap"><code class="bg-gray-100 text-blue-600 px-2 py-1 rounded text-xs font-mono select-all">${order.license_key || '-'}</code></td>
                         <td class="p-3 md:p-4 whitespace-nowrap font-bold text-green-600">${order.amount} ${order.currency}</td>
                     </tr>
                 `;

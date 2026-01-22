@@ -15,7 +15,16 @@ export async function onRequestPost(context) {
 
         // Get all products and their keys
         // Get all products and their keys
-        const products = ['windows-11-pro', 'office-2024-ltsc', 'capcut-pro'];
+        const defaultProducts = ['windows-11-pro', 'office-2024-ltsc', 'capcut-pro'];
+
+        let customProducts = [];
+        try {
+            customProducts = await env.LICENSE_KEYS.get('PRODUCTS_LIST', 'json') || [];
+        } catch (e) {
+            console.warn('Failed to fetch custom products', e);
+        }
+
+        const productSlugs = [...new Set([...defaultProducts, ...customProducts.map(p => p.slug)])];
         const inventory = {};
 
         if (!env.LICENSE_KEYS) {
@@ -23,9 +32,13 @@ export async function onRequestPost(context) {
             throw new Error('LICENSE_KEYS binding is missing in Cloudflare Pages settings');
         }
 
-        for (const product of products) {
-            const keys = await env.LICENSE_KEYS.get(product, 'json') || [];
-            inventory[product] = {
+        for (const slug of productSlugs) {
+            const keys = await env.LICENSE_KEYS.get(slug, 'json') || [];
+            // Try to find metadata
+            const metadata = customProducts.find(p => p.slug === slug) || { name: slug };
+
+            inventory[slug] = {
+                name: metadata.name,
                 available: keys.length,
                 keys: keys
             };
