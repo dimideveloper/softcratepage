@@ -46,9 +46,13 @@ export async function onRequestPost(context) {
         });
 
     } catch (error) {
+        console.error('View Orders Error:', error);
         return new Response(JSON.stringify({
             error: 'Failed to fetch orders',
-            message: error.message
+            message: error.message || 'Unknown server error',
+            name: error.name,
+            stack: error.stack,
+            binding_status: !!env.ORDERS ? 'present' : 'missing'
         }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }
