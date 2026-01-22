@@ -4,70 +4,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="favicon.png">
     <title>Admin Dashboard | Softcrate</title>
-    <meta name="robots" content="noindex, nofollow">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="favicon.png">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
         }
 
         .glass {
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
     </style>
 </head>
 
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
-    <div class="min-h-screen p-4 md:p-8">
-        <div class="max-w-7xl mx-auto">
+<body class="min-h-screen bg-[#eef2f6] text-[#1e293b]">
 
-            <!-- Login Section -->
-            <div id="login-section" class="flex items-center justify-center min-h-screen">
-                <div class="glass rounded-2xl shadow-2xl p-8 md:p-12 w-full max-w-md">
-                    <div class="text-center mb-8">
-                        <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-lock text-white text-3xl"></i>
-                        </div>
-                        <h1 class="text-3xl font-bold text-gray-900">Admin Login</h1>
-                        <p class="text-gray-600 mt-2">Softcrate Dashboard</p>
-                    </div>
-                    <div id="login-error"
-                        class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4"></div>
-                    <input type="password" id="admin-password" placeholder="Admin Passwort"
-                        class="border-2 border-gray-200 p-4 rounded-lg w-full mb-4 focus:border-blue-600 focus:outline-none transition"
-                        onkeypress="if(event.key==='Enter') login()">
-                    <button onclick="login()"
-                        class="bg-blue-600 text-white px-6 py-4 rounded-lg hover:bg-blue-700 w-full font-semibold transition shadow-lg hover:shadow-xl">
-                        <i class="fas fa-sign-in-alt mr-2"></i> Anmelden
-                    </button>
+    <!-- Login Section -->
+    <div id="login-section" class="flex items-center justify-center min-h-screen p-4">
+        <div class="glass w-full max-w-md p-8 rounded-2xl shadow-2xl transform transition-all hover:scale-[1.01]">
+            <div class="text-center mb-8">
+                <div
+                    class="w-16 h-16 bg-blue-600 rounded-2xl mx-auto flex items-center justify-center mb-4 shadow-lg shadow-blue-500/30">
+                    <i class="fas fa-shield-alt text-2xl text-white"></i>
                 </div>
+                <h1 class="text-3xl font-extrabold text-[#0f172a] tracking-tight">Admin Login</h1>
+                <p class="text-gray-500 mt-2 text-sm">Bitte authentifizieren Sie sich</p>
             </div>
 
-            <!-- Dashboard (hidden until login) -->
-            <div id="dashboard" class="hidden">
-                <!-- Header -->
-                <div class="glass rounded-2xl shadow-xl p-6 mb-8">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h1 class="text-3xl font-bold text-gray-900">🔑 Admin Dashboard</h1>
-                            <p class="text-gray-600">Softcrate Lizenzschlüssel-Verwaltung</p>
-                        </div>
+            <div class="space-y-6">
+                <div>
+                    <input type="password" id="admin-password" placeholder="••••••••"
+                        class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 bg-gray-50 text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all text-lg"
+                        onkeypress="if(event.key === 'Enter') login()">
+                </div>
+                <button onclick="login()"
+                    class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/30 transform hover:-translate-y-0.5">
+                    <i class="fas fa-lock-open mr-2"></i> Dashboard öffnen
+                </button>
+            </div>
+            <div id="login-error"
+                class="hidden mt-4 p-4 bg-red-50 text-red-600 rounded-xl text-center text-sm font-medium border border-red-100 animate-pulse">
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div id="dashboard" class="hidden min-h-screen pb-20">
+        <!-- Top Nav -->
+        <div class="bg-white border-b border-gray-200 sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-20">
+                    <div class="flex items-center">
+                        <i class="fas fa-key text-blue-600 text-2xl mr-3"></i>
+                        <span class="font-extrabold text-xl text-gray-900">Admin Dashboard</span>
+                        <span
+                            class="ml-4 text-xs bg-gray-100 text-gray-500 px-3 py-1 rounded-full uppercase tracking-wider font-semibold">Softcrate
+                            Lizenzschlüssel-Verwaltung</span>
+                    </div>
+                    <div>
                         <button onclick="logout()"
                             class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
                             <i class="fas fa-sign-out-alt mr-2"></i> Logout
                         </button>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col gap-6">
 
                 <!-- Stats Cards -->
                 <div id="stats-cards" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"></div>
 
-                <!-- Create Product -->
                 <!-- Create Product (Advanced) -->
                 <div class="glass rounded-2xl shadow-xl p-8 mb-8">
                     <h2 class="text-2xl font-bold mb-8 flex items-center">
@@ -393,6 +409,30 @@
             document.getElementById('add-result').innerHTML = message;
         }
 
+        async function deleteProduct(slug) {
+            if (!confirm(`Möchtest du das Produkt "${slug}" wirklich löschen? Dies kann nicht rückgängig gemacht werden.`)) {
+                return;
+            }
+
+            const response = await fetch('/api/admin/delete-product', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password, slug })
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                await viewKeys(); // Refresh
+                // update dropdown implies viewKeys ran, but viewKeys only populates defaults? No, viewKeys() updates dropdown too.
+                // Just to be sure the select blank is cleaner:
+                const select = document.getElementById('product-select');
+                if (select) select.value = '';
+                alert('Produkt gelöscht.');
+            } else {
+                alert('Fehler beim Löschen: ' + result.error);
+            }
+        }
+
         async function viewKeys() {
             const response = await fetch('/api/admin/view-keys', {
                 method: 'POST',
@@ -404,14 +444,24 @@
             let html = '<div class="grid grid-cols-1 md:grid-cols-3 gap-6">';
             let selectHtml = '';
 
+            // Hardcoded products that cannot be deleted
+            const defaultProducts = ['windows-11-pro', 'office-2024-ltsc', 'capcut-pro'];
+
             for (const [slug, data] of Object.entries(inventory)) {
                 // Determine color
                 const color = data.available > 10 ? 'green' : data.available > 0 ? 'yellow' : 'red';
                 const name = data.name || slug; // Use dynamic name if available
 
+                // Add delete button for non-default products
+                const isCustom = !defaultProducts.includes(slug);
+                const deleteBtn = isCustom ?
+                    `<button onclick="deleteProduct('${slug}')" class="absolute top-4 right-4 text-red-300 hover:text-red-500 transition-colors z-20 p-2" title="Produkt löschen"><i class="fas fa-trash"></i></button>`
+                    : '';
+
                 html += `
-                    <div class="border-2 border-${color}-200 bg-${color}-50 p-6 rounded-xl">
-                        <h3 class="font-bold text-gray-700 mb-2">${name}</h3>
+                    <div class="relative border-2 border-${color}-200 bg-${color}-50 p-6 rounded-xl group">
+                        ${deleteBtn}
+                        <h3 class="font-bold text-gray-700 mb-2 pr-8">${name}</h3>
                         <p class="text-4xl font-bold text-${color}-600">${data.available}</p>
                         <p class="text-gray-600 text-sm mt-1">verfügbar</p>
                         <div class="mt-2 text-xs text-gray-400 font-mono">${slug}</div>
