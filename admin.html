@@ -292,18 +292,18 @@
                 return;
             }
 
-            const data = await response.json();
+            const ordersData = await response.json();
 
-            if (!data.orders || data.orders.length === 0) {
+            if (!ordersData.orders || ordersData.orders.length === 0) {
                 document.getElementById('orders-display').innerHTML = '<p class="text-gray-600">Keine Bestellungen vorhanden</p>';
                 return;
             }
 
-            let html = `<p class="mb-6 font-bold text-lg">📊 Total: ${data.total} Bestellungen</p>`;
+            let html = `<p class="mb-6 font-bold text-lg">📊 Total: ${ordersData.total} Bestellungen</p>`;
             html += '<div class="overflow-x-auto"><table class="w-full border-collapse">';
             html += '<thead><tr class="bg-gray-100 border-b-2 border-gray-300"><th class="p-3 text-left">Datum</th><th class="p-3 text-left">E-Mail</th><th class="p-3 text-left">Produkt</th><th class="p-3 text-left">Key</th><th class="p-3 text-left">Betrag</th></tr></thead><tbody>';
 
-            data.orders.forEach((order, index) => {
+            ordersData.orders.forEach((order, index) => {
                 const date = new Date(order.timestamp).toLocaleString('de-DE');
                 const bgColor = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
                 html += `
