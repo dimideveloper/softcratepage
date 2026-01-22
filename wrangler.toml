@@ -1,0 +1,10 @@
+name = "softcratepage"
+compatibility_date = "2024-01-22"
+
+[[kv_namespaces]]
+binding = "LICENSE_KEYS"
+id = "e8bb2043bed8424c94fc8a95e46ab0d0"
+
+[[kv_namespaces]]
+binding = "ORDERS"
+id = "ace45e8707e94873be5e0dcf12067c6c"
