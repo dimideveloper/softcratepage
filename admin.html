@@ -68,21 +68,124 @@
                 <div id="stats-cards" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"></div>
 
                 <!-- Create Product -->
+                <!-- Create Product (Advanced) -->
                 <div class="glass rounded-2xl shadow-xl p-8 mb-8">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center">
-                        <i class="fas fa-plus-square text-indigo-600 mr-3"></i> Produkt erstellen
+                    <h2 class="text-2xl font-bold mb-8 flex items-center">
+                        <i class="fas fa-magic text-indigo-600 mr-3"></i> Produkt erstellen
                     </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <input type="text" id="new-product-name" placeholder="Produkt Name (z.B. New Software 2024)"
-                            class="border-2 border-gray-200 p-4 rounded-lg focus:border-indigo-600 focus:outline-none">
-                        <input type="text" id="new-product-slug" placeholder="Slug / ID (z.B. new-software-2024)"
-                            class="border-2 border-gray-200 p-4 rounded-lg focus:border-indigo-600 focus:outline-none">
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <!-- Form -->
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Produkt Name</label>
+                                <input type="text" id="new-product-name" oninput="updatePreview()"
+                                    placeholder="z.B. Super Game 2026"
+                                    class="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-indigo-600 focus:outline-none transition-colors">
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Slug (ID)</label>
+                                    <input type="text" id="new-product-slug" placeholder="super-game-2026"
+                                        class="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-indigo-600 focus:outline-none transition-colors font-mono text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Preis (€)</label>
+                                    <input type="number" id="new-product-price" oninput="updatePreview()"
+                                        placeholder="19.99" step="0.01"
+                                        class="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-indigo-600 focus:outline-none transition-colors">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Bild URL <span
+                                        class="text-red-500">*</span></label>
+                                <input type="url" id="new-product-image" oninput="updatePreview()"
+                                    placeholder="https://..."
+                                    class="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-indigo-600 focus:outline-none transition-colors">
+                                <p class="text-xs text-gray-500 mt-2">Nutze einen externen Hoster wie imgur.com</p>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Kategorie</label>
+                                    <select id="new-product-category" onchange="updatePreview()"
+                                        class="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-indigo-600 focus:outline-none bg-white">
+                                        <option value="windows">Windows</option>
+                                        <option value="office">Office</option>
+                                        <option value="multimedia">Multimedia</option>
+                                        <option value="other">Sonstiges</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Währung</label>
+                                    <select id="new-product-currency"
+                                        class="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-indigo-600 focus:outline-none bg-white">
+                                        <option value="EUR">EUR (€)</option>
+                                        <option value="USD">USD ($)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Kurzbeschreibung
+                                    (Features)</label>
+                                <input type="text" id="new-product-desc" oninput="updatePreview()"
+                                    placeholder="z.B. Premium Features | Sofortlieferung"
+                                    class="w-full border-2 border-gray-200 p-4 rounded-xl focus:border-indigo-600 focus:outline-none transition-colors">
+                            </div>
+
+                            <button onclick="createProduct()"
+                                class="w-full bg-indigo-600 text-white px-6 py-4 rounded-xl text-lg font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 hover:shadow-xl transform hover:-translate-y-0.5">
+                                <i class="fas fa-rocket mr-2"></i> Produkt Veröffentlichen
+                            </button>
+                            <div id="create-product-result" class="mt-4"></div>
+                        </div>
+
+                        <!-- Preview -->
+                        <div
+                            class="flex flex-col items-center justify-center bg-gray-50 rounded-2xl p-8 border-2 border-dashed border-gray-200">
+                            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">Live Vorschau
+                            </h3>
+
+                            <!-- Card Preview -->
+                            <div
+                                class="w-full max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden transform transition-all hover:scale-105 duration-500">
+                                <div class="aspect-square bg-white relative p-12 flex items-center justify-center">
+                                    <img id="preview-image" src="https://via.placeholder.com/300?text=No+Image"
+                                        class="w-full h-full object-contain">
+                                    <div class="absolute top-6 left-6">
+                                        <span id="preview-badge"
+                                            class="bg-black text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Neu</span>
+                                    </div>
+                                </div>
+                                <div class="p-8 bg-white border-t border-gray-100">
+                                    <h3 id="preview-title"
+                                        class="text-2xl font-black mb-4 tracking-tight text-gray-900">Produkt Name</h3>
+                                    <div class="space-y-2 mb-8">
+                                        <div class="flex items-center text-[13px] text-gray-500 font-medium">
+                                            <i class="fas fa-check text-blue-600 mr-2 opacity-50"></i> <span
+                                                id="preview-desc">Features</span>
+                                        </div>
+                                        <div class="flex items-center text-[13px] text-gray-500 font-medium">
+                                            <i class="fas fa-bolt text-blue-600 mr-2 opacity-50"></i> Digitale
+                                            Auslieferung
+                                        </div>
+                                    </div>
+                                    <div class="flex items-end justify-between mb-6">
+                                        <div>
+                                            <span class="text-3xl font-black text-gray-900" id="preview-price">19.99
+                                                €</span>
+                                        </div>
+                                    </div>
+                                    <button class="w-full py-4 bg-black text-white rounded-2xl text-[14px] font-bold">
+                                        In den Warenkorb
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <button onclick="createProduct()"
-                        class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition shadow-lg w-full md:w-auto">
-                        <i class="fas fa-save mr-2"></i> Produkt erstellen
-                    </button>
-                    <div id="create-product-result" class="mt-4"></div>
                 </div>
 
                 <!-- Add Keys -->
@@ -195,24 +298,61 @@
             const slug = document.getElementById('new-product-slug').value;
 
             if (!name || !slug) {
-                document.getElementById('create-product-result').innerHTML = '<div class="text-red-600">Bitte Name und Slug eingeben</div>';
+                document.getElementById('create-product-result').innerHTML = '<div class="text-red-600 font-bold p-4 bg-red-100 rounded-xl">❌ Bitte Name und Slug eingeben</div>';
                 return;
             }
+
+            const price = document.getElementById('new-product-price').value;
+            const imageUrl = document.getElementById('new-product-image').value;
+            const category = document.getElementById('new-product-category').value;
+            const currency = document.getElementById('new-product-currency').value;
+            const desc = document.getElementById('new-product-desc').value;
 
             const response = await fetch('/api/admin/create-product', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password, name, slug })
+                body: JSON.stringify({
+                    password,
+                    name,
+                    slug,
+                    price,
+                    imageUrl,
+                    category,
+                    currency,
+                    description: desc
+                })
             });
 
             const result = await response.json();
             if (response.ok) {
-                document.getElementById('create-product-result').innerHTML = `<div class="text-green-600">✅ Produkt "${result.product.name}" erstellt!</div>`;
+                document.getElementById('create-product-result').innerHTML = `<div class="text-green-600 font-bold p-4 bg-green-100 rounded-xl">✅ Produkt "${result.product.name}" erstellt!</div>`;
                 document.getElementById('new-product-name').value = '';
                 document.getElementById('new-product-slug').value = '';
+                document.getElementById('new-product-price').value = '';
+                document.getElementById('new-product-image').value = '';
+                updatePreview();
                 await viewKeys(); // Refresh lists
             } else {
-                document.getElementById('create-product-result').innerHTML = `<div class="text-red-600">❌ Fehler: ${result.error}</div>`;
+                document.getElementById('create-product-result').innerHTML = `<div class="text-red-600 font-bold p-4 bg-red-100 rounded-xl">❌ Fehler: ${result.error}</div>`;
+            }
+        }
+
+        function updatePreview() {
+            const name = document.getElementById('new-product-name').value || 'Produkt Name';
+            const price = document.getElementById('new-product-price').value || '19.99';
+            const image = document.getElementById('new-product-image').value;
+            const desc = document.getElementById('new-product-desc').value || 'Features';
+
+            document.getElementById('preview-title').textContent = name;
+            document.getElementById('preview-price').textContent = price + ' €';
+            document.getElementById('preview-desc').textContent = desc;
+
+            const imgEl = document.getElementById('preview-image');
+            if (image) {
+                imgEl.src = image;
+                imgEl.onerror = () => { imgEl.src = 'https://via.placeholder.com/300?text=Invalid+Image'; };
+            } else {
+                imgEl.src = 'https://via.placeholder.com/300?text=No+Image';
             }
         }
 

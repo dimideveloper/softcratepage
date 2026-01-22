@@ -3,7 +3,7 @@ export async function onRequestPost(context) {
 
     try {
         const body = await request.json();
-        const { password, name, slug, price, currency, imageUrl } = body;
+        const { password, name, slug, price, currency, imageUrl, category, description } = body;
 
         // Check admin password
         if (password !== env.ADMIN_PASSWORD) {
@@ -13,8 +13,8 @@ export async function onRequestPost(context) {
             });
         }
 
-        if (!name || !slug) {
-            return new Response(JSON.stringify({ error: 'Missing name or slug' }), {
+        if (!name || !slug || !imageUrl) {
+            return new Response(JSON.stringify({ error: 'Missing required fields: name, slug, or imageUrl' }), {
                 status: 400,
                 headers: { 'Content-Type': 'application/json' }
             });
@@ -38,7 +38,9 @@ export async function onRequestPost(context) {
             slug,
             price: price || '0.00',
             currency: currency || 'EUR',
-            imageUrl: imageUrl || '',
+            imageUrl: imageUrl,
+            category: category || 'other',
+            description: description || '',
             createdAt: new Date().toISOString()
         };
 

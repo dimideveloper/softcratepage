@@ -396,6 +396,82 @@
     </div>
 
     <script>
+        // Logic to load dynamic products
+        async function loadDynamicProducts() {
+            try {
+                const response = await fetch('/api/products');
+                if (!response.ok) return;
+
+                const products = await response.json();
+                const grid = document.getElementById('products-grid');
+
+                products.forEach(product => {
+                    // Check if product already exists (to avoid duplicates with hardcoded ones if filtered poorly)
+                    if (document.querySelector(`[data-slug="${product.slug}"]`)) return;
+
+                    const card = document.createElement('div');
+                    card.className = 'product-card group reveal bg-zinc-50/50 rounded-3xl border border-zinc-100 overflow-hidden flex flex-col';
+                    card.dataset.category = product.category || 'other';
+                    card.dataset.slug = product.slug;
+
+                    // Fallback features list
+                    const desc = product.description || 'Sofortige Lieferung | Original Lizenz';
+                    const features = desc.split('|').map(f => f.trim()).filter(f => f);
+
+                    let featuresHtml = '';
+                    features.forEach(f => {
+                        featuresHtml += `
+                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
+                                <i class="fas fa-check text-blue-600 mr-2 opacity-50"></i> ${f}
+                            </div>`;
+                    });
+
+                    // Construct HTML
+                    card.innerHTML = `
+                        <a href="javascript:void(0)" onclick="addToCart('${product.name}', ${product.price})" class="block aspect-square bg-white relative p-12">
+                            <img src="${product.imageUrl || 'https://via.placeholder.com/300?text=No+Image'}" alt="${product.name}"
+                                class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700">
+                             <div class="absolute top-6 left-6 flex flex-col gap-2">
+                                <span class="bg-zinc-900 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Digital</span>
+                            </div>
+                        </a>
+                        <div class="p-8 flex flex-col flex-grow bg-white border-t border-zinc-100">
+                            <h3 class="text-2xl font-black mb-4 tracking-tight">${product.name}</h3>
+                            <div class="space-y-2 mb-8 flex-grow">
+                                ${featuresHtml || `
+                                <div class="flex items-center text-[13px] text-zinc-500 font-medium">
+                                    <i class="fas fa-check text-blue-600 mr-2 opacity-50"></i> Permanente Aktivierung
+                                </div>
+                                <div class="flex items-center text-[13px] text-zinc-500 font-medium">
+                                    <i class="fas fa-bolt text-blue-600 mr-2 opacity-50"></i> Sofort verfügbar
+                                </div>`}
+                            </div>
+                            <div class="flex items-end justify-between mb-6">
+                                <div>
+                                    <span class="text-3xl font-black text-zinc-950">${parseFloat(product.price).toFixed(2).replace('.', ',')} €</span>
+                                </div>
+                                <span class="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Inkl. MwSt.</span>
+                            </div>
+                            <button onclick="addToCart('${product.name}', ${product.price})"
+                                class="w-full py-4 bg-zinc-950 hover:bg-blue-600 text-white rounded-2xl text-[14px] font-bold transition-all transform active:scale-95">
+                                In den Warenkorb
+                            </button>
+                        </div>
+                    `;
+
+                    grid.appendChild(card);
+                    // Observe for animation
+                    observer.observe(card);
+                });
+
+            } catch (e) {
+                console.error("Failed to load products", e);
+            }
+        }
+
+        // Load immediately
+        loadDynamicProducts();
+
         // Reveal Logic
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
