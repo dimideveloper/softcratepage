@@ -64,105 +64,129 @@ export async function onRequestPost(context) {
             // Save updated order
             await env.ORDERS.put(order.key, JSON.stringify(order));
 
-            // Send Email
-            if (env.RESEND_API_KEY) {
-                const emailHtml = `
-                  <!DOCTYPE html>
-                  <html>
-                  <head>
-                    <style>
-                      body { font-family: 'Inter', Arial, sans-serif; background: #f5f5f7; margin: 0; padding: 20px; }
-                      .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-                      .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 40px 20px; text-align: center; }
-                      .header h1 { color: white; margin: 0; font-size: 28px; }
-                      .content { padding: 40px 30px; }
-                      .license-box { background: #f5f5f7; border-radius: 8px; padding: 20px; margin: 20px 0; text-align: center; }
-                      .license-key { font-size: 24px; font-weight: bold; color: #10b981; letter-spacing: 2px; font-family: 'Courier New', monospace; }
-                      .footer { background: #f5f5f7; padding: 20px; text-align: center; font-size: 12px; color: #86868b; }
-                      .button { display: inline-block; background: #10b981; color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; margin: 20px 0; }
-                    </style>
-                  </head>
-                  <body>
-                    <div class="container">
-                      <div class="header">
-                        <h1>🌟 Ihr Key ist da!</h1>
-                      </div>
-                      <div class="content">
-                        <p>Hallo,</p>
-                        <p>Gute Nachrichten! Wir haben Nachschub erhalten und Ihre Bestellung wurde sofort bearbeitet.</p>
-                        <p>Vielen Dank für Ihre Geduld.</p>
-                        
-                        <div class="license-box">
-                          <div style="font-size: 14px; color: #86868b; margin-bottom: 10px;">Ihr Lizenzschlüssel</div>
-                          <div class="license-key">${assignKey}</div>
-                        </div>
+            const emailHtml = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #ffffff; margin: 0; padding: 0; color: #1d1d1f; line-height: 1.5; }
+    .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
+    .header { margin-bottom: 40px; }
+    .logo { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; color: #1d1d1f; text-decoration: none; }
+    .logo span { color: #0071e3; }
+    .hero-text { font-size: 32px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 24px; color: #1d1d1f; }
+    .intro-text { font-size: 16px; color: #86868b; margin-bottom: 32px; }
+    .key-container { background-color: #f5f5f7; border-radius: 12px; padding: 32px; text-align: center; margin-bottom: 32px; }
+    .key-label { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #86868b; font-weight: 600; margin-bottom: 12px; }
+    .license-key { font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace; font-size: 20px; color: #1d1d1f; letter-spacing: 1px; font-weight: 500; user-select: all; }
+    .product-info { border-top: 1px solid #e5e5e5; padding-top: 24px; margin-bottom: 32px; }
+    .info-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; }
+    .info-label { color: #86868b; }
+    .info-value { font-weight: 500; }
+    .button { display: inline-block; background-color: #0071e3; color: white; padding: 12px 24px; border-radius: 980px; text-decoration: none; font-size: 14px; font-weight: 500; transition: background-color 0.2s; }
+    .button:hover { background-color: #0077ed; }
+    .footer { border-top: 1px solid #e5e5e5; margin-top: 60px; padding-top: 30px; font-size: 12px; color: #86868b; text-align: center; }
+    .instructions { background-color: #ffffff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 24px; margin-top: 32px; }
+    .instructions h3 { margin-top: 0; font-size: 16px; margin-bottom: 12px; }
+    .instructions ol { padding-left: 20px; margin: 0; color: #424245; font-size: 14px; }
+    .instructions li { margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">Softcrate<span>.</span></div>
+    </div>
+    
+    <div class="hero-text">Ihr Key ist bereit.</div>
+    <p class="intro-text">Vielen Dank für Ihre Geduld. Ihre Bestellung wurde soeben fertiggestellt.</p>
+    
+    <div class="key-container">
+      <div class="key-label">Lizenzschlüssel</div>
+      <div class="license-key">${assignKey}</div>
+    </div>
 
-                        <p><strong>Produkt:</strong> ${order.product}</p>
+    <div class="product-info">
+      <div class="info-row">
+        <span class="info-label">Produkt</span>
+        <span class="info-value">${order.product}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Status</span>
+        <span class="info-value" style="color: #0071e3;">Ausgeliefert</span>
+      </div>
+    </div>
 
-                        <a href="mailto:support@softcrate.de" class="button">Support kontaktieren</a>
+    <div class="instructions">
+      <h3>Aktivierung</h3>
+      <ol>
+        <li>Software herunterladen und installieren</li>
+        <li>Anwendung starten</li>
+        <li>Lizenzschlüssel eingeben wenn aufgefordert</li>
+      </ol>
+    </div>
 
-                        <p style="margin-top: 30px; font-size: 14px; color: #86868b;">
-                          <strong>Aktivierungsanleitung:</strong><br>
-                          1. Laden Sie die Software herunter<br>
-                          2. Installieren Sie die Software<br>
-                          3. Geben Sie den Lizenzschlüssel bei der Aktivierung ein
-                        </p>
-                      </div>
-                      <div class="footer">
-                        <p>&copy; 2026 Softcrate Digital Solutions. All rights reserved.</p>
-                      </div>
-                    </div>
-                  </body>
-                  </html>
+    <div style="text-align: center; margin-top: 40px;">
+      <a href="mailto:support@softcrate.de" class="button">Support kontaktieren</a>
+    </div>
+
+    <div class="footer">
+      <p>&copy; 2026 Softcrate Digital Solutions. All rights reserved.</p>
+      <p>Heilbronn, Deutschland</p>
+    </div>
+  </div>
+</body>
+</html>
                 `;
 
-                try {
-                    await fetch('https://api.resend.com/emails', {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${env.RESEND_API_KEY}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            from: 'Softcrate <noreply@softcrate.de>',
-                            to: [order.email],
-                            subject: '🌟 Ihr Lizenzschlüssel ist da! (Softcrate Nachlieferung)',
-                            html: emailHtml
-                        })
-                    });
-                } catch (e) {
-                    console.error('Failed to send fulfillment email', e);
-                }
+            try {
+                await fetch('https://api.resend.com/emails', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        from: 'Softcrate <noreply@softcrate.de>',
+                        to: [order.email],
+                        subject: '🌟 Ihr Lizenzschlüssel ist da! (Softcrate Nachlieferung)',
+                        html: emailHtml
+                    })
+                });
+            } catch (e) {
+                console.error('Failed to send fulfillment email', e);
             }
         }
+    }
 
         // 3. Add remaining keys to stock
         const existingKeys = await env.LICENSE_KEYS.get(product, 'json') || [];
-        const updatedKeys = [...existingKeys, ...keysArray];
-        await env.LICENSE_KEYS.put(product, JSON.stringify(updatedKeys));
+    const updatedKeys = [...existingKeys, ...keysArray];
+    await env.LICENSE_KEYS.put(product, JSON.stringify(updatedKeys));
 
-        return new Response(JSON.stringify({
-            success: true,
-            product: product,
-            added_to_stock: keysArray.length,
-            fulfilled_backorders: fulfilledOrders,
-            total_stock: updatedKeys.length
-        }), {
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            }
-        });
+    return new Response(JSON.stringify({
+        success: true,
+        product: product,
+        added_to_stock: keysArray.length,
+        fulfilled_backorders: fulfilledOrders,
+        total_stock: updatedKeys.length
+    }), {
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        }
+    });
 
-    } catch (error) {
-        return new Response(JSON.stringify({
-            error: 'Failed to add keys',
-            message: error.message
-        }), {
-            status: 500,
-            headers: { 'Content-Type': 'application/json' }
-        });
-    }
+} catch (error) {
+    return new Response(JSON.stringify({
+        error: 'Failed to add keys',
+        message: error.message
+    }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+    });
+}
 }
 
 export async function onRequestOptions() {
