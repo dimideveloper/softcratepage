@@ -19,6 +19,18 @@ export async function onRequestPost(context) {
         // PayPal API credentials
         const PAYPAL_CLIENT_ID = env.PAYPAL_CLIENT_ID;
         const PAYPAL_SECRET = env.PAYPAL_SECRET;
+
+        // Validate PayPal credentials
+        if (!PAYPAL_CLIENT_ID || !PAYPAL_SECRET) {
+            return new Response(JSON.stringify({
+                error: 'PayPal configuration error',
+                message: 'PAYPAL_CLIENT_ID or PAYPAL_SECRET not set in environment variables'
+            }), {
+                status: 500,
+                headers: { 'Content-Type': 'application/json' }
+            });
+        }
+
         const PAYPAL_MODE = env.PAYPAL_MODE || 'live'; // Default to live
         const PAYPAL_API = PAYPAL_MODE === 'sandbox'
             ? 'https://api-m.sandbox.paypal.com'
