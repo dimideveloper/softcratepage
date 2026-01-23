@@ -96,7 +96,8 @@
     </div>
 
     <!-- App Container -->
-    <div id="dashboard" class="hidden flex flex-col md:flex-row h-screen overflow-hidden">
+    <div id="dashboard" class="hidden flex flex-col md:flex-row h-screen md:h-screen overflow-hidden"
+        style="height: 100dvh;">
 
         <!-- Mobile Header -->
         <header class="md:hidden h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 z-30">
@@ -122,10 +123,6 @@
                     class="sidebar-link active w-full flex items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors text-left">
                     <i class="fas fa-home w-6"></i> Übersicht
                 </button>
-                <button onclick="switchView('editor')" id="nav-editor"
-                    class="sidebar-link w-full flex items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors text-left">
-                    <i class="fas fa-pen-nib w-6"></i> Produkt Editor
-                </button>
                 <button onclick="switchView('keys')" id="nav-keys"
                     class="sidebar-link w-full flex items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors text-left">
                     <i class="fas fa-key w-6"></i> Lager & Keys
@@ -145,10 +142,10 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 overflow-y-auto bg-gray-50/50 relative">
+        <main class="flex-1 overflow-y-auto bg-gray-50/50 relative min-h-0">
 
             <!-- View: Overview -->
-            <div id="view-overview" class="p-4 md:p-8 max-w-7xl mx-auto">
+            <div id="view-overview" class="p-4 md:p-8 pb-32 md:pb-8 max-w-7xl mx-auto">
                 <h2 class="text-xl md:text-2xl font-bold mb-6">Dashboard Übersicht</h2>
                 <div id="stats-cards" class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8"></div>
 
@@ -163,178 +160,10 @@
                 </div>
             </div>
 
-            <!-- View: Editor (Builder) -->
-            <div id="view-editor" class="hidden p-4 md:p-8 max-w-7xl mx-auto">
-                <div class="flex justify-between items-center mb-8">
-                    <h2 class="text-xl md:text-2xl font-bold flex items-center"><i
-                            class="fas fa-magic text-indigo-600 mr-3"></i>
-                        Produkt erstellen</h2>
-                </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <!-- Left: Editor Controls -->
-                    <div class="lg:col-span-2 space-y-6 order-2 lg:order-1">
-
-                        <!-- Tabs -->
-                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-1 flex space-x-1 mb-6">
-                            <button onclick="setTab('details')" id="tab-btn-details"
-                                class="flex-1 py-2 rounded-lg text-sm font-bold bg-gray-100 text-gray-900">Details</button>
-                            <button onclick="setTab('builder')" id="tab-btn-builder"
-                                class="flex-1 py-2 rounded-lg text-sm font-bold text-gray-500 hover:bg-gray-50">Shop
-                                Builder</button>
-                        </div>
-
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-
-                            <!-- Tab Content: Details -->
-                            <div id="tab-details" class="space-y-6">
-                                <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-2">Produkt Name</label>
-                                    <input type="text" id="new-product-name" oninput="updatePreview()"
-                                        placeholder="z.B. Super Game 2026"
-                                        class="w-full border-2 border-gray-100 p-3 rounded-xl focus:border-blue-500 outline-none transition-colors">
-                                </div>
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-sm font-bold text-gray-700 mb-2">Slug (ID)</label>
-                                        <input type="text" id="new-product-slug" placeholder="super-game-2026"
-                                            class="w-full border-2 border-gray-100 p-3 rounded-xl focus:border-blue-500 outline-none transition-colors font-mono text-sm">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-bold text-gray-700 mb-2">Preis (€)</label>
-                                        <input type="number" id="new-product-price" oninput="updatePreview()"
-                                            placeholder="19.99" step="0.01"
-                                            class="w-full border-2 border-gray-100 p-3 rounded-xl focus:border-blue-500 outline-none transition-colors">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-2">Bild URL*</label>
-                                    <input type="url" id="new-product-image" oninput="updatePreview()"
-                                        placeholder="https://..."
-                                        class="w-full border-2 border-gray-100 p-3 rounded-xl focus:border-blue-500 outline-none transition-colors">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-2">Kategorie</label>
-                                    <select id="new-product-category" onchange="updatePreview()"
-                                        class="w-full border-2 border-gray-100 p-3 rounded-xl focus:border-blue-500 outline-none bg-white">
-                                        <option value="windows">Windows</option>
-                                        <option value="office">Office</option>
-                                        <option value="multimedia">Multimedia</option>
-                                        <option value="other">Sonstiges</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-2">Kurz-Features
-                                        (Liste)</label>
-                                    <input type="text" id="new-product-desc" oninput="updatePreview()"
-                                        placeholder="Feature 1 | Feature 2 | Feature 3"
-                                        class="w-full border-2 border-gray-100 p-3 rounded-xl focus:border-blue-500 outline-none transition-colors">
-                                </div>
-                            </div>
-
-                            <!-- Tab Content: Builder -->
-                            <div id="tab-builder" class="hidden space-y-8">
-                                <div class="bg-blue-50 text-blue-800 p-4 rounded-xl text-sm mb-4">
-                                    <i class="fas fa-info-circle mr-2"></i> Hier kannst du zusätzliche Sektionen für die
-                                    Produktseite bauen.
-                                </div>
-
-                                <!-- Template: Feature Grid -->
-                                <div class="border border-gray-200 rounded-xl p-6 relative group">
-                                    <div
-                                        class="absolute top-4 right-4 text-xs font-bold text-gray-400 uppercase tracking-wider">
-                                        Template: Feature Grid</div>
-                                    <h3 class="font-bold text-lg mb-4">Feature Grid Sektion</h3>
-
-                                    <div class="space-y-4">
-                                        <div>
-                                            <label
-                                                class="block text-xs font-bold text-gray-500 mb-1">Überschrift</label>
-                                            <input type="text" id="tpl-grid-headline"
-                                                placeholder="Perfekt für Business & Home"
-                                                class="w-full border border-gray-200 p-2 rounded-lg text-sm">
-                                        </div>
-                                        <div>
-                                            <label
-                                                class="block text-xs font-bold text-gray-500 mb-1">Einleitungstext</label>
-                                            <textarea id="tpl-grid-intro" rows="2"
-                                                placeholder="Windows 11 Pro bietet alles..."
-                                                class="w-full border border-gray-200 p-2 rounded-lg text-sm"></textarea>
-                                        </div>
-
-                                        <div class="grid grid-cols-2 gap-4">
-                                            <div class="p-3 bg-gray-50 rounded-lg">
-                                                <label class="block text-xs font-bold text-gray-500 mb-2">Feature
-                                                    1</label>
-                                                <input type="text" id="tpl-grid-f1-title"
-                                                    placeholder="Titel (z.B. Sicherheit)"
-                                                    class="w-full border border-gray-200 p-2 rounded-lg text-sm mb-2">
-                                                <textarea id="tpl-grid-f1-text" rows="2" placeholder="Beschreibung..."
-                                                    class="w-full border border-gray-200 p-2 rounded-lg text-sm"></textarea>
-                                            </div>
-                                            <div class="p-3 bg-gray-50 rounded-lg">
-                                                <label class="block text-xs font-bold text-gray-500 mb-2">Feature
-                                                    2</label>
-                                                <input type="text" id="tpl-grid-f2-title"
-                                                    placeholder="Titel (z.B. Multitasking)"
-                                                    class="w-full border border-gray-200 p-2 rounded-lg text-sm mb-2">
-                                                <textarea id="tpl-grid-f2-text" rows="2" placeholder="Beschreibung..."
-                                                    class="w-full border border-gray-200 p-2 rounded-lg text-sm"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <button onclick="createProduct()"
-                            class="w-full bg-indigo-600 text-white px-6 py-4 rounded-xl text-lg font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 hover:shadow-xl">
-                            <i class="fas fa-rocket mr-2"></i> Produkt Veröffentlichen
-                        </button>
-                        <div id="create-product-result" class="mt-4"></div>
-                    </div>
-
-                    <!-- Right: Live Preview -->
-                    <div class="lg:col-span-1 order-1 lg:order-2">
-                        <div class="sticky top-8 mb-8 lg:mb-0">
-                            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Live Vorschau
-                                (Card)</h3>
-                            <!-- Card Preview -->
-                            <div
-                                class="w-full bg-white rounded-3xl shadow-xl overflow-hidden transform transition-all hover:scale-105 duration-500 border border-gray-100">
-                                <div class="aspect-square bg-white relative p-8 flex items-center justify-center">
-                                    <img id="preview-image" src="https://via.placeholder.com/300?text=No+Image"
-                                        class="w-full h-full object-contain">
-                                    <div class="absolute top-6 left-6">
-                                        <span id="preview-badge"
-                                            class="bg-black text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Neu</span>
-                                    </div>
-                                </div>
-                                <div class="p-6 bg-white border-t border-gray-50">
-                                    <h3 id="preview-title" class="text-xl font-black mb-3 tracking-tight text-gray-900">
-                                        Produkt Name</h3>
-                                    <div class="space-y-2 mb-6">
-                                        <div class="flex items-center text-[12px] text-gray-500 font-medium">
-                                            <i class="fas fa-check text-blue-600 mr-2 opacity-50"></i> <span
-                                                id="preview-desc">Features</span>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-end justify-between mb-4">
-                                        <span class="text-2xl font-black text-gray-900" id="preview-price">19.99
-                                            €</span>
-                                    </div>
-                                    <button class="w-full py-3 bg-black text-white rounded-xl text-[13px] font-bold">In
-                                        den Warenkorb</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <!-- View: Keys -->
-            <div id="view-keys" class="hidden p-8 max-w-7xl mx-auto">
+            <div id="view-keys" class="hidden p-4 md:p-8 pb-32 md:pb-8 max-w-7xl mx-auto">
                 <h2 class="text-2xl font-bold mb-6">Keys Verwalten</h2>
 
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-8">
@@ -354,7 +183,7 @@
             </div>
 
             <!-- View: Orders -->
-            <div id="view-orders" class="hidden p-8 max-w-7xl mx-auto">
+            <div id="view-orders" class="hidden p-4 md:p-8 pb-32 md:pb-8 max-w-7xl mx-auto">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-bold">Bestellungen</h2>
                     <button onclick="viewOrders()"
@@ -398,7 +227,7 @@
             }
 
             // Hide all views
-            ['overview', 'editor', 'keys', 'orders'].forEach(v => {
+            ['overview', 'keys', 'orders'].forEach(v => {
                 document.getElementById('view-' + v).classList.add('hidden');
                 document.getElementById('nav-' + v).classList.remove('active');
             });
@@ -415,20 +244,7 @@
             if (viewName === 'orders') viewOrders();
         }
 
-        // Tabs in Editor
-        function setTab(tabName) {
-            currentTab = tabName;
-            document.getElementById('tab-details').classList.add('hidden');
-            document.getElementById('tab-builder').classList.add('hidden');
-            document.getElementById('tab-btn-details').classList.remove('bg-gray-100', 'text-gray-900');
-            document.getElementById('tab-btn-details').classList.add('text-gray-500');
-            document.getElementById('tab-btn-builder').classList.remove('bg-gray-100', 'text-gray-900');
-            document.getElementById('tab-btn-builder').classList.add('text-gray-500');
 
-            document.getElementById('tab-' + tabName).classList.remove('hidden');
-            document.getElementById('tab-btn-' + tabName).classList.remove('text-gray-500');
-            document.getElementById('tab-btn-' + tabName).classList.add('bg-gray-100', 'text-gray-900');
-        }
 
         // Auth
         async function login() {
@@ -481,19 +297,13 @@
 
         function renderKeysGrid(inventory, elementId, simple = false) {
             let html = '';
-            const defaultProducts = ['windows-11-pro', 'office-2024-ltsc', 'capcut-pro'];
 
             for (const [slug, data] of Object.entries(inventory)) {
                 const color = data.available > 10 ? 'green' : data.available > 0 ? 'yellow' : 'red';
                 const name = data.name || slug;
-                const isCustom = !defaultProducts.includes(slug);
-
-                const deleteBtn = (isCustom && !simple) ?
-                    `<button onclick="deleteProduct('${slug}')" class="absolute top-4 right-4 text-gray-300 hover:text-red-500 transition-colors p-2"><i class="fas fa-trash"></i></button>` : '';
 
                 html += `
                     <div class="relative border border-gray-200 bg-white p-6 rounded-xl group hover:border-blue-300 transition-all">
-                        ${deleteBtn}
                         <div class="flex items-center justify-between mb-2">
                              <h3 class="font-bold text-gray-700 text-sm">${name}</h3>
                              <span class="w-2 h-2 rounded-full bg-${color}-500"></span>
@@ -525,67 +335,7 @@
             `;
         }
 
-        // Create Product
-        async function createProduct() {
-            const name = document.getElementById('new-product-name').value;
-            const slug = document.getElementById('new-product-slug').value;
-            const price = document.getElementById('new-product-price').value;
-            const imageUrl = document.getElementById('new-product-image').value;
-            const category = document.getElementById('new-product-category').value;
-            const desc = document.getElementById('new-product-desc').value;
 
-            if (!name || !slug || !imageUrl) {
-                alert('Bitte Name, Slug und Bild ausfüllen!');
-                return;
-            }
-
-            // Builder Data
-            const builderData = {
-                template: 'feature-grid',
-                headline: document.getElementById('tpl-grid-headline').value,
-                intro: document.getElementById('tpl-grid-intro').value,
-                features: [
-                    { title: document.getElementById('tpl-grid-f1-title').value, text: document.getElementById('tpl-grid-f1-text').value, icon: 'shield-alt' },
-                    { title: document.getElementById('tpl-grid-f2-title').value, text: document.getElementById('tpl-grid-f2-text').value, icon: 'layer-group' }
-                ]
-            };
-
-            const response = await fetch('/api/admin/create-product', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    password, name, slug, price, imageUrl, category, description: desc,
-                    content_sections: [builderData] // Save template data!
-                })
-            });
-
-            if (response.ok) {
-                alert('Produkt erfolgreich erstellt!');
-                // Clear Inputs (Simple reset)
-                document.getElementById('new-product-name').value = '';
-                document.getElementById('new-product-slug').value = '';
-                viewKeys();
-            } else {
-                const res = await response.json();
-                alert('Fehler: ' + res.error);
-            }
-        }
-
-        // updatePreview, addKeys, deleteProduct, viewOrders (Standard implementations)
-        function updatePreview() {
-            const name = document.getElementById('new-product-name').value || 'Produkt Name';
-            const price = document.getElementById('new-product-price').value || '19.99';
-            const image = document.getElementById('new-product-image').value;
-            const desc = document.getElementById('new-product-desc').value || 'Features';
-
-            document.getElementById('preview-title').textContent = name;
-            document.getElementById('preview-price').textContent = price + ' €';
-            document.getElementById('preview-desc').textContent = desc;
-
-            const imgEl = document.getElementById('preview-image');
-            if (image) imgEl.src = image;
-            else imgEl.src = 'https://via.placeholder.com/300?text=No+Image';
-        }
 
         async function addKeys() {
             const product = document.getElementById('product-select').value;
