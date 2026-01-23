@@ -247,22 +247,68 @@
 
 
         // Auth
+        let isLoggingIn = false;
         async function login() {
-            password = document.getElementById('admin-password').value;
-            const response = await fetch('/api/admin/view-keys', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password })
-            });
+            if (isLoggingIn) return;
 
-            if (response.ok) {
-                document.getElementById('login-section').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                switchView('overview');
-                viewKeys(); // Init data
-            } else {
-                document.getElementById('login-error').textContent = 'Falsches Passwort';
-                document.getElementById('login-error').classList.remove('hidden');
+            const passwordInput = document.getElementById('admin-password');
+            const passwordValue = passwordInput.value;
+
+            if (!passwordValue) {
+                alert('Bitte Passwort eingeben');
+                return;
+            }
+
+            isLoggingIn = true;
+            console.log('Login attempt started...');
+
+            try {
+                const response = await fetch('/api/admin/view-keys', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: passwordValue })
+                });
+
+                if (response.ok) {
+                    password = passwordValue; // Set global password for subsequent requests
+                    const inventory = await response.json();
+
+                    document.getElementById('login-section').classList.add('hidden');
+                    document.getElementById('dashboard').classList.remove('hidden');
+
+                    // Direct switch to overview WITHOUT triggering another fetch
+                    ['keys', 'orders'].forEach(v => {
+                        document.getElementById('view-' + v).classList.add('hidden');
+                        document.getElementById('nav-' + v).classList.remove('active');
+                    });
+                    document.getElementById('view-overview').classList.remove('hidden');
+                    document.getElementById('nav-overview').classList.add('active');
+
+                    // Standard render logic
+                    renderKeysGrid(inventory, 'keys-display');
+                    renderKeysGrid(inventory, 'keys-display-quick', true);
+                    updateStats(inventory);
+
+                    // Populate Dropdown
+                    const select = document.getElementById('product-select');
+                    let opts = '';
+                    for (const [slug, data] of Object.entries(inventory)) {
+                        opts += `<option value="${slug}">${data.name || slug} (${data.available})</option>`;
+                    }
+                    select.innerHTML = opts;
+
+                    console.log('Login successful');
+                } else {
+                    const errorData = await response.json();
+                    console.error('Login failed:', response.status, errorData);
+                    document.getElementById('login-error').textContent = 'Falsches Passwort (' + response.status + ')';
+                    document.getElementById('login-error').classList.remove('hidden');
+                }
+            } catch (e) {
+                console.error('Login error:', e);
+                alert('Ein Netzwerkfehler ist aufgetreten.');
+            } finally {
+                isLoggingIn = false;
             }
         }
 
