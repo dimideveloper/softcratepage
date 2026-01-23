@@ -94,6 +94,16 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Utility for filters */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
 
@@ -138,16 +148,17 @@
     </div>
 
     <!-- Catalog Header -->
-    <main class="pt-[160px] pb-32">
-        <div class="max-w-[1240px] mx-auto px-6">
-            <div class="max-w-3xl mb-16 reveal">
+    <main class="pt-24 md:pt-[160px] pb-32">
+        <div class="max-w-[1240px] mx-auto px-4 md:px-6">
+            <div class="max-w-3xl mb-12 md:mb-16 reveal">
                 <div
                     class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-zinc-100 border border-zinc-200 mb-6">
                     <span class="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span>
                     <span class="text-[11px] font-bold text-zinc-600 uppercase tracking-widest">Produktkatalog</span>
                 </div>
-                <h1 class="text-[48px] md:text-[72px] font-black tracking-tight leading-[1.05] mb-8">
-                    Premium Software.<br>Fair bepreist.
+                <h1
+                    class="text-[32px] md:text-[72px] font-black tracking-tight leading-[1.1] md:leading-[1.05] mb-6 md:mb-8">
+                    Premium Software.<br class="hidden md:block">Fair bepreist.
                 </h1>
                 <p class="text-zinc-500 text-[19px] leading-relaxed max-w-2xl">
                     Entdecke unsere kuratierte Auswahl an professioneller Software. Alle Lizenzen sind original, sofort
@@ -166,66 +177,71 @@
                 </div>
 
                 <!-- Filters -->
-                <div class="flex flex-wrap gap-2">
-                    <button
-                        class="category-pill active px-6 py-2.5 rounded-full border border-zinc-200 text-sm font-bold hover:border-zinc-400"
-                        onclick="filterProducts('all', this)">Alle Produkte</button>
-                    <button
-                        class="category-pill px-6 py-2.5 rounded-full border border-zinc-200 text-sm font-bold text-zinc-600 hover:border-zinc-400"
-                        onclick="filterProducts('windows', this)">Windows</button>
-                    <button
-                        class="category-pill px-6 py-2.5 rounded-full border border-zinc-200 text-sm font-bold text-zinc-600 hover:border-zinc-400"
-                        onclick="filterProducts('office', this)">Office</button>
-                    <button
-                        class="category-pill px-6 py-2.5 rounded-full border border-zinc-200 text-sm font-bold text-zinc-600 hover:border-zinc-400"
-                        onclick="filterProducts('multimedia', this)">Multimedia</button>
+                <div class="overflow-x-auto pb-4 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
+                    <div class="flex flex-nowrap md:flex-wrap gap-2 min-w-max md:min-w-0">
+                        <button
+                            class="category-pill active px-5 md:px-6 py-2 md:py-2.5 rounded-full border border-zinc-200 text-[13px] md:text-sm font-bold hover:border-zinc-400 whitespace-nowrap"
+                            onclick="filterProducts('all', this)">Alle Produkte</button>
+                        <button
+                            class="category-pill px-5 md:px-6 py-2 md:py-2.5 rounded-full border border-zinc-200 text-[13px] md:text-sm font-bold text-zinc-600 hover:border-zinc-400 whitespace-nowrap"
+                            onclick="filterProducts('windows', this)">Windows</button>
+                        <button
+                            class="category-pill px-5 md:px-6 py-2 md:py-2.5 rounded-full border border-zinc-200 text-[13px] md:text-sm font-bold text-zinc-600 hover:border-zinc-400 whitespace-nowrap"
+                            onclick="filterProducts('office', this)">Office</button>
+                        <button
+                            class="category-pill px-5 md:px-6 py-2 md:py-2.5 rounded-full border border-zinc-200 text-[13px] md:text-sm font-bold text-zinc-600 hover:border-zinc-400 whitespace-nowrap"
+                            onclick="filterProducts('multimedia', this)">Multimedia</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Products Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="products-grid">
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8" id="products-grid">
 
                 <!-- Windows 11 Pro -->
                 <div class="product-card group reveal rounded-2xl overflow-hidden flex flex-col"
                     data-category="windows">
                     <a href="windows-11-pro.html"
-                        class="block aspect-square bg-gradient-to-br from-blue-50 to-white relative p-10">
+                        class="block aspect-square bg-gradient-to-br from-blue-50 to-white relative p-6 md:p-10">
                         <img src="productcards/windows11pro_card.png" alt="Windows 11 Pro"
                             class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute top-4 left-4">
+                        <div class="absolute top-3 left-3 md:top-4 md:left-4">
                             <span
-                                class="bg-blue-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wide">Bestseller</span>
+                                class="bg-blue-600 text-white text-[8px] md:text-[10px] font-bold px-2 py-0.5 md:px-2.5 md:py-1 rounded md:rounded-md uppercase tracking-wide">Bestseller</span>
                         </div>
                     </a>
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-xl font-bold mb-3 text-zinc-900">Windows 11 Pro</h3>
-                        <div class="space-y-1.5 mb-6 flex-grow">
-                            <div class="flex items-center text-[13px] text-zinc-600">
-                                <svg class="w-4 h-4 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                    <div class="p-4 md:p-6 flex flex-col flex-grow">
+                        <h3 class="text-[15px] md:text-xl font-bold mb-2 md:mb-3 text-zinc-900 line-clamp-2">Windows 11
+                            Pro</h3>
+                        <div class="space-y-1 md:space-y-1.5 mb-4 md:mb-6 flex-grow">
+                            <div class="flex items-center text-[11px] md:text-[13px] text-zinc-600">
+                                <svg class="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 md:mr-2 text-blue-600" fill="currentColor"
+                                    viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                Permanente Aktivierung
+                                <span>Permanente Aktivierung</span>
                             </div>
-                            <div class="flex items-center text-[13px] text-zinc-600">
-                                <svg class="w-4 h-4 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                            <div class="flex items-center text-[11px] md:text-[13px] text-zinc-600">
+                                <svg class="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 md:mr-2 text-blue-600" fill="currentColor"
+                                    viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                Digitale Auslieferung
+                                <span>Digitale Auslieferung</span>
                             </div>
                         </div>
                         <div class="mb-4">
-                            <div class="flex items-baseline gap-2 mb-1">
-                                <span class="text-2xl font-bold text-zinc-900">14,90 €</span>
-                                <span class="text-sm text-zinc-400 line-through">259,00 €</span>
+                            <div class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-2 mb-1">
+                                <span class="text-lg md:text-2xl font-bold text-zinc-900 leading-tight">14,90 €</span>
+                                <span class="text-[11px] md:text-sm text-zinc-400 line-through">259,00 €</span>
                             </div>
-                            <span class="text-xs text-zinc-500">inkl. MwSt.</span>
+                            <span class="text-[10px] md:text-xs text-zinc-500">inkl. MwSt.</span>
                         </div>
                         <button onclick="addToCart('Windows 11 Pro', 14.90)"
-                            class="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-sm font-semibold transition-colors">
+                            class="w-full py-2.5 md:py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs md:text-sm font-semibold transition-colors">
                             In den Warenkorb
                         </button>
                     </div>
@@ -235,44 +251,47 @@
                 <div class="product-card group reveal rounded-2xl overflow-hidden flex flex-col" data-category="office"
                     style="transition-delay: 0.1s;">
                     <a href="office-2024-ltsc.html"
-                        class="block aspect-square bg-gradient-to-br from-emerald-50 to-white relative p-10">
+                        class="block aspect-square bg-gradient-to-br from-emerald-50 to-white relative p-6 md:p-10">
                         <img src="productcards/office2024_professional.png" alt="Office 2024 Pro"
                             class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute top-4 left-4">
+                        <div class="absolute top-3 left-3 md:top-4 md:left-4">
                             <span
-                                class="bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wide">LTSC
+                                class="bg-emerald-600 text-white text-[8px] md:text-[10px] font-bold px-2 py-0.5 md:px-2.5 md:py-1 rounded md:rounded-md uppercase tracking-wide">LTSC
                                 Edition</span>
                         </div>
                     </a>
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-xl font-bold mb-3 text-zinc-900">Office 2024 Pro Plus</h3>
-                        <div class="space-y-1.5 mb-6 flex-grow">
-                            <div class="flex items-center text-[13px] text-zinc-600">
-                                <svg class="w-4 h-4 mr-2 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                    <div class="p-4 md:p-6 flex flex-col flex-grow">
+                        <h3 class="text-[15px] md:text-xl font-bold mb-2 md:mb-3 text-zinc-900 line-clamp-2">Office 2024
+                            Pro Plus</h3>
+                        <div class="space-y-1 md:space-y-1.5 mb-4 md:mb-6 flex-grow">
+                            <div class="flex items-center text-[11px] md:text-[13px] text-zinc-600">
+                                <svg class="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 md:mr-2 text-emerald-600"
+                                    fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                Einmalzahlung, kein Abo
+                                <span>Einmalzahlung, kein Abo</span>
                             </div>
-                            <div class="flex items-center text-[13px] text-zinc-600">
-                                <svg class="w-4 h-4 mr-2 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                            <div class="flex items-center text-[11px] md:text-[13px] text-zinc-600">
+                                <svg class="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 md:mr-2 text-emerald-600"
+                                    fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                Vollversion LTSC
+                                <span>Vollversion LTSC</span>
                             </div>
                         </div>
                         <div class="mb-4">
-                            <div class="flex items-baseline gap-2 mb-1">
-                                <span class="text-2xl font-bold text-zinc-900">24,90 €</span>
-                                <span class="text-sm text-zinc-400 line-through">579,00 €</span>
+                            <div class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-2 mb-1">
+                                <span class="text-lg md:text-2xl font-bold text-zinc-900 leading-tight">24,90 €</span>
+                                <span class="text-[11px] md:text-sm text-zinc-400 line-through">579,00 €</span>
                             </div>
-                            <span class="text-xs text-zinc-500">inkl. MwSt.</span>
+                            <span class="text-[10px] md:text-xs text-zinc-500">inkl. MwSt.</span>
                         </div>
                         <button onclick="addToCart('Office 2024 Pro Plus', 24.90)"
-                            class="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-sm font-semibold transition-colors">
+                            class="w-full py-2.5 md:py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs md:text-sm font-semibold transition-colors">
                             In den Warenkorb
                         </button>
                     </div>
@@ -284,43 +303,46 @@
                 <div class="product-card group reveal rounded-2xl overflow-hidden flex flex-col"
                     data-category="multimedia" style="transition-delay: 0.3s;">
                     <a href="duolingo-max.html"
-                        class="block aspect-square bg-gradient-to-br from-green-50 to-white relative p-10">
+                        class="block aspect-square bg-gradient-to-br from-green-50 to-white relative p-6 md:p-10">
                         <img src="productcards/duolingo_max_card.png" alt="Duolingo Max"
                             class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute top-4 left-4">
+                        <div class="absolute top-3 left-3 md:top-4 md:left-4">
                             <span
-                                class="bg-green-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wide">New</span>
+                                class="bg-green-600 text-white text-[8px] md:text-[10px] font-bold px-2 py-0.5 md:px-2.5 md:py-1 rounded md:rounded-md uppercase tracking-wide">New</span>
                         </div>
                     </a>
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-xl font-bold mb-3 text-zinc-900">Duolingo Max (1 Jahr)</h3>
-                        <div class="space-y-1.5 mb-6 flex-grow">
-                            <div class="flex items-center text-[13px] text-zinc-600">
-                                <svg class="w-4 h-4 mr-2 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                    <div class="p-4 md:p-6 flex flex-col flex-grow">
+                        <h3 class="text-[15px] md:text-xl font-bold mb-2 md:mb-3 text-zinc-900 line-clamp-2">Duolingo
+                            Max (1 Jahr)</h3>
+                        <div class="space-y-1 md:space-y-1.5 mb-4 md:mb-6 flex-grow">
+                            <div class="flex items-center text-[11px] md:text-[13px] text-zinc-600">
+                                <svg class="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 md:mr-2 text-green-600" fill="currentColor"
+                                    viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                Permanente Aktivierung
+                                <span>Permanente Aktivierung</span>
                             </div>
-                            <div class="flex items-center text-[13px] text-zinc-600">
-                                <svg class="w-4 h-4 mr-2 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                            <div class="flex items-center text-[11px] md:text-[13px] text-zinc-600">
+                                <svg class="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 md:mr-2 text-green-600" fill="currentColor"
+                                    viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                Family Plan (1 Slot)
+                                <span>Family Plan (1 Slot)</span>
                             </div>
                         </div>
                         <div class="mb-4">
-                            <div class="flex items-baseline gap-2 mb-1">
-                                <span class="text-2xl font-bold text-zinc-900">24,90 €</span>
-                                <span class="text-sm text-zinc-400 line-through">99,00 €</span>
+                            <div class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-2 mb-1">
+                                <span class="text-lg md:text-2xl font-bold text-zinc-900 leading-tight">24,90 €</span>
+                                <span class="text-[11px] md:text-sm text-zinc-400 line-through">99,00 €</span>
                             </div>
-                            <span class="text-xs text-zinc-500">inkl. MwSt.</span>
+                            <span class="text-[10px] md:text-xs text-zinc-500">inkl. MwSt.</span>
                         </div>
                         <button onclick="addToCart('Duolingo Max (1 Jahr)', 24.90)"
-                            class="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-sm font-semibold transition-colors">
+                            class="w-full py-2.5 md:py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs md:text-sm font-semibold transition-colors">
                             In den Warenkorb
                         </button>
                     </div>
@@ -330,43 +352,46 @@
                 <div class="product-card group reveal rounded-2xl overflow-hidden flex flex-col"
                     data-category="multimedia" style="transition-delay: 0.4s;">
                     <a href="figma-pro.html"
-                        class="block aspect-square bg-gradient-to-br from-purple-50 to-white relative p-10">
+                        class="block aspect-square bg-gradient-to-br from-purple-50 to-white relative p-6 md:p-10">
                         <img src="productcards/figma_card.png" alt="Figma Professional"
                             class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute top-4 left-4">
+                        <div class="absolute top-3 left-3 md:top-4 md:left-4">
                             <span
-                                class="bg-purple-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wide">Pro</span>
+                                class="bg-purple-600 text-white text-[8px] md:text-[10px] font-bold px-2 py-0.5 md:px-2.5 md:py-1 rounded md:rounded-md uppercase tracking-wide">Pro</span>
                         </div>
                     </a>
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-xl font-bold mb-3 text-zinc-900">Figma Professional (2 Jahre)</h3>
-                        <div class="space-y-1.5 mb-6 flex-grow">
-                            <div class="flex items-center text-[13px] text-zinc-600">
-                                <svg class="w-4 h-4 mr-2 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                    <div class="p-4 md:p-6 flex flex-col flex-grow">
+                        <h3 class="text-[15px] md:text-xl font-bold mb-2 md:mb-3 text-zinc-900 line-clamp-2">Figma Prof.
+                            (2 Jahre)</h3>
+                        <div class="space-y-1 md:space-y-1.5 mb-4 md:mb-6 flex-grow">
+                            <div class="flex items-center text-[11px] md:text-[13px] text-zinc-600">
+                                <svg class="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 md:mr-2 text-purple-600"
+                                    fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                Dev Mode & Prototyping
+                                <span class="truncate">Dev Mode & Design</span>
                             </div>
-                            <div class="flex items-center text-[13px] text-zinc-600">
-                                <svg class="w-4 h-4 mr-2 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                            <div class="flex items-center text-[11px] md:text-[13px] text-zinc-600">
+                                <svg class="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 md:mr-2 text-purple-600"
+                                    fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                Unbegrenzte Dateien
+                                <span>Unlimited Files</span>
                             </div>
                         </div>
                         <div class="mb-4">
-                            <div class="flex items-baseline gap-2 mb-1">
-                                <span class="text-2xl font-bold text-zinc-900">29,90 €</span>
-                                <span class="text-sm text-zinc-400 line-through">288,00 €</span>
+                            <div class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-2 mb-1">
+                                <span class="text-lg md:text-2xl font-bold text-zinc-900 leading-tight">29,90 €</span>
+                                <span class="text-[11px] md:text-sm text-zinc-400 line-through">288,00 €</span>
                             </div>
-                            <span class="text-xs text-zinc-500">inkl. MwSt.</span>
+                            <span class="text-[10px] md:text-xs text-zinc-500">inkl. MwSt.</span>
                         </div>
                         <button onclick="addToCart('Figma Professional (2 Jahre)', 29.90)"
-                            class="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-sm font-semibold transition-colors">
+                            class="w-full py-2.5 md:py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs md:text-sm font-semibold transition-colors">
                             In den Warenkorb
                         </button>
                     </div>
@@ -376,43 +401,46 @@
                 <div class="product-card group reveal rounded-2xl overflow-hidden flex flex-col"
                     data-category="multimedia" style="transition-delay: 0.5s;">
                     <a href="canva-pro.html"
-                        class="block aspect-square bg-gradient-to-br from-pink-50 to-white relative p-10">
+                        class="block aspect-square bg-gradient-to-br from-pink-50 to-white relative p-6 md:p-10">
                         <img src="productcards/canva_pro_card.png" alt="Canva Pro EDU"
                             class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute top-4 left-4">
+                        <div class="absolute top-3 left-3 md:top-4 md:left-4">
                             <span
-                                class="bg-pink-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wide">EDU</span>
+                                class="bg-pink-600 text-white text-[8px] md:text-[10px] font-bold px-2 py-0.5 md:px-2.5 md:py-1 rounded md:rounded-md uppercase tracking-wide">EDU</span>
                         </div>
                     </a>
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-xl font-bold mb-3 text-zinc-900">Canva Pro EDU (1 Jahr)</h3>
-                        <div class="space-y-1.5 mb-6 flex-grow">
-                            <div class="flex items-center text-[13px] text-zinc-600">
-                                <svg class="w-4 h-4 mr-2 text-pink-600" fill="currentColor" viewBox="0 0 20 20">
+                    <div class="p-4 md:p-6 flex flex-col flex-grow">
+                        <h3 class="text-[15px] md:text-xl font-bold mb-2 md:mb-3 text-zinc-900 line-clamp-2">Canva Pro
+                            EDU (1 Jahr)</h3>
+                        <div class="space-y-1 md:space-y-1.5 mb-4 md:mb-6 flex-grow">
+                            <div class="flex items-center text-[11px] md:text-[13px] text-zinc-600">
+                                <svg class="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 md:mr-2 text-pink-600" fill="currentColor"
+                                    viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                Premium Templates
+                                <span>Premium Templates</span>
                             </div>
-                            <div class="flex items-center text-[13px] text-zinc-600">
-                                <svg class="w-4 h-4 mr-2 text-pink-600" fill="currentColor" viewBox="0 0 20 20">
+                            <div class="flex items-center text-[11px] md:text-[13px] text-zinc-600">
+                                <svg class="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 md:mr-2 text-pink-600" fill="currentColor"
+                                    viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                Team Einladung
+                                <span>Team Einladung</span>
                             </div>
                         </div>
                         <div class="mb-4">
-                            <div class="flex items-baseline gap-2 mb-1">
-                                <span class="text-2xl font-bold text-zinc-900">14,90 €</span>
-                                <span class="text-sm text-zinc-400 line-through">119,00 €</span>
+                            <div class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-2 mb-1">
+                                <span class="text-lg md:text-2xl font-bold text-zinc-900 leading-tight">14,90 €</span>
+                                <span class="text-[11px] md:text-sm text-zinc-400 line-through">119,00 €</span>
                             </div>
-                            <span class="text-xs text-zinc-500">inkl. MwSt.</span>
+                            <span class="text-[10px] md:text-xs text-zinc-500">inkl. MwSt.</span>
                         </div>
                         <button onclick="addToCart('Canva Pro EDU (1 Jahr)', 14.90)"
-                            class="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-sm font-semibold transition-colors">
+                            class="w-full py-2.5 md:py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs md:text-sm font-semibold transition-colors">
                             In den Warenkorb
                         </button>
                     </div>
@@ -422,43 +450,46 @@
                 <div class="product-card group reveal rounded-2xl overflow-hidden flex flex-col"
                     data-category="multimedia" style="transition-delay: 0.6s;">
                     <a href="adobe-creative-cloud.html"
-                        class="block aspect-square bg-gradient-to-br from-red-50 to-white relative p-10">
+                        class="block aspect-square bg-gradient-to-br from-red-50 to-white relative p-6 md:p-10">
                         <img src="productcards/adobe_cc_card.png" alt="Adobe Creative Cloud"
                             class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute top-4 left-4">
+                        <div class="absolute top-3 left-3 md:top-4 md:left-4">
                             <span
-                                class="bg-red-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wide">Premium</span>
+                                class="bg-red-600 text-white text-[8px] md:text-[10px] font-bold px-2 py-0.5 md:px-2.5 md:py-1 rounded md:rounded-md uppercase tracking-wide">Premium</span>
                         </div>
                     </a>
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-xl font-bold mb-3 text-zinc-900">Adobe Creative Cloud (3 Monate)</h3>
-                        <div class="space-y-1.5 mb-6 flex-grow">
-                            <div class="flex items-center text-[13px] text-zinc-600">
-                                <svg class="w-4 h-4 mr-2 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                    <div class="p-4 md:p-6 flex flex-col flex-grow">
+                        <h3 class="text-[15px] md:text-xl font-bold mb-2 md:mb-3 text-zinc-900 line-clamp-2">Adobe
+                            Creative Cloud</h3>
+                        <div class="space-y-1 md:space-y-1.5 mb-4 md:mb-6 flex-grow">
+                            <div class="flex items-center text-[11px] md:text-[13px] text-zinc-600">
+                                <svg class="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 md:mr-2 text-red-600" fill="currentColor"
+                                    viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                20+ Premium Apps
+                                <span>20+ Premium Apps</span>
                             </div>
-                            <div class="flex items-center text-[13px] text-zinc-600">
-                                <svg class="w-4 h-4 mr-2 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                            <div class="flex items-center text-[11px] md:text-[13px] text-zinc-600">
+                                <svg class="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 md:mr-2 text-red-600" fill="currentColor"
+                                    viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                Photoshop, Premiere & mehr
+                                <span class="truncate">Photoshop & mehr</span>
                             </div>
                         </div>
                         <div class="mb-4">
-                            <div class="flex items-baseline gap-2 mb-1">
-                                <span class="text-2xl font-bold text-zinc-900">49,90 €</span>
-                                <span class="text-sm text-zinc-400 line-through">179,00 €</span>
+                            <div class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-2 mb-1">
+                                <span class="text-lg md:text-2xl font-bold text-zinc-900 leading-tight">49,90 €</span>
+                                <span class="text-[11px] md:text-sm text-zinc-400 line-through">179,00 €</span>
                             </div>
-                            <span class="text-xs text-zinc-500">inkl. MwSt.</span>
+                            <span class="text-[10px] md:text-xs text-zinc-500">inkl. MwSt.</span>
                         </div>
                         <button onclick="addToCart('Adobe Creative Cloud (3 Monate)', 49.90)"
-                            class="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-sm font-semibold transition-colors">
+                            class="w-full py-2.5 md:py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs md:text-sm font-semibold transition-colors">
                             In den Warenkorb
                         </button>
                     </div>
@@ -469,10 +500,10 @@
     </main>
 
     <!-- Professional Footer -->
-    <footer class="pt-24 pb-12 bg-white border-t border-zinc-100">
+    <footer class="pt-16 md:pt-24 pb-12 bg-white border-t border-zinc-100">
         <div class="max-w-7xl mx-auto px-6">
             <!-- Grid Layout -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 mb-20 text-left">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 md:gap-16 mb-12 md:mb-20 text-left">
                 <!-- Branding & Tagline -->
                 <div class="lg:col-span-4 space-y-8">
                     <div class="text-2xl font-black text-zinc-950 cursor-pointer" onclick="window.scrollTo(0,0)">
@@ -580,54 +611,55 @@
                 const grid = document.getElementById('products-grid');
 
                 products.forEach(product => {
-                    // Check if product already exists (to avoid duplicates with hardcoded ones if filtered poorly)
+                    // Check if product already exists
                     if (document.querySelector(`[data-slug="${product.slug}"]`)) return;
 
                     const card = document.createElement('div');
-                    card.className = 'product-card group reveal bg-zinc-50/50 rounded-3xl border border-zinc-100 overflow-hidden flex flex-col';
+                    card.className = 'product-card group reveal rounded-2xl overflow-hidden flex flex-col';
                     card.dataset.category = product.category || 'other';
                     card.dataset.slug = product.slug;
 
-                    // Fallback features list
                     const desc = product.description || 'Sofortige Lieferung | Original Lizenz';
                     const features = desc.split('|').map(f => f.trim()).filter(f => f);
 
                     let featuresHtml = '';
                     features.forEach(f => {
                         featuresHtml += `
-                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
-                                <i class="fas fa-check text-blue-600 mr-2 opacity-50"></i> ${f}
+                            <div class="flex items-center text-[11px] md:text-[13px] text-zinc-600">
+                                <svg class="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 md:mr-2 text-zinc-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span>${f}</span>
                             </div>`;
                     });
 
-                    // Construct HTML
                     card.innerHTML = `
-                        <a href="product.html?product=${product.slug}" class="block aspect-square bg-white relative p-12">
+                        <a href="product.html?product=${product.slug}" class="block aspect-square bg-gradient-to-br from-zinc-50 to-white relative p-6 md:p-10">
                             <img src="${product.imageUrl || 'https://via.placeholder.com/300?text=No+Image'}" alt="${product.name}"
-                                class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700">
-                             <div class="absolute top-6 left-6 flex flex-col gap-2">
-                                <span class="bg-zinc-900 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Digital</span>
+                                class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500">
+                             <div class="absolute top-3 left-3 md:top-4 md:left-4">
+                                <span class="bg-zinc-900 text-white text-[8px] md:text-[10px] font-bold px-2 py-0.5 md:px-2.5 md:py-1 rounded md:rounded-md uppercase tracking-wide">Digital</span>
                             </div>
                         </a>
-                        <div class="p-8 flex flex-col flex-grow bg-white border-t border-zinc-100">
-                            <h3 class="text-2xl font-black mb-4 tracking-tight">${product.name}</h3>
-                            <div class="space-y-2 mb-8 flex-grow">
+                        <div class="p-4 md:p-6 flex flex-col flex-grow">
+                            <h3 class="text-[15px] md:text-xl font-bold mb-2 md:mb-3 text-zinc-900 line-clamp-2">${product.name}</h3>
+                            <div class="space-y-1 md:space-y-1.5 mb-4 md:mb-6 flex-grow">
                                 ${featuresHtml || `
-                                <div class="flex items-center text-[13px] text-zinc-500 font-medium">
-                                    <i class="fas fa-check text-blue-600 mr-2 opacity-50"></i> Permanente Aktivierung
-                                </div>
-                                <div class="flex items-center text-[13px] text-zinc-500 font-medium">
-                                    <i class="fas fa-bolt text-blue-600 mr-2 opacity-50"></i> Sofort verfügbar
+                                <div class="flex items-center text-[11px] md:text-[13px] text-zinc-600">
+                                    <svg class="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 md:mr-2 text-zinc-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Permanente Aktivierung</span>
                                 </div>`}
                             </div>
-                            <div class="flex items-end justify-between mb-6">
-                                <div>
-                                    <span class="text-3xl font-black text-zinc-950">${parseFloat(product.price).toFixed(2).replace('.', ',')} €</span>
+                            <div class="mb-4">
+                                <div class="flex items-baseline gap-2 mb-1">
+                                    <span class="text-lg md:text-2xl font-bold text-zinc-900 leading-tight">${parseFloat(product.price).toFixed(2).replace('.', ',')} €</span>
                                 </div>
-                                <span class="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Inkl. MwSt.</span>
+                                <span class="text-[10px] md:text-xs text-zinc-500">inkl. MwSt.</span>
                             </div>
                             <a href="product.html?product=${product.slug}" 
-                                class="block w-full py-4 bg-zinc-950 hover:bg-blue-600 text-white rounded-2xl text-[14px] font-bold transition-all transform active:scale-95 text-center">
+                                class="w-full py-2.5 md:py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs md:text-sm font-semibold transition-all text-center">
                                 Zum Produkt
                             </a>
                         </div>
