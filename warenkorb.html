@@ -297,7 +297,7 @@
                             </div>
                         </div>
 
-                        <div class="mb-8">
+                        <div class="mb-4">
                             <label
                                 class="text-[11px] font-black text-zinc-400 uppercase tracking-widest mb-3 block">Empfänger
                                 E-Mail</label>
@@ -305,6 +305,20 @@
                             <p class="text-[11px] text-zinc-400 mt-3 leading-relaxed">
                                 Die Lizenzschlüssel werden unmittelbar nach Zahlung an diese Adresse versendet.
                             </p>
+                        </div>
+
+                        <!-- T&C Checkbox -->
+                        <div class="mb-8 bg-zinc-50 border border-zinc-200 p-3 rounded-xl flex items-start gap-3">
+                            <input type="checkbox" id="terms-checkbox" onchange="updateSummary()"
+                                class="mt-1 w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
+                            <label for="terms-checkbox"
+                                class="text-xs text-zinc-600 leading-snug cursor-pointer select-none">
+                                Ich akzeptiere die <a href="agb.html" target="_blank"
+                                    class="underline font-bold text-zinc-800">AGB</a> und <a href="widerruf.html"
+                                    target="_blank" class="underline font-bold text-zinc-800">Widerrufsbelehrung</a>.
+                                <span class="block mt-1 font-medium text-yellow-700">Information: In Ausnahmefällen kann
+                                    die Lieferung bis zu 24h dauern.</span>
+                            </label>
                         </div>
 
                         <button id="checkout-btn" onclick="startCheckout()" class="apple-btn w-full transition-all"
@@ -583,8 +597,9 @@
 
             // Enable/disable checkout button
             const email = document.getElementById('checkout-email').value;
+            const termsAccepted = document.getElementById('terms-checkbox').checked;
             const checkoutBtn = document.getElementById('checkout-btn');
-            checkoutBtn.disabled = cart.length === 0 || !email.includes('@');
+            checkoutBtn.disabled = cart.length === 0 || !email.includes('@') || !termsAccepted;
         }
 
         // Email validation
