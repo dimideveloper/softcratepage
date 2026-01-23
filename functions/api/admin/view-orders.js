@@ -6,18 +6,8 @@ export async function onRequestPost(context) {
         const { password } = body;
 
         // Check admin password
-        if (!env.ADMIN_PASSWORD) {
-            return new Response(JSON.stringify({ error: 'System configuration error: ADMIN_PASSWORD missing' }), {
-                status: 500,
-                headers: { 'Content-Type': 'application/json' }
-            });
-        }
-
         if (password !== env.ADMIN_PASSWORD) {
-            return new Response(JSON.stringify({ error: 'Unauthorized: Incorrect password' }), {
-                status: 401,
-                headers: { 'Content-Type': 'application/json' }
-            });
+            return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
         }
 
         if (!env.ORDERS) {
