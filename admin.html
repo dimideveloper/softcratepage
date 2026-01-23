@@ -252,7 +252,7 @@
             if (isLoggingIn) return;
 
             const passwordInput = document.getElementById('admin-password');
-            const passwordValue = passwordInput.value;
+            const passwordValue = passwordInput.value.trim();
 
             if (!passwordValue) {
                 alert('Bitte Passwort eingeben');
