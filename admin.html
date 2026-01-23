@@ -36,6 +36,36 @@
             border-color: #2563eb;
             background-color: #f8fafc;
         }
+
+        @media (max-width: 768px) {
+            .sidebar-off-canvas {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                width: 280px;
+                z-index: 50;
+            }
+
+            .sidebar-off-canvas.open {
+                transform: translateX(0);
+            }
+
+            .mobile-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.4);
+                backdrop-filter: blur(2px);
+                z-index: 40;
+            }
+
+            .mobile-overlay.active {
+                display: block;
+            }
+        }
     </style>
 </head>
 
@@ -66,37 +96,49 @@
     </div>
 
     <!-- App Container -->
-    <div id="dashboard" class="hidden flex h-screen overflow-hidden">
+    <div id="dashboard" class="hidden flex flex-col md:flex-row h-screen overflow-hidden">
+
+        <!-- Mobile Header -->
+        <header class="md:hidden h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 z-30">
+            <div class="text-lg font-black tracking-tight text-blue-600">Softcrate<span class="text-gray-900">.</span>
+            </div>
+            <button onclick="toggleSidebar()" class="text-gray-600 p-2">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </header>
+
+        <!-- Sidebar Overlay -->
+        <div id="sidebar-overlay" class="mobile-overlay" onclick="toggleSidebar()"></div>
 
         <!-- Sidebar -->
-        <aside class="w-64 bg-white border-r border-gray-200 flex flex-col z-20">
-            <div class="h-16 flex items-center px-6 border-b border-gray-100">
+        <aside id="sidebar" class="sidebar-off-canvas w-64 bg-white border-r border-gray-200 flex flex-col z-50">
+            <div class="h-16 hidden md:flex items-center px-6 border-b border-gray-100">
                 <div class="text-xl font-black tracking-tight text-blue-600">Softcrate<span
                         class="text-gray-900">.</span></div>
             </div>
 
             <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
                 <button onclick="switchView('overview')" id="nav-overview"
-                    class="sidebar-link active w-full flex items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                    class="sidebar-link active w-full flex items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors text-left">
                     <i class="fas fa-home w-6"></i> Übersicht
                 </button>
                 <button onclick="switchView('editor')" id="nav-editor"
-                    class="sidebar-link w-full flex items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                    class="sidebar-link w-full flex items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors text-left">
                     <i class="fas fa-pen-nib w-6"></i> Produkt Editor
                 </button>
                 <button onclick="switchView('keys')" id="nav-keys"
-                    class="sidebar-link w-full flex items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                    class="sidebar-link w-full flex items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors text-left">
                     <i class="fas fa-key w-6"></i> Lager & Keys
                 </button>
                 <button onclick="switchView('orders')" id="nav-orders"
-                    class="sidebar-link w-full flex items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                    class="sidebar-link w-full flex items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors text-left">
                     <i class="fas fa-shopping-bag w-6"></i> Bestellungen
                 </button>
             </nav>
 
             <div class="p-4 border-t border-gray-100">
                 <button onclick="logout()"
-                    class="w-full flex items-center px-4 py-2 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 transition-colors">
+                    class="w-full flex items-center px-4 py-2 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 transition-colors text-left">
                     <i class="fas fa-sign-out-alt w-6"></i> Abmelden
                 </button>
             </div>
@@ -106,31 +148,32 @@
         <main class="flex-1 overflow-y-auto bg-gray-50/50 relative">
 
             <!-- View: Overview -->
-            <div id="view-overview" class="p-8 max-w-7xl mx-auto">
-                <h2 class="text-2xl font-bold mb-6">Dashboard Übersicht</h2>
-                <div id="stats-cards" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"></div>
+            <div id="view-overview" class="p-4 md:p-8 max-w-7xl mx-auto">
+                <h2 class="text-xl md:text-2xl font-bold mb-6">Dashboard Übersicht</h2>
+                <div id="stats-cards" class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8"></div>
 
                 <!-- Quick Inventory List -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-6">
                     <div class="flex justify-between items-center mb-6">
-                        <h3 class="font-bold text-gray-900">Aktueller Lagerbestand</h3>
+                        <h3 class="font-bold text-gray-900">Lagerbestand</h3>
                         <button onclick="viewKeys()" class="text-blue-600 hover:text-blue-700 text-sm font-medium"><i
                                 class="fas fa-sync-alt mr-1"></i> Refresh</button>
                     </div>
-                    <div id="keys-display-quick" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    <div id="keys-display-quick" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
                 </div>
             </div>
 
             <!-- View: Editor (Builder) -->
-            <div id="view-editor" class="hidden p-8 max-w-7xl mx-auto">
+            <div id="view-editor" class="hidden p-4 md:p-8 max-w-7xl mx-auto">
                 <div class="flex justify-between items-center mb-8">
-                    <h2 class="text-2xl font-bold flex items-center"><i class="fas fa-magic text-indigo-600 mr-3"></i>
+                    <h2 class="text-xl md:text-2xl font-bold flex items-center"><i
+                            class="fas fa-magic text-indigo-600 mr-3"></i>
                         Produkt erstellen</h2>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <!-- Left: Editor Controls -->
-                    <div class="lg:col-span-2 space-y-6">
+                    <div class="lg:col-span-2 space-y-6 order-2 lg:order-1">
 
                         <!-- Tabs -->
                         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-1 flex space-x-1 mb-6">
@@ -253,8 +296,8 @@
                     </div>
 
                     <!-- Right: Live Preview -->
-                    <div class="lg:col-span-1">
-                        <div class="sticky top-8">
+                    <div class="lg:col-span-1 order-1 lg:order-2">
+                        <div class="sticky top-8 mb-8 lg:mb-0">
                             <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Live Vorschau
                                 (Card)</h3>
                             <!-- Card Preview -->
@@ -338,8 +381,22 @@
         let password = '';
         let currentTab = 'details';
 
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
         // Navigation
         function switchView(viewName) {
+            // Close sidebar on mobile after clicking
+            if (window.innerWidth < 768) {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebar-overlay');
+                if (sidebar.classList.contains('open')) toggleSidebar();
+            }
+
             // Hide all views
             ['overview', 'editor', 'keys', 'orders'].forEach(v => {
                 document.getElementById('view-' + v).classList.add('hidden');
@@ -568,45 +625,90 @@
         }
 
         function renderOrders(orders) {
+            const container = document.getElementById('orders-display');
             if (!orders || orders.length === 0) {
-                document.getElementById('orders-display').innerHTML = '<p class="p-4 text-gray-500">Keine Bestellungen vorhanden</p>';
+                container.innerHTML = '<p class="p-4 text-gray-500">Keine Bestellungen vorhanden</p>';
                 return;
             }
 
-            let html = '<table class="w-full text-sm text-left"><thead class="bg-gray-50 text-gray-500 border-b border-gray-200"><tr><th class="p-3">Bestellnr.</th><th class="p-3">Datum</th><th class="p-3">Status</th><th class="p-3">Email</th><th class="p-3">Produkt</th><th class="p-3">Key</th></tr></thead><tbody class="divide-y divide-gray-100">';
+            // Status options helper
+            const statusOptions = [
+                { value: 'completed', label: 'Erledigt', color: 'green' },
+                { value: 'waiting_for_stock', label: 'Wartet auf Key', color: 'yellow' },
+                { value: 'refunded', label: 'Rückerstattet', color: 'red' },
+                { value: 'cancelled', label: 'Storniert', color: 'gray' }
+            ];
+
+            // Desktop Table View
+            let tableHtml = `
+                <div class="hidden md:block overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-gray-50 text-gray-500 border-b border-gray-200">
+                            <tr>
+                                <th class="p-3 whitespace-nowrap">Bestellnr.</th>
+                                <th class="p-3">Datum</th>
+                                <th class="p-3">Status</th>
+                                <th class="p-3">Email</th>
+                                <th class="p-3">Produkt</th>
+                                <th class="p-3">Key</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+            `;
+
+            // Mobile Card View
+            let cardsHtml = '<div class="md:hidden divide-y divide-gray-100">';
+
             orders.forEach((o, idx) => {
                 const date = new Date(o.timestamp).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit' });
                 const orderNum = o.order_number || 'N/A';
-
-                // Status dropdown
-                const statusOptions = [
-                    { value: 'completed', label: 'Erledigt', color: 'green' },
-                    { value: 'waiting_for_stock', label: 'Wartet auf Key', color: 'yellow' },
-                    { value: 'refunded', label: 'Rückerstattet', color: 'red' },
-                    { value: 'cancelled', label: 'Storniert', color: 'gray' }
-                ];
-
                 const currentStatus = statusOptions.find(s => s.value === o.status) || statusOptions[0];
-                const statusHtml = `
+
+                const statusDropdown = `
                     <select onchange="updateOrderStatus('${o.id || idx}', this.value)" 
-                        class="text-xs font-semibold px-2 py-1 rounded bg-${currentStatus.color}-100 text-${currentStatus.color}-800 border border-${currentStatus.color}-200 cursor-pointer">
+                        class="text-xs font-semibold px-2 py-1 rounded bg-${currentStatus.color}-100 text-${currentStatus.color}-800 border border-${currentStatus.color}-200 cursor-pointer outline-none">
                         ${statusOptions.map(opt => `<option value="${opt.value}" ${opt.value === o.status ? 'selected' : ''}>${opt.label}</option>`).join('')}
                     </select>
                 `;
 
-                html += `
-                    <tr class="hover:bg-gray-50 transition" data-order-number="${orderNum}" data-email="${o.email}" data-product="${o.product}">
-                        <td class="p-3 font-mono text-xs text-blue-600 font-bold">${orderNum}</td>
-                        <td class="p-3 text-gray-600">${date}</td>
-                        <td class="p-3">${statusHtml}</td>
+                // Add to Table
+                tableHtml += `
+                    <tr class="hover:bg-gray-50 transition" data-order-number="${orderNum}">
+                        <td class="p-3 font-mono text-xs text-blue-600 font-bold whitespace-nowrap">${orderNum}</td>
+                        <td class="p-3 text-gray-600 whitespace-nowrap">${date}</td>
+                        <td class="p-3">${statusDropdown}</td>
                         <td class="p-3 font-medium text-gray-900">${o.email}</td>
                         <td class="p-3 text-gray-600">${o.product}</td>
                         <td class="p-3"><code class="bg-gray-100 text-blue-600 px-2 py-1 rounded text-xs font-mono">${o.license_key || '-'}</code></td>
                     </tr>
                 `;
+
+                // Add to Cards
+                cardsHtml += `
+                    <div class="p-4 space-y-3" data-order-number="${orderNum}">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">${date}</p>
+                                <p class="font-mono text-xs text-blue-600 font-bold">${orderNum}</p>
+                            </div>
+                            ${statusDropdown}
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-gray-900">${o.product}</p>
+                            <p class="text-xs text-gray-500">${o.email}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Key:</span>
+                            <code class="bg-gray-100 text-blue-600 px-2 py-1 rounded text-xs font-mono flex-1 truncate">${o.license_key || '-'}</code>
+                        </div>
+                    </div>
+                `;
             });
-            html += '</tbody></table>';
-            document.getElementById('orders-display').innerHTML = html;
+
+            tableHtml += '</tbody></table></div>';
+            cardsHtml += '</div>';
+
+            container.innerHTML = tableHtml + cardsHtml;
         }
 
         function filterOrders() {

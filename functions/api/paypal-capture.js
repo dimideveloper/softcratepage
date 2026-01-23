@@ -284,6 +284,7 @@ export async function onRequestPost(context) {
           body: JSON.stringify({
             from: 'Softcrate <noreply@softcrate.de>',
             to: [customerEmail],
+            bcc: ['softcrate.team@gmail.com'],
             subject: emailSubject,
             html: emailHtml
           })
@@ -297,6 +298,36 @@ export async function onRequestPost(context) {
         } else {
           console.log('Email sent successfully:', emailResult);
         }
+      }
+
+      // Send Discord notification
+      const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1462871892640796755/eWuhK5afxDbkv85JCDBsYqBKItOscvUGOpgECdyc_JeR4Z_S7n3xxQJi4ApDTE8zRKu_';
+
+      try {
+        await fetch(DISCORD_WEBHOOK_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            embeds: [{
+              title: '🚀 Neue Bestellung!',
+              color: 3447003, // Blue
+              fields: [
+                { name: 'Bestell-Nr', value: orderNumber, inline: true },
+                { name: 'Produkt', value: productName, inline: true },
+                { name: 'Preis', value: `${productPrice} ${productCurrency}`, inline: true },
+                { name: 'Kunde', value: customerEmail, inline: false },
+                { name: 'Status', value: orderStatus === 'completed' ? '✅ Key gesendet' : '⏳ Warteliste', inline: true }
+              ],
+              footer: { text: 'Softcrate Order System' },
+              timestamp: new Date().toISOString()
+            }]
+          })
+        });
+        console.log('Discord notification sent');
+      } catch (e) {
+        console.error('Failed to send Discord notification:', e);
       }
 
       return new Response(JSON.stringify({
