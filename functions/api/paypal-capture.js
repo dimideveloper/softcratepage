@@ -74,9 +74,15 @@ export async function onRequestPost(context) {
         emailSubject = '🎉 Ihre Softcrate Bestellung - Lizenzschlüssel';
       }
 
-      // Save order to KV
+      // Save order to KV with proper order number
+      const now = new Date();
+      const dateStr = now.toISOString().slice(0, 10).replace(/-/g, ''); // YYYYMMDD
+      const randomNum = Math.floor(1000 + Math.random() * 9000); // 4-digit random
+      const orderNumber = `ORD-${dateStr}-${randomNum}`;
       const orderId = `order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
       await env.ORDERS.put(orderId, JSON.stringify({
+        order_number: orderNumber,
         email: customerEmail,
         product: env.PRODUCT_NAME || 'Digital Product',
         product_slug: productSlug,
@@ -144,7 +150,7 @@ export async function onRequestPost(context) {
       </div>
        <div class="info-row">
         <span class="info-label">Bestell-NR</span>
-        <span class="info-value">#${orderId.substring(6, 14)}</span>
+        <span class="info-value">${orderNumber}</span>
       </div>
     </div>
 
