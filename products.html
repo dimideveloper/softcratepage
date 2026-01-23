@@ -74,14 +74,14 @@
         .product-card {
             transition: all 0.3s ease;
             background: white;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            border: 1px solid #f4f4f5;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
         }
 
         .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-            border-color: #d1d5db;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+            border-color: #e4e4e7;
         }
 
         .reveal {
@@ -232,217 +232,277 @@
                 </div>
 
                 <!-- Office 2024 Pro -->
-                <div class="product-card group reveal bg-zinc-50/50 rounded-3xl border border-zinc-100 overflow-hidden flex flex-col"
-                    data-category="office" style="transition-delay: 0.1s;">
-                    <a href="office-2024-ltsc.html" class="block aspect-square bg-white relative p-12">
+                <div class="product-card group reveal rounded-2xl overflow-hidden flex flex-col" data-category="office"
+                    style="transition-delay: 0.1s;">
+                    <a href="office-2024-ltsc.html"
+                        class="block aspect-square bg-gradient-to-br from-emerald-50 to-white relative p-10">
                         <img src="productcards/office2024_professional.png" alt="Office 2024 Pro"
-                            class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700">
-                        <div class="absolute top-6 left-6">
+                            class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 left-4">
                             <span
-                                class="bg-emerald-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">LTSC
+                                class="bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wide">LTSC
                                 Edition</span>
                         </div>
                     </a>
-                    <div class="p-8 flex flex-col flex-grow bg-white border-t border-zinc-100">
-                        <h3 class="text-2xl font-black mb-4 tracking-tight">Office 2024 Pro Plus</h3>
-                        <div class="space-y-2 mb-8 flex-grow">
-                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
-                                <i class="fas fa-check text-emerald-600 mr-2 opacity-50"></i> Einmalzahlung, kein Abo
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold mb-3 text-zinc-900">Office 2024 Pro Plus</h3>
+                        <div class="space-y-1.5 mb-6 flex-grow">
+                            <div class="flex items-center text-[13px] text-zinc-600">
+                                <svg class="w-4 h-4 mr-2 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Einmalzahlung, kein Abo
                             </div>
-                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
-                                <i class="fas fa-bolt text-emerald-600 mr-2 opacity-50"></i> Vollversion LTSC
+                            <div class="flex items-center text-[13px] text-zinc-600">
+                                <svg class="w-4 h-4 mr-2 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Vollversion LTSC
                             </div>
                         </div>
-                        <div class="flex items-end justify-between mb-6">
-                            <div>
-                                <span class="block text-zinc-400 text-xs line-through mb-1">UVP 579,00 €</span>
-                                <span class="text-3xl font-black text-zinc-950">24,90 €</span>
+                        <div class="mb-4">
+                            <div class="flex items-baseline gap-2 mb-1">
+                                <span class="text-2xl font-bold text-zinc-900">24,90 €</span>
+                                <span class="text-sm text-zinc-400 line-through">579,00 €</span>
                             </div>
-                            <span class="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Inkl.
-                                MwSt.</span>
+                            <span class="text-xs text-zinc-500">inkl. MwSt.</span>
                         </div>
                         <button onclick="addToCart('Office 2024 Pro Plus', 24.90)"
-                            class="w-full py-4 bg-zinc-950 hover:bg-emerald-600 text-white rounded-2xl text-[14px] font-bold transition-all transform active:scale-95">
+                            class="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-sm font-semibold transition-colors">
                             In den Warenkorb
                         </button>
                     </div>
                 </div>
 
                 <!-- CapCut Pro -->
-                <div class="product-card group reveal bg-zinc-50/50 rounded-3xl border border-zinc-100 overflow-hidden flex flex-col"
+                <div class="product-card group reveal rounded-2xl overflow-hidden flex flex-col"
                     data-category="multimedia" style="transition-delay: 0.2s;">
-                    <a href="capcut-pro.html" class="block aspect-square bg-white relative p-12">
+                    <a href="capcut-pro.html"
+                        class="block aspect-square bg-gradient-to-br from-purple-50 to-white relative p-10">
                         <img src="productcards/capcutpro_card.png" alt="CapCut Pro"
-                            class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700">
-                        <div class="absolute top-6 left-6">
+                            class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 left-4">
                             <span
-                                class="bg-purple-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Hot</span>
+                                class="bg-purple-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wide">Hot</span>
                         </div>
                     </a>
-                    <div class="p-8 flex flex-col flex-grow bg-white border-t border-zinc-100">
-                        <h3 class="text-2xl font-black mb-4 tracking-tight">CapCut Pro (1 Jahr)</h3>
-                        <div class="space-y-2 mb-8 flex-grow">
-                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
-                                <i class="fas fa-check text-purple-600 mr-2 opacity-50"></i> Premium AI-Features
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold mb-3 text-zinc-900">CapCut Pro (1 Jahr)</h3>
+                        <div class="space-y-1.5 mb-6 flex-grow">
+                            <div class="flex items-center text-[13px] text-zinc-600">
+                                <svg class="w-4 h-4 mr-2 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Premium AI-Features
                             </div>
-                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
-                                <i class="fas fa-bolt text-purple-600 mr-2 opacity-50"></i> Desktop & Mobile
+                            <div class="flex items-center text-[13px] text-zinc-600">
+                                <svg class="w-4 h-4 mr-2 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Desktop & Mobile
                             </div>
                         </div>
-                        <div class="flex items-end justify-between mb-6">
-                            <div>
-                                <span class="block text-zinc-400 text-xs line-through mb-1">UVP 119,00 €</span>
-                                <span class="text-3xl font-black text-zinc-950">19,90 €</span>
+                        <div class="mb-4">
+                            <div class="flex items-baseline gap-2 mb-1">
+                                <span class="text-2xl font-bold text-zinc-900">19,90 €</span>
+                                <span class="text-sm text-zinc-400 line-through">119,00 €</span>
                             </div>
-                            <span class="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Inkl.
-                                MwSt.</span>
+                            <span class="text-xs text-zinc-500">inkl. MwSt.</span>
                         </div>
                         <button onclick="addToCart('CapCut Pro (1 Jahr)', 19.90)"
-                            class="w-full py-4 bg-zinc-950 hover:bg-purple-600 text-white rounded-2xl text-[14px] font-bold transition-all transform active:scale-95">
+                            class="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-sm font-semibold transition-colors">
                             In den Warenkorb
                         </button>
                     </div>
                 </div>
 
                 <!-- Duolingo Max -->
-                <div class="product-card group reveal bg-zinc-50/50 rounded-3xl border border-zinc-100 overflow-hidden flex flex-col"
+                <div class="product-card group reveal rounded-2xl overflow-hidden flex flex-col"
                     data-category="multimedia" style="transition-delay: 0.3s;">
-                    <a href="duolingo-max.html" class="block aspect-square bg-white relative p-12">
+                    <a href="duolingo-max.html"
+                        class="block aspect-square bg-gradient-to-br from-green-50 to-white relative p-10">
                         <img src="productcards/duolingo_max_card.png" alt="Duolingo Max"
-                            class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700">
-                        <div class="absolute top-6 left-6">
+                            class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 left-4">
                             <span
-                                class="bg-green-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">New</span>
+                                class="bg-green-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wide">New</span>
                         </div>
                     </a>
-                    <div class="p-8 flex flex-col flex-grow bg-white border-t border-zinc-100">
-                        <h3 class="text-2xl font-black mb-4 tracking-tight">Duolingo Max (1 Jahr)</h3>
-                        <div class="space-y-2 mb-8 flex-grow">
-                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
-                                <i class="fas fa-check text-green-600 mr-2 opacity-50"></i> Pemanente Aktivierung
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold mb-3 text-zinc-900">Duolingo Max (1 Jahr)</h3>
+                        <div class="space-y-1.5 mb-6 flex-grow">
+                            <div class="flex items-center text-[13px] text-zinc-600">
+                                <svg class="w-4 h-4 mr-2 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Permanente Aktivierung
                             </div>
-                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
-                                <i class="fas fa-bolt text-green-600 mr-2 opacity-50"></i> Family Plan (1 Slot)
+                            <div class="flex items-center text-[13px] text-zinc-600">
+                                <svg class="w-4 h-4 mr-2 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Family Plan (1 Slot)
                             </div>
                         </div>
-                        <div class="flex items-end justify-between mb-6">
-                            <div>
-                                <span class="block text-zinc-400 text-xs line-through mb-1">UVP 99,00 €</span>
-                                <span class="text-3xl font-black text-zinc-950">24,90 €</span>
+                        <div class="mb-4">
+                            <div class="flex items-baseline gap-2 mb-1">
+                                <span class="text-2xl font-bold text-zinc-900">24,90 €</span>
+                                <span class="text-sm text-zinc-400 line-through">99,00 €</span>
                             </div>
-                            <span class="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Inkl.
-                                MwSt.</span>
+                            <span class="text-xs text-zinc-500">inkl. MwSt.</span>
                         </div>
                         <button onclick="addToCart('Duolingo Max (1 Jahr)', 24.90)"
-                            class="w-full py-4 bg-zinc-950 hover:bg-green-600 text-white rounded-2xl text-[14px] font-bold transition-all transform active:scale-95">
+                            class="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-sm font-semibold transition-colors">
                             In den Warenkorb
                         </button>
                     </div>
                 </div>
 
                 <!-- Figma Professional -->
-                <div class="product-card group reveal bg-zinc-50/50 rounded-3xl border border-zinc-100 overflow-hidden flex flex-col"
+                <div class="product-card group reveal rounded-2xl overflow-hidden flex flex-col"
                     data-category="multimedia" style="transition-delay: 0.4s;">
-                    <a href="figma-pro.html" class="block aspect-square bg-white relative p-12">
+                    <a href="figma-pro.html"
+                        class="block aspect-square bg-gradient-to-br from-purple-50 to-white relative p-10">
                         <img src="productcards/figma_card.png" alt="Figma Professional"
-                            class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700">
-                        <div class="absolute top-6 left-6">
+                            class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 left-4">
                             <span
-                                class="bg-purple-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Pro</span>
+                                class="bg-purple-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wide">Pro</span>
                         </div>
                     </a>
-                    <div class="p-8 flex flex-col flex-grow bg-white border-t border-zinc-100">
-                        <h3 class="text-2xl font-black mb-4 tracking-tight">Figma Professional (2 Jahre)</h3>
-                        <div class="space-y-2 mb-8 flex-grow">
-                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
-                                <i class="fas fa-check text-purple-600 mr-2 opacity-50"></i> Dev Mode & Prototyping
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold mb-3 text-zinc-900">Figma Professional (2 Jahre)</h3>
+                        <div class="space-y-1.5 mb-6 flex-grow">
+                            <div class="flex items-center text-[13px] text-zinc-600">
+                                <svg class="w-4 h-4 mr-2 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Dev Mode & Prototyping
                             </div>
-                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
-                                <i class="fas fa-bolt text-purple-600 mr-2 opacity-50"></i> Unbegrenzte Dateien
+                            <div class="flex items-center text-[13px] text-zinc-600">
+                                <svg class="w-4 h-4 mr-2 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Unbegrenzte Dateien
                             </div>
                         </div>
-                        <div class="flex items-end justify-between mb-6">
-                            <div>
-                                <span class="block text-zinc-400 text-xs line-through mb-1">UVP 288,00 €</span>
-                                <span class="text-3xl font-black text-zinc-950">29,90 €</span>
+                        <div class="mb-4">
+                            <div class="flex items-baseline gap-2 mb-1">
+                                <span class="text-2xl font-bold text-zinc-900">29,90 €</span>
+                                <span class="text-sm text-zinc-400 line-through">288,00 €</span>
                             </div>
-                            <span class="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Inkl.
-                                MwSt.</span>
+                            <span class="text-xs text-zinc-500">inkl. MwSt.</span>
                         </div>
                         <button onclick="addToCart('Figma Professional (2 Jahre)', 29.90)"
-                            class="w-full py-4 bg-zinc-950 hover:bg-purple-600 text-white rounded-2xl text-[14px] font-bold transition-all transform active:scale-95">
+                            class="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-sm font-semibold transition-colors">
                             In den Warenkorb
                         </button>
                     </div>
                 </div>
 
                 <!-- Canva Pro EDU -->
-                <div class="product-card group reveal bg-zinc-50/50 rounded-3xl border border-zinc-100 overflow-hidden flex flex-col"
+                <div class="product-card group reveal rounded-2xl overflow-hidden flex flex-col"
                     data-category="multimedia" style="transition-delay: 0.5s;">
-                    <a href="canva-pro.html" class="block aspect-square bg-white relative p-12">
+                    <a href="canva-pro.html"
+                        class="block aspect-square bg-gradient-to-br from-pink-50 to-white relative p-10">
                         <img src="productcards/canva_pro_card.png" alt="Canva Pro EDU"
-                            class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700">
-                        <div class="absolute top-6 left-6">
+                            class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 left-4">
                             <span
-                                class="bg-pink-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">EDU</span>
+                                class="bg-pink-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wide">EDU</span>
                         </div>
                     </a>
-                    <div class="p-8 flex flex-col flex-grow bg-white border-t border-zinc-100">
-                        <h3 class="text-2xl font-black mb-4 tracking-tight">Canva Pro EDU (1 Jahr)</h3>
-                        <div class="space-y-2 mb-8 flex-grow">
-                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
-                                <i class="fas fa-check text-pink-600 mr-2 opacity-50"></i> Premium Templates
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold mb-3 text-zinc-900">Canva Pro EDU (1 Jahr)</h3>
+                        <div class="space-y-1.5 mb-6 flex-grow">
+                            <div class="flex items-center text-[13px] text-zinc-600">
+                                <svg class="w-4 h-4 mr-2 text-pink-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Premium Templates
                             </div>
-                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
-                                <i class="fas fa-bolt text-pink-600 mr-2 opacity-50"></i> Team Einladung
+                            <div class="flex items-center text-[13px] text-zinc-600">
+                                <svg class="w-4 h-4 mr-2 text-pink-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Team Einladung
                             </div>
                         </div>
-                        <div class="flex items-end justify-between mb-6">
-                            <div>
-                                <span class="block text-zinc-400 text-xs line-through mb-1">UVP 119,00 €</span>
-                                <span class="text-3xl font-black text-zinc-950">14,90 €</span>
+                        <div class="mb-4">
+                            <div class="flex items-baseline gap-2 mb-1">
+                                <span class="text-2xl font-bold text-zinc-900">14,90 €</span>
+                                <span class="text-sm text-zinc-400 line-through">119,00 €</span>
                             </div>
-                            <span class="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Inkl.
-                                MwSt.</span>
+                            <span class="text-xs text-zinc-500">inkl. MwSt.</span>
                         </div>
                         <button onclick="addToCart('Canva Pro EDU (1 Jahr)', 14.90)"
-                            class="w-full py-4 bg-zinc-950 hover:bg-pink-600 text-white rounded-2xl text-[14px] font-bold transition-all transform active:scale-95">
+                            class="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-sm font-semibold transition-colors">
                             In den Warenkorb
                         </button>
                     </div>
                 </div>
 
                 <!-- Adobe Creative Cloud -->
-                <div class="product-card group reveal bg-zinc-50/50 rounded-3xl border border-zinc-100 overflow-hidden flex flex-col"
+                <div class="product-card group reveal rounded-2xl overflow-hidden flex flex-col"
                     data-category="multimedia" style="transition-delay: 0.6s;">
-                    <a href="adobe-creative-cloud.html" class="block aspect-square bg-white relative p-12">
+                    <a href="adobe-creative-cloud.html"
+                        class="block aspect-square bg-gradient-to-br from-red-50 to-white relative p-10">
                         <img src="productcards/adobe_cc_card.png" alt="Adobe Creative Cloud"
-                            class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700">
-                        <div class="absolute top-6 left-6">
+                            class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 left-4">
                             <span
-                                class="bg-red-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Premium</span>
+                                class="bg-red-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wide">Premium</span>
                         </div>
                     </a>
-                    <div class="p-8 flex flex-col flex-grow bg-white border-t border-zinc-100">
-                        <h3 class="text-2xl font-black mb-4 tracking-tight">Adobe Creative Cloud (3 Monate)</h3>
-                        <div class="space-y-2 mb-8 flex-grow">
-                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
-                                <i class="fas fa-check text-red-600 mr-2 opacity-50"></i> 20+ Premium Apps
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold mb-3 text-zinc-900">Adobe Creative Cloud (3 Monate)</h3>
+                        <div class="space-y-1.5 mb-6 flex-grow">
+                            <div class="flex items-center text-[13px] text-zinc-600">
+                                <svg class="w-4 h-4 mr-2 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                20+ Premium Apps
                             </div>
-                            <div class="flex items-center text-[13px] text-zinc-500 font-medium">
-                                <i class="fas fa-bolt text-red-600 mr-2 opacity-50"></i> Photoshop, Premiere & mehr
+                            <div class="flex items-center text-[13px] text-zinc-600">
+                                <svg class="w-4 h-4 mr-2 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Photoshop, Premiere & mehr
                             </div>
                         </div>
-                        <div class="flex items-end justify-between mb-6">
-                            <div>
-                                <span class="block text-zinc-400 text-xs line-through mb-1">UVP 179,00 €</span>
-                                <span class="text-3xl font-black text-zinc-950">49,90 €</span>
+                        <div class="mb-4">
+                            <div class="flex items-baseline gap-2 mb-1">
+                                <span class="text-2xl font-bold text-zinc-900">49,90 €</span>
+                                <span class="text-sm text-zinc-400 line-through">179,00 €</span>
                             </div>
-                            <span class="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Inkl.
-                                MwSt.</span>
+                            <span class="text-xs text-zinc-500">inkl. MwSt.</span>
                         </div>
                         <button onclick="addToCart('Adobe Creative Cloud (3 Monate)', 49.90)"
-                            class="w-full py-4 bg-zinc-950 hover:bg-red-600 text-white rounded-2xl text-[14px] font-bold transition-all transform active:scale-95">
+                            class="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-sm font-semibold transition-colors">
                             In den Warenkorb
                         </button>
                     </div>
