@@ -55,8 +55,38 @@ export async function onRequestPost(context) {
       // Use email from request body
       const customerEmail = email;
 
-      // Determine product from cart (you can enhance this logic)
-      const productSlug = env.PRODUCT_SLUG || 'windows-11-pro';
+      // Extract product data from PayPal order custom_id
+      let productName = 'Digital Product';
+      let productSlug = 'windows-11-pro';
+      let productPrice = '0.00';
+      let productCurrency = 'EUR';
+
+      try {
+        const purchaseUnit = captureData.purchase_units?.[0];
+        if (purchaseUnit?.custom_id) {
+          const customData = JSON.parse(purchaseUnit.custom_id);
+          if (customData.items && customData.items.length > 0) {
+            const firstItem = customData.items[0];
+            productName = firstItem.name || productName;
+            productSlug = firstItem.slug || firstItem.name?.toLowerCase().replace(/\s+/g, '-') || productSlug;
+            productPrice = firstItem.price?.toString() || productPrice;
+          }
+        }
+        // Also try to get from amount
+        if (purchaseUnit?.amount) {
+          productCurrency = purchaseUnit.amount.currency_code || productCurrency;
+          if (productPrice === '0.00') {
+            productPrice = purchaseUnit.amount.value || productPrice;
+          }
+        }
+      } catch (e) {
+        console.error('Failed to parse custom_id:', e);
+        // Fallback to env variables
+        productName = env.PRODUCT_NAME || productName;
+        productSlug = env.PRODUCT_SLUG || productSlug;
+        productPrice = env.PRODUCT_PRICE || productPrice;
+        productCurrency = env.PRODUCT_CURRENCY || productCurrency;
+      }
 
       // Get available keys from KV
       const availableKeys = await env.LICENSE_KEYS.get(productSlug, 'json') || [];
@@ -84,12 +114,12 @@ export async function onRequestPost(context) {
       await env.ORDERS.put(orderId, JSON.stringify({
         order_number: orderNumber,
         email: customerEmail,
-        product: env.PRODUCT_NAME || 'Digital Product',
+        product: productName,
         product_slug: productSlug,
         license_key: assignedKey, // null if waiting
         paypal_transaction_id: orderID,
-        amount: env.PRODUCT_PRICE || '0.00',
-        currency: env.PRODUCT_CURRENCY || 'EUR',
+        amount: productPrice,
+        currency: productCurrency,
         timestamp: new Date().toISOString(),
         status: orderStatus
       }));
@@ -142,11 +172,11 @@ export async function onRequestPost(context) {
     <div class="product-info">
       <div class="info-row">
         <span class="info-label">Produkt</span>
-        <span class="info-value">${env.PRODUCT_NAME || 'Digitales Produkt'}</span>
+        <span class="info-value">${productName}</span>
       </div>
       <div class="info-row">
         <span class="info-label">Betrag</span>
-        <span class="info-value">${env.PRODUCT_PRICE || '0.00'} ${env.PRODUCT_CURRENCY || 'EUR'}</span>
+        <span class="info-value">${productPrice} ${productCurrency}</span>
       </div>
        <div class="info-row">
         <span class="info-label">Bestell-NR</span>
