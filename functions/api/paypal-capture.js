@@ -1,3 +1,6 @@
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
+
 export async function onRequestPost(context) {
   const { request, env } = context;
 
@@ -55,12 +58,13 @@ export async function onRequestPost(context) {
       // Use email from request body
       const customerEmail = email;
 
-      // Extract product data from PayPal order custom_id
       let productName = 'Digital Product';
       let productSlug = 'windows-11-pro';
       let productPrice = '0.00';
       let productCurrency = 'EUR';
       let itemAttributes = null;
+      let customerName = 'Kunde';
+      let customerAddress = null;
 
       try {
         const purchaseUnit = captureData.purchase_units?.[0];
@@ -74,20 +78,24 @@ export async function onRequestPost(context) {
             itemAttributes = firstItem.attributes || null;
           }
         }
-        // Also try to get from amount
+
         if (purchaseUnit?.amount) {
           productCurrency = purchaseUnit.amount.currency_code || productCurrency;
           if (productPrice === '0.00') {
             productPrice = purchaseUnit.amount.value || productPrice;
           }
         }
+
+        // Get customer info from PayPal
+        const shipping = purchaseUnit?.shipping;
+        if (shipping) {
+          customerName = shipping.name?.full_name || customerName;
+          customerAddress = shipping.address;
+        } else if (captureData.payer) {
+          customerName = `${captureData.payer.name?.given_name} ${captureData.payer.name?.surname}`.trim() || customerName;
+        }
       } catch (e) {
-        console.error('Failed to parse custom_id:', e);
-        // Fallback to env variables
-        productName = env.PRODUCT_NAME || productName;
-        productSlug = env.PRODUCT_SLUG || productSlug;
-        productPrice = env.PRODUCT_PRICE || productPrice;
-        productCurrency = env.PRODUCT_CURRENCY || productCurrency;
+        console.error('Failed to parse purchase data:', e);
       }
 
       // Get available keys from KV
@@ -116,16 +124,79 @@ export async function onRequestPost(context) {
       await env.ORDERS.put(orderId, JSON.stringify({
         order_number: orderNumber,
         email: customerEmail,
+        customer_name: customerName,
         product: productName,
         product_slug: productSlug,
-        license_key: assignedKey, // null if waiting
+        license_key: assignedKey,
         paypal_transaction_id: orderID,
         amount: productPrice,
         currency: productCurrency,
-        timestamp: new Date().toISOString(),
+        timestamp: now.toISOString(),
         status: orderStatus,
-        attributes: itemAttributes // Save custom attributes like Canva email
+        attributes: itemAttributes
       }));
+
+      // --- INVOICE GENERATION ---
+      let invoiceBase64 = null;
+      try {
+        const doc = new jsPDF();
+        doc.setFontSize(22);
+        doc.text("Softcrate.", 15, 20);
+        doc.setFontSize(10);
+        doc.setTextColor(100);
+        doc.text("Digital Excellence", 15, 25);
+
+        doc.setTextColor(0);
+        const sellerX = 140;
+        doc.text("Softcrate Digital Solutions", sellerX, 20);
+        doc.text("Lukas Schneider", sellerX, 25);
+        doc.text("Liebermann Straße 2", sellerX, 30);
+        doc.text("74078 Heilbronn", sellerX, 35);
+        doc.text("support@softcrate.de", sellerX, 40);
+
+        doc.setFontSize(9);
+        doc.setTextColor(150);
+        doc.text("RECHNUNG AN:", 15, 55);
+        doc.setTextColor(0);
+        doc.setFontSize(11);
+        doc.text(customerName, 15, 62);
+        if (customerAddress) {
+          doc.setFontSize(10);
+          doc.text(customerAddress.address_line_1 || "", 15, 67);
+          doc.text(`${customerAddress.postal_code || ""} ${customerAddress.admin_area_2 || ""}`, 15, 72);
+        }
+        doc.text(customerEmail, 15, customerAddress ? 77 : 67);
+
+        doc.setFontSize(9);
+        doc.setTextColor(150);
+        doc.text("RECHNUNGSNUMMER", 140, 55);
+        doc.text("DATUM", 140, 65);
+        doc.setTextColor(0);
+        doc.setFontSize(10);
+        doc.text(orderNumber, 140, 60);
+        doc.text(now.toLocaleDateString('de-DE'), 140, 70);
+
+        doc.autoTable({
+          startY: 90,
+          head: [['Produkt', 'Menge', 'Preis']],
+          body: [[productName, "1", `${productPrice} ${productCurrency}`]],
+          headStyles: { fillColor: [0, 113, 227] },
+          margin: { left: 15, right: 15 }
+        });
+
+        const finalY = doc.lastAutoTable.finalY + 10;
+        doc.setFontSize(11);
+        doc.text(`Gesamtbetrag: ${productPrice} ${productCurrency}`, 140, finalY);
+
+        doc.setFontSize(9);
+        doc.setTextColor(100);
+        doc.text("Hinweis: Gemäß § 19 UStG wird keine Umsatzsteuer berechnet (Kleinunternehmerregelung).", 15, finalY + 20);
+        doc.text("Vielen Dank für Ihren Einkauf!", 15, 280);
+
+        invoiceBase64 = doc.output('datauristring').split(',')[1];
+      } catch (pdfError) {
+        console.error('PDF Generation failed:', pdfError);
+      }
 
       // Prepare Email Content based on status
       if (orderStatus === 'completed') {
@@ -165,7 +236,7 @@ export async function onRequestPost(context) {
     </div>
     
     <div class="hero-text">Vielen Dank für Ihre Bestellung.</div>
-    <p class="intro-text">Ihre Zahlung wurde bestätigt. Hier ist Ihr Aktivierungsschlüssel.</p>
+    <p class="intro-text">Ihre Zahlung wurde bestätigt. Hier ist Ihr Aktivierungsschlüssel. Eine Rechnung finden Sie im Anhang.</p>
     
     <div class="key-container">
       <div class="key-label">Lizenzschlüssel</div>
@@ -243,7 +314,7 @@ export async function onRequestPost(context) {
     
     <div class="info-box">
       <p style="margin: 0; font-weight: 500; color: #1d1d1f; margin-bottom: 8px;">Wir bereiten Ihren Key vor.</p>
-      <p style="margin: 0; font-size: 14px;">Aufgrund der hohen Nachfrage sind wir gerade am Nachgenerieren von Lizenzen. Sie stehen ganz oben auf der Liste.</p>
+      <p style="margin: 0; font-size: 14px;">Ihre Rechnung finden Sie bereits im Anhang dieser E-Mail. Der Key folgt in Kürze automatisch.</p>
     </div>
 
     <p class="intro-text">
@@ -289,7 +360,8 @@ export async function onRequestPost(context) {
             to: [customerEmail],
             bcc: ['softcrate.team@gmail.com'],
             subject: emailSubject,
-            html: emailHtml
+            html: emailHtml,
+            attachments: invoiceBase64 ? [{ filename: `Rechnung_${orderNumber}.pdf`, content: invoiceBase64 }] : []
           })
         });
 
@@ -322,7 +394,7 @@ export async function onRequestPost(context) {
                 { name: 'Preis', value: `${productPrice} ${productCurrency}`, inline: true },
                 { name: 'Kunde', value: customerEmail, inline: false },
                 ...(itemAttributes?.canvaEmail ? [{ name: '📧 Canva Account', value: itemAttributes.canvaEmail, inline: false }] : []),
-                { name: 'Status', value: orderStatus === 'completed' ? '✅ Key gesendet' : '⏳ Warteliste / Manuell', inline: true }
+                { name: 'Status', value: orderStatus === 'completed' ? '✅ Key & Rechnung gesendet' : '⏳ Rechnung gesendet / Key Warteliste', inline: true }
               ],
               footer: { text: 'Softcrate Order System' },
               timestamp: new Date().toISOString()
