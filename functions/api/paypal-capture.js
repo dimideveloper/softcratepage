@@ -136,17 +136,23 @@ export async function onRequestPost(context) {
         attributes: itemAttributes
       }));
 
-      // --- INVOICE GENERATION ---
+      // --- INVOICE GENERATION (Refined Apple Style) ---
       let invoiceBase64 = null;
       try {
         const doc = new jsPDF();
-        doc.setFontSize(22);
-        doc.text("Softcrate.", 15, 20);
-        doc.setFontSize(10);
-        doc.setTextColor(100);
-        doc.text("Digital Excellence", 15, 25);
 
-        doc.setTextColor(0);
+        // Header
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(28);
+        doc.setTextColor(29, 29, 31);
+        doc.text("Softcrate", 15, 25);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(0, 113, 227);
+        doc.text(".", 57, 25);
+
+        // Seller Info
+        doc.setFontSize(9);
+        doc.setTextColor(134, 134, 139);
         const sellerX = 140;
         doc.text("Softcrate Digital Solutions", sellerX, 20);
         doc.text("Lukas Schneider", sellerX, 25);
@@ -154,44 +160,80 @@ export async function onRequestPost(context) {
         doc.text("74078 Heilbronn", sellerX, 35);
         doc.text("support@softcrate.de", sellerX, 40);
 
-        doc.setFontSize(9);
-        doc.setTextColor(150);
-        doc.text("RECHNUNG AN:", 15, 55);
-        doc.setTextColor(0);
+        // Customer Info
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10);
+        doc.setTextColor(29, 29, 31);
+        doc.text("RECHNUNG AN", 15, 55);
+
+        doc.setFont("helvetica", "normal");
         doc.setFontSize(11);
         doc.text(customerName, 15, 62);
         if (customerAddress) {
           doc.setFontSize(10);
-          doc.text(customerAddress.address_line_1 || "", 15, 67);
-          doc.text(`${customerAddress.postal_code || ""} ${customerAddress.admin_area_2 || ""}`, 15, 72);
+          doc.setTextColor(100, 100, 100);
+          doc.text(customerAddress.address_line_1 || "", 15, 68);
+          doc.text(`${customerAddress.postal_code || ""} ${customerAddress.admin_area_2 || ""}`, 15, 73);
+          doc.text(customerEmail, 15, 79);
+        } else {
+          doc.setFontSize(10);
+          doc.setTextColor(100, 100, 100);
+          doc.text(customerEmail, 15, 68);
         }
-        doc.text(customerEmail, 15, customerAddress ? 77 : 67);
 
-        doc.setFontSize(9);
-        doc.setTextColor(150);
-        doc.text("RECHNUNGSNUMMER", 140, 55);
-        doc.text("DATUM", 140, 65);
-        doc.setTextColor(0);
-        doc.setFontSize(10);
+        // Invoice Meta Data
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(29, 29, 31);
+        doc.text("BESTELLUNG", 140, 55);
+        doc.text("DATUM", 140, 68);
+
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(100, 100, 100);
         doc.text(orderNumber, 140, 60);
-        doc.text(now.toLocaleDateString('de-DE'), 140, 70);
+        doc.text(now.toLocaleDateString('de-DE'), 140, 73);
 
+        // Explicit Digital Delivery Note
+        doc.setFillColor(250, 250, 252);
+        doc.roundedRect(15, 90, 180, 15, 3, 3, 'F');
+        doc.setFontSize(9);
+        doc.setTextColor(0, 113, 227);
+        doc.setFont(undefined, 'bold');
+        doc.text("PRODUKT-HINWEIS:", 20, 99);
+        doc.setFont(undefined, 'normal');
+        doc.setTextColor(100, 100, 100);
+        doc.text("Digitaler Produktschlüssel (ESD). Kein physischer Versand von CD/DVD oder COA-Label.", 53, 99);
+
+        // Table
         doc.autoTable({
-          startY: 90,
-          head: [['Produkt', 'Menge', 'Preis']],
-          body: [[productName, "1", `${productPrice} ${productCurrency}`]],
-          headStyles: { fillColor: [0, 113, 227] },
+          startY: 110,
+          head: [['Produktbeschreibung', 'Menge', 'Preis']],
+          body: [
+            [`${productName}\n(Vollversion, Digitale Lizenz)`, "1", `${productPrice} ${productCurrency}`]
+          ],
+          theme: 'plain',
+          headStyles: { fontSize: 10, fontStyle: 'bold', textColor: [29, 29, 31], cellPadding: 5 },
+          bodyStyles: { fontSize: 10, textColor: [66, 66, 69], cellPadding: 5 },
+          columnStyles: { 2: { halign: 'right' } },
           margin: { left: 15, right: 15 }
         });
 
+        // Summary
         const finalY = doc.lastAutoTable.finalY + 10;
-        doc.setFontSize(11);
-        doc.text(`Gesamtbetrag: ${productPrice} ${productCurrency}`, 140, finalY);
+        doc.setDrawColor(230, 230, 235);
+        doc.line(140, finalY, 195, finalY);
 
+        doc.setFontSize(11);
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(29, 29, 31);
+        doc.text("Gesamtbetrag:", 140, finalY + 10);
+        doc.text(`${productPrice} ${productCurrency}`, 195, finalY + 10, { align: 'right' });
+
+        // Legal Note (§ 19 UStG)
         doc.setFontSize(9);
-        doc.setTextColor(100);
-        doc.text("Hinweis: Gemäß § 19 UStG wird keine Umsatzsteuer berechnet (Kleinunternehmerregelung).", 15, finalY + 20);
-        doc.text("Vielen Dank für Ihren Einkauf!", 15, 280);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(134, 134, 139);
+        doc.text("Gemäß § 19 UStG wird keine Umsatzsteuer berechnet (Kleinunternehmerregelung).", 15, finalY + 30);
+        doc.text("Vielen Dank für Ihren Einkauf bei Softcrate!", 15, 280);
 
         invoiceBase64 = doc.output('datauristring').split(',')[1];
       } catch (pdfError) {
