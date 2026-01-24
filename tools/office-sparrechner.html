@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <title>Office Sparrechner | Abo vs. Einmalkauf Vergleich | Softcrate</title>
+    <meta name="description"
+        content="Berechnen Sie, wie viel Sie mit Office 2024 LTSC im Vergleich zum Office 365 Abo sparen. Interaktiver Rechner für private und geschäftliche Nutzung.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --text-main: #1d1d1f;
+            --accent: #0071e3;
+            --nav-height: 44px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--text-main);
+            background-color: #fbfbfd;
+        }
+
+        .glass-nav {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+            height: var(--nav-height);
+            display: flex;
+            align-items: center;
+        }
+
+        .calc-card {
+            background: #ffffff;
+            border-radius: 32px;
+            padding: 40px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: #e5e5e7;
+            border-radius: 5px;
+            outline: none;
+            margin: 20px 0;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            cursor: pointer;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+        }
+
+        .chart-bar {
+            height: 40px;
+            border-radius: 8px;
+            transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="glass-nav fixed top-0 w-full z-50 px-5">
+        <div class="max-w-[980px] mx-auto flex justify-between items-center w-full">
+            <a href="../index.html" class="text-[21px] font-semibold tracking-tight">Softcrate<span
+                    class="text-blue-600">.</span></a>
+            <div class="flex space-x-8 text-[12px] font-normal">
+                <a href="../products.html" class="text-zinc-600 hover:text-black">Shop</a>
+                <a href="../support.html" class="text-zinc-600 hover:text-black">Support</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-[140px] pb-32">
+        <div class="max-w-[900px] mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <span
+                    class="inline-block px-3 py-1 bg-emerald-50 text-emerald-600 text-[11px] font-bold uppercase tracking-widest rounded-full mb-6">Spar-Rechner</span>
+                <h1 class="text-4xl md:text-5xl font-black mb-6 tracking-tight">Abo vs. Einmalkauf.</h1>
+                <p class="text-zinc-500 text-lg leading-relaxed max-w-2xl mx-auto">
+                    Warum monatlich zahlen, wenn es auch anders geht? Vergleichen Sie die Kosten eines Office-Abos mit
+                    der einmaligen Lizenz von Softcrate über 5 Jahre.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-1 gap-8">
+                <div class="calc-card reveal" style="transition-delay: 0.1s;">
+                    <div class="mb-10">
+                        <div class="flex justify-between items-center mb-4">
+                            <label class="font-bold text-lg">Nutzungsdauer (Jahre)</label>
+                            <span id="years-val" class="text-2xl font-black text-blue-600">3 Jahre</span>
+                        </div>
+                        <input type="range" min="1" max="10" value="3" class="slider" id="years-slider"
+                            oninput="calculate()">
+                        <div class="flex justify-between text-xs text-zinc-400 font-bold uppercase">
+                            <span>1 Jahr</span>
+                            <span>10 Jahre</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-12">
+                        <!-- Abo Card -->
+                        <div>
+                            <div class="flex justify-between items-end mb-4">
+                                <h3 class="font-bold uppercase tracking-widest text-[11px] text-zinc-400">Office 365 Abo
+                                    (Single)</h3>
+                                <span id="abo-total" class="font-black text-xl">207,00 €</span>
+                            </div>
+                            <div class="w-full bg-zinc-100 rounded-lg overflow-hidden">
+                                <div id="abo-bar" class="chart-bar bg-zinc-300" style="width: 60%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Softcrate Card -->
+                        <div>
+                            <div class="flex justify-between items-end mb-4 text-emerald-600">
+                                <h3 class="font-bold uppercase tracking-widest text-[11px]">Softcrate Einmalkauf (LTSC)
+                                </h3>
+                                <span id="ltsc-total" class="font-black text-xl">24,90 €</span>
+                            </div>
+                            <div class="w-full bg-zinc-100 rounded-lg overflow-hidden">
+                                <div id="ltsc-bar" class="chart-bar bg-emerald-500" style="width: 10%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Result Section -->
+                        <div class="pt-10 border-t border-zinc-100 text-center">
+                            <h4 class="text-zinc-500 text-sm font-bold uppercase tracking-widest mb-2">Ihre Ersparnis
+                            </h4>
+                            <div id="savings-val"
+                                class="text-5xl md:text-6xl font-black text-zinc-950 tracking-tighter mb-4">182,10 €
+                            </div>
+                            <p class="text-zinc-400 text-sm">Gegenüber dem Standard-Abo von 69,00 €/Jahr.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-zinc-950 p-10 md:p-16 rounded-[40px] text-white text-center reveal"
+                    style="transition-delay: 0.2s;">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6">Stoppen Sie die Abo-Falle.</h3>
+                    <p class="text-zinc-400 mb-8 max-w-lg mx-auto leading-relaxed">Sichern Sie sich Office 2024
+                        Professional Plus als dauerhafte Lizenz – ohne versteckte Kosten.</p>
+                    <a href="../office-2024-ltsc.html"
+                        class="inline-block bg-white text-zinc-950 px-10 py-4.5 rounded-2xl font-bold hover:scale-105 transition-all shadow-xl">Office
+                        2024 kaufen</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function calculate() {
+            const years = document.getElementById('years-slider').value;
+            document.getElementById('years-val').textContent = years + (years == 1 ? ' Jahr' : ' Jahre');
+
+            const aboPrice = 69.00;
+            const ltscPrice = 24.90;
+
+            const totalAbo = years * aboPrice;
+            const totalLtsc = ltscPrice;
+            const savings = totalAbo - totalLtsc;
+
+            document.getElementById('abo-total').textContent = totalAbo.toFixed(2).replace('.', ',') + ' €';
+            document.getElementById('ltsc-total').textContent = totalLtsc.toFixed(2).replace('.', ',') + ' €';
+            document.getElementById('savings-val').textContent = (savings > 0 ? savings : 0).toFixed(2).replace('.', ',') + ' €';
+
+            // Update Bars
+            const maxVal = Math.max(totalAbo, 100);
+            document.getElementById('abo-bar').style.width = (totalAbo / maxVal * 100) + '%';
+            document.getElementById('ltsc-bar').style.width = (totalLtsc / maxVal * 100) + '%';
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Init
+        calculate();
+    </script>
+</body>
+
+</html>

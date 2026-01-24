@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <title>Windows Lizenz-Check via CMD | Originalität prüfen | Softcrate</title>
+    <meta name="description"
+        content="Prüfen Sie mit unserem kostenlosen Tool, ob Ihre Windows-Lizenz original und dauerhaft aktiviert ist. Einfache CMD-Befehle, sofortiges Ergebnis.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-main: #1d1d1f;
+            --accent: #0071e3;
+            --nav-height: 44px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--text-main);
+            background-color: #fbfbfd;
+        }
+
+        .glass-nav {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+            height: var(--nav-height);
+            display: flex;
+            align-items: center;
+        }
+
+        .cmd-box {
+            background: #1c1c1e;
+            border-radius: 12px;
+            padding: 24px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            color: #ffffff;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="glass-nav fixed top-0 w-full z-50 px-5">
+        <div class="max-w-[980px] mx-auto flex justify-between items-center w-full">
+            <a href="../index.html" class="text-[21px] font-semibold tracking-tight">Softcrate<span
+                    class="text-blue-600">.</span></a>
+            <div class="flex space-x-8 text-[12px] font-normal">
+                <a href="../products.html" class="text-zinc-600 hover:text-black">Shop</a>
+                <a href="../support.html" class="text-zinc-600 hover:text-black">Support</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-[140px] pb-32">
+        <div class="max-w-[800px] mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <span
+                    class="inline-block px-3 py-1 bg-blue-50 text-blue-600 text-[11px] font-bold uppercase tracking-widest rounded-full mb-6">Gratis
+                    Tool</span>
+                <h1 class="text-4xl md:text-5xl font-black mb-6 tracking-tight">Windows Lizenz-Echtheit prüfen.</h1>
+                <p class="text-zinc-500 text-lg leading-relaxed max-w-2xl mx-auto">
+                    Möchten Sie wissen, ob Ihre Windows-Version dauerhaft aktiviert und original ist? Nutzen Sie unseren
+                    bequemen Befehls-Generator für die Windows-Konsole.
+                </p>
+            </div>
+
+            <div class="space-y-12">
+                <!-- Step 1 -->
+                <div class="bg-white p-8 md:p-12 rounded-[32px] border border-zinc-100 shadow-sm reveal"
+                    style="transition-delay: 0.1s;">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div
+                            class="w-10 h-10 bg-zinc-900 text-white rounded-full flex items-center justify-center font-bold">
+                            1</div>
+                        <h2 class="text-2xl font-bold">Basis-Check (Status)</h2>
+                    </div>
+                    <p class="text-zinc-600 mb-6 font-medium">Zeigt an, ob Windows aktiviert ist und ob es sich um eine
+                        permanente Lizenz handelt.</p>
+                    <div class="cmd-box">
+                        <button class="copy-btn" onclick="copyCmd('slmgr /xpr')"><i class="fas fa-copy mr-2"></i>
+                            Kopieren</button>
+                        <span class="text-blue-400">C:\></span> slmgr /xpr
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="bg-white p-8 md:p-12 rounded-[32px] border border-zinc-100 shadow-sm reveal"
+                    style="transition-delay: 0.2s;">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div
+                            class="w-10 h-10 bg-zinc-900 text-white rounded-full flex items-center justify-center font-bold">
+                            2</div>
+                        <h2 class="text-2xl font-bold">Detaillierte Infos</h2>
+                    </div>
+                    <p class="text-zinc-600 mb-6 font-medium">Öffnet ein Fenster mit Infos zur Lizenz-Art (Retail, OEM
+                        oder Volume).</p>
+                    <div class="cmd-box">
+                        <button class="copy-btn" onclick="copyCmd('slmgr /dli')"><i class="fas fa-copy mr-2"></i>
+                            Kopieren</button>
+                        <span class="text-blue-400">C:\></span> slmgr /dli
+                    </div>
+                </div>
+
+                <div class="bg-blue-600 p-10 md:p-16 rounded-[40px] text-white text-center reveal"
+                    style="transition-delay: 0.3s;">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6">Keine gültige Lizenz?</h3>
+                    <p class="text-blue-100 mb-8 max-w-lg mx-auto leading-relaxed">Holen Sie sich jetzt einen originalen
+                        Windows 11 Key bei Softcrate – blitzschnell geliefert und garantiert audit-sicher.</p>
+                    <a href="../windows-11-pro.html"
+                        class="inline-block bg-white text-blue-600 px-8 py-4 rounded-2xl font-bold hover:scale-105 transition-all shadow-xl">Windows
+                        11 Pro kaufen</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function copyCmd(text) {
+            navigator.clipboard.writeText(text);
+            const btn = event.currentTarget;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Kopiert!';
+            setTimeout(() => btn.innerHTML = originalText, 2000);
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+
+</html>
