@@ -60,6 +60,7 @@ export async function onRequestPost(context) {
       let productSlug = 'windows-11-pro';
       let productPrice = '0.00';
       let productCurrency = 'EUR';
+      let itemAttributes = null;
 
       try {
         const purchaseUnit = captureData.purchase_units?.[0];
@@ -70,6 +71,7 @@ export async function onRequestPost(context) {
             productName = firstItem.name || productName;
             productSlug = firstItem.slug || firstItem.name?.toLowerCase().replace(/\s+/g, '-') || productSlug;
             productPrice = firstItem.price?.toString() || productPrice;
+            itemAttributes = firstItem.attributes || null;
           }
         }
         // Also try to get from amount
@@ -121,7 +123,8 @@ export async function onRequestPost(context) {
         amount: productPrice,
         currency: productCurrency,
         timestamp: new Date().toISOString(),
-        status: orderStatus
+        status: orderStatus,
+        attributes: itemAttributes // Save custom attributes like Canva email
       }));
 
       // Prepare Email Content based on status
@@ -318,7 +321,8 @@ export async function onRequestPost(context) {
                 { name: 'Produkt', value: productName, inline: true },
                 { name: 'Preis', value: `${productPrice} ${productCurrency}`, inline: true },
                 { name: 'Kunde', value: customerEmail, inline: false },
-                { name: 'Status', value: orderStatus === 'completed' ? '✅ Key gesendet' : '⏳ Warteliste', inline: true }
+                ...(itemAttributes?.canvaEmail ? [{ name: '📧 Canva Account', value: itemAttributes.canvaEmail, inline: false }] : []),
+                { name: 'Status', value: orderStatus === 'completed' ? '✅ Key gesendet' : '⏳ Warteliste / Manuell', inline: true }
               ],
               footer: { text: 'Softcrate Order System' },
               timestamp: new Date().toISOString()

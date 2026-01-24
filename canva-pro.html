@@ -269,16 +269,16 @@
                         <span
                             class="text-pink-600 text-[12px] font-bold uppercase tracking-widest bg-pink-50 px-3 py-1 rounded-full">Design</span>
                         <span
-                            class="bg-zinc-950 text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-tighter">24
+                            class="bg-zinc-950 text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-tighter">12
                             Monate Abo</span>
                     </div>
                     <h1
                         class="text-[48px] md:text-[64px] font-black leading-[1.02] tracking-tighter mb-8 text-zinc-900">
                         Canva Pro EDU</h1>
                     <p class="text-zinc-500 text-[20px] mb-10 leading-relaxed font-medium">
-                        Das führende Interface Design Tool. <span class="text-pink-600 font-bold">Dev Mode</span>,
-                        erweiterte Prototyping-Funktionen und
-                        unbegrenzte Dateien für nahtlose Zusammenarbeit.
+                        Die All-in-One Design Plattform. <span class="text-pink-600 font-bold">Premium-Tools</span>,
+                        Millionen von Assets und
+                        KI-gestützte Funktionen für professionelle Ergebnisse.
                     </p>
                     <div class="flex items-baseline space-x-4 mb-8 p-6 bg-zinc-50 rounded-2xl">
                         <div>
@@ -296,12 +296,12 @@
                             <span>Lieferzeit: Innerhalb 24h (Aktivierungscode)</span>
                         </div>
 
-                        <div class="flex items-center space-x-4">
+                        <div class="flex flex-col space-y-4">
                             <div class="flex flex-col">
                                 <label
                                     class="text-[11px] font-semibold text-zinc-400 mb-2 uppercase tracking-wider">Menge</label>
                                 <div
-                                    class="flex items-center border border-zinc-200 rounded-xl overflow-hidden bg-zinc-50">
+                                    class="flex items-center border border-zinc-200 rounded-xl overflow-hidden bg-zinc-50 w-fit">
                                     <button
                                         onclick="document.getElementById('quantity-input').stepDown(); updatePrice()"
                                         class="px-3 py-2 hover:bg-zinc-100 transition-colors border-r border-zinc-200">
@@ -315,6 +315,15 @@
                                         <i class="fas fa-plus text-[10px]"></i>
                                     </button>
                                 </div>
+                            </div>
+
+                            <div class="flex flex-col">
+                                <label class="text-[11px] font-black text-pink-600 mb-2 uppercase tracking-widest">Canva
+                                    Account E-Mail <span class="text-red-500">*</span></label>
+                                <input type="email" id="canva-account-email" placeholder="deine@email.de"
+                                    class="w-full md:w-[320px] border-2 border-pink-100 p-3 rounded-xl focus:border-pink-500 outline-none transition-all bg-pink-50/30">
+                                <p class="text-[10px] text-zinc-400 mt-2 font-medium">Wichtig: Auf diesen Account wird
+                                    das Abo aktiviert.</p>
                             </div>
                         </div>
                     </div>
@@ -411,32 +420,32 @@
                             class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6">
                             <i class="fas fa-wand-magic-sparkles"></i>
                         </div>
-                        <h3 class="text-[21px] font-semibold mb-3">Dev Mode</h3>
-                        <p class="text-zinc-600 text-sm leading-relaxed">Der neue <strong>Dev Mode</strong> bringt
-                            Designer und Entwickler zusammen.
-                            Inspiziere Designs, kopiere Code und exportiere Assets schneller als je zuvor.
+                        <h3 class="text-[21px] font-semibold mb-3">Magic Studio™</h3>
+                        <p class="text-zinc-600 text-sm leading-relaxed">Nutze die volle Power von <strong>KI</strong>.
+                            Erstelle Bilder aus Text, entferne Hintergründe mit einem Klick und schreibe Texte
+                            automatisch.
                         </p>
                     </div>
                     <div class="feature-card reveal" style="transition-delay: 0.2s;">
                         <div
                             class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6">
-                            <i class="fas fa-video"></i>
+                            <i class="fas fa-layer-group"></i>
                         </div>
-                        <h3 class="text-[21px] font-semibold mb-3">Advanced Prototyping</h3>
-                        <p class="text-zinc-600 text-sm leading-relaxed">Erstelle komplexe, <strong>interaktive
-                                Prototypen</strong> mit Variablen,
-                            bedingter Logik und realistischen Übergängen.
+                        <h3 class="text-[21px] font-semibold mb-3">Brand Hub</h3>
+                        <p class="text-zinc-600 text-sm leading-relaxed">Halte dein Design konsistent. Speichere Logos,
+                            Farben und Schriftarten deiner <strong>Marke</strong> an einem zentralen Ort für das ganze
+                            Team.
                         </p>
                     </div>
                     <div class="feature-card reveal" style="transition-delay: 0.3s;">
                         <div
                             class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6">
-                            <i class="fas fa-cloud"></i>
+                            <i class="fas fa-calendar-check"></i>
                         </div>
-                        <h3 class="text-[21px] font-semibold mb-3">Design Systems</h3>
-                        <p class="text-zinc-600 text-sm leading-relaxed">Baue skalierbare <strong>Design
-                                Systeme</strong> mit
-                            wiederverwendbaren Komponenten, Stilen und Variablen.
+                        <h3 class="text-[21px] font-semibold mb-3">Content Planer</h3>
+                        <p class="text-zinc-600 text-sm leading-relaxed">Plane und veröffentliche deine Designs direkt
+                            aus Canva auf deinen <strong>Social Media</strong> Kanälen. Spare Zeit und bleib
+                            organisiert.
                         </p>
                     </div>
                 </div>
@@ -635,12 +644,24 @@
         }
 
         function addToCart(productName, price, quantity = 1) {
+            const canvaEmail = document.getElementById('canva-account-email').value.trim();
+            if (!canvaEmail || !canvaEmail.includes('@')) {
+                alert('⚠️ Bitte gib deine gültige Canva Account E-Mail an, damit wir das Abo aktivieren können!');
+                document.getElementById('canva-account-email').focus();
+                return;
+            }
+
             let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-            const existingItem = cart.find(item => item.name === productName);
+            const existingItem = cart.find(item => item.name === productName && item.attributes?.canvaEmail === canvaEmail);
             if (existingItem) {
                 existingItem.quantity += quantity;
             } else {
-                cart.push({ name: productName, price: price, quantity: quantity });
+                cart.push({
+                    name: productName,
+                    price: price,
+                    quantity: quantity,
+                    attributes: { canvaEmail: canvaEmail }
+                });
             }
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();
