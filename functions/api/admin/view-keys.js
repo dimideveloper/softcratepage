@@ -22,7 +22,7 @@ export async function onRequestPost(context) {
 
         // Get all products and their keys
         // Get all products and their keys
-        const defaultProducts = ['windows-11-pro', 'office-2024-ltsc', 'capcut-pro'];
+        const defaultProducts = ['windows-11-pro', 'office-2024-ltsc', 'adobe-creative-cloud', 'figma-pro', 'canva-pro', 'duolingo-max'];
 
         let customProducts = [];
         try {

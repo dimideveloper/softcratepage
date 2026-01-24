@@ -285,7 +285,7 @@
 
         function renderKeysGrid(inventory, elementId, simple = false) {
             let html = '';
-            const defaultProducts = ['windows-11-pro', 'office-2024-ltsc', 'capcut-pro'];
+            const defaultProducts = ['windows-11-pro', 'office-2024-ltsc', 'adobe-creative-cloud', 'figma-pro', 'canva-pro', 'duolingo-max'];
 
             for (const [slug, data] of Object.entries(inventory)) {
                 const color = data.available > 10 ? 'green' : data.available > 0 ? 'yellow' : 'red';
