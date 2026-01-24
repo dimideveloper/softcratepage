@@ -647,6 +647,7 @@
                             name: item.name,
                             price: parseFloat(item.price),
                             quantity: item.quantity,
+                            slug: item.slug || item.name.toLowerCase().replace(/\s+/g, '-'),
                             attributes: item.attributes // Pass through attributes
                         }))
                     })

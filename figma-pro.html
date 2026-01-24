@@ -636,11 +636,12 @@
 
         function addToCart(productName, price, quantity = 1) {
             let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-            const existingItem = cart.find(item => item.name === productName);
+            const slug = 'figma-pro'; // Standardized slug
+            const existingItem = cart.find(item => item.slug === slug);
             if (existingItem) {
                 existingItem.quantity += quantity;
             } else {
-                cart.push({ name: productName, price: price, quantity: quantity });
+                cart.push({ name: productName, price: price, quantity: quantity, slug: slug });
             }
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();

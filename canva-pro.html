@@ -652,7 +652,8 @@
             }
 
             let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-            const existingItem = cart.find(item => item.name === productName && item.attributes?.canvaEmail === canvaEmail);
+            const slug = 'canva-pro'; // Standardized slug
+            const existingItem = cart.find(item => item.slug === slug && item.attributes?.canvaEmail === canvaEmail);
             if (existingItem) {
                 existingItem.quantity += quantity;
             } else {
@@ -660,6 +661,7 @@
                     name: productName,
                     price: price,
                     quantity: quantity,
+                    slug: slug,
                     attributes: { canvaEmail: canvaEmail }
                 });
             }
