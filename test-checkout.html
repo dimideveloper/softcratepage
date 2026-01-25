@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>Test Produkt | Softcrate Internal</title>
+    <meta name="robots" content="noindex, nofollow">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fafafa;
+            color: #1d1d1f;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .glass-nav {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+            height: 44px;
+        }
+
+        .test-card {
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .apple-btn {
+            background: #0071e3;
+            color: white;
+            border-radius: 12px;
+            padding: 16px 32px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .apple-btn:hover {
+            background: #005bb7;
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="glass-nav fixed top-0 w-full z-50 px-5 flex items-center">
+        <div class="max-w-[980px] mx-auto w-full">
+            <a href="index.html" class="text-[19px] font-semibold tracking-tight">Softcrate<span
+                    class="text-blue-600">.</span></a>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-20 px-6">
+        <div class="max-w-[600px] mx-auto">
+            <div class="test-card p-10 md:p-16 text-center">
+                <div class="w-20 h-20 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-8">
+                    <i class="fas fa-flask text-3xl text-blue-600"></i>
+                </div>
+
+                <h1 class="text-3xl font-black mb-4 tracking-tight">E2E Test Produkt 🧪</h1>
+                <p class="text-zinc-500 mb-10 leading-relaxed font-medium">
+                    Dieses Produkt dient ausschließlich zum Testen der kompletten Checkout-Strecke, PDF-Generierung und
+                    Email-Zustellung.
+                </p>
+
+                <div class="inline-block bg-zinc-50 px-8 py-4 rounded-2xl border border-zinc-100 mb-10">
+                    <span class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1">Test
+                        Preis</span>
+                    <span class="text-4xl font-black">1,00 €</span>
+                </div>
+
+                <button onclick="addAndGo()" class="w-full apple-btn">
+                    Zahlungsprozess testen
+                </button>
+
+                <p class="mt-6 text-[11px] text-zinc-400 font-medium italic">
+                    * Wird nicht im öffentlichen Katalog angezeigt.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function addAndGo() {
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const testProduct = {
+                name: "E2E System Test (1€)",
+                price: 1.00,
+                quantity: 1,
+                slug: "test-product",
+                image: "favicon.png"
+            };
+
+            // Clear cart for clean test if desired, or just add
+            cart = [testProduct];
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            window.location.href = 'warenkorb.html';
+        }
+    </script>
+</body>
+
+</html>
