@@ -1,5 +1,5 @@
-import { jsPDF } from 'https://esm.sh/jspdf@2.5.1';
-import 'https://esm.sh/jspdf-autotable@3.8.2';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
 
 export async function onRequestPost(context) {
   const { request, env } = context;
