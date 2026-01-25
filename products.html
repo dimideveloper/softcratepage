@@ -337,13 +337,13 @@
                         </div>
                         <div class="mb-4">
                             <div class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-2 mb-1">
-                                <span class="text-lg md:text-2xl font-bold text-zinc-900 leading-tight">99,90 €</span>
+                                <span class="text-lg md:text-2xl font-bold text-zinc-900 leading-tight">90,00 €</span>
                                 <span class="text-[11px] md:text-sm text-zinc-400 line-through">579,00 €</span>
                             </div>
                             <span class="text-[10px] md:text-xs text-zinc-500">inkl. MwSt.</span>
                         </div>
                         <button
-                            onclick="addToCart('Microsoft Office 2024 Professional Plus', 99.90, 1, 'office-2024-pro-plus')"
+                            onclick="addToCart('Microsoft Office 2024 Professional Plus', 90.00, 1, 'office-2024-pro-plus')"
                             class="w-full py-2.5 md:py-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs md:text-sm font-semibold transition-colors">
                             In den Warenkorb
                         </button>
@@ -788,11 +788,14 @@
         }
 
         // Cart Logic
-        function addToCart(name, price) {
+        function addToCart(name, price, quantity = 1, slug = '') {
             let cart = JSON.parse(localStorage.getItem('cart') || '[]');
             const existing = cart.find(i => i.name === name);
-            if (existing) existing.quantity++;
-            else cart.push({ name, price, quantity: 1 });
+            if (existing) {
+                existing.quantity += quantity;
+            } else {
+                cart.push({ name, price, quantity, slug });
+            }
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();
             showToast();

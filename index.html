@@ -640,7 +640,7 @@
                                             MwSt.</span>
                                     </div>
                                 </div>
-                                <button onclick="addToCart('Windows 11 Professional', 14.90)"
+                                <button onclick="addToCart('Windows 11 Professional', 14.90, 1, 'windows-11-pro')"
                                     class="w-full py-4 bg-zinc-950 text-white rounded-2xl text-[15px] font-bold hover:bg-zinc-800 transition-all transform hover:shadow-xl active:scale-95 flex items-center justify-center space-x-2">
                                     <i class="fas fa-shopping-cart text-blue-400"></i>
                                     <span>In den Warenkorb</span>
@@ -689,7 +689,8 @@
                                             class="text-[9px] text-zinc-400 block uppercase font-bold">Einmalzahlung</span>
                                     </div>
                                 </div>
-                                <button onclick="addToCart('Office 2024 Professional Plus LTSC', 24.90)"
+                                <button
+                                    onclick="addToCart('Office 2024 Professional Plus LTSC', 24.90, 1, 'office-2024-ltsc')"
                                     class="w-full py-4 bg-zinc-950 text-white rounded-2xl text-[15px] font-bold hover:bg-zinc-800 transition-all transform hover:shadow-xl active:scale-95 flex items-center justify-center space-x-2">
                                     <i class="fas fa-shopping-cart text-emerald-400"></i>
                                     <span>In den Warenkorb</span>
@@ -731,14 +732,15 @@
                                     <div class="flex flex-col">
                                         <span class="text-zinc-400 line-through text-[11px] font-medium">UVP 579,00
                                             €</span>
-                                        <span class="text-3xl font-black tracking-tighter">99,90 €</span>
+                                        <span class="text-3xl font-black tracking-tighter">90,00 €</span>
                                     </div>
                                     <div class="text-right">
                                         <span class="text-[9px] text-zinc-400 block uppercase font-bold">Best
                                             Value</span>
                                     </div>
                                 </div>
-                                <button onclick="addToCart('Microsoft Office 2024 Professional Plus', 99.90)"
+                                <button
+                                    onclick="addToCart('Microsoft Office 2024 Professional Plus', 90.00, 1, 'office-2024-pro-plus')"
                                     class="w-full py-4 bg-zinc-950 text-white rounded-2xl text-[15px] font-bold hover:bg-zinc-800 transition-all transform hover:shadow-xl active:scale-95 flex items-center justify-center space-x-2">
                                     <i class="fas fa-shopping-cart text-blue-400"></i>
                                     <span>In den Warenkorb</span>
@@ -1098,6 +1100,39 @@
                 nav.style.boxShadow = 'none';
             }
         });
+
+        // Cart Logic
+        function addToCart(name, price, quantity = 1, slug = '') {
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const existing = cart.find(i => i.name === name);
+            if (existing) {
+                existing.quantity += quantity;
+            } else {
+                cart.push({ name, price, quantity, slug });
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartBadge();
+            showToast(`${name} hinzugefügt`);
+        }
+
+        function showToast(message) {
+            const container = document.getElementById('toast-container') || createToastContainer();
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-8 left-1/2 -translate-x-1/2 bg-zinc-900/90 backdrop-blur-xl text-white px-6 py-3 rounded-full text-sm font-bold shadow-2xl flex items-center gap-3 z-[9999] animate-bounce-in';
+            toast.innerHTML = `<i class="fas fa-check-circle text-blue-400"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-4');
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+
+        function createToastContainer() {
+            const div = document.createElement('div');
+            div.id = 'toast-container';
+            document.body.appendChild(div);
+            return div;
+        }
 
         // Update cart badge
         function updateCartBadge() {
