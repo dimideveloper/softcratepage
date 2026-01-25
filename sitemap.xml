@@ -20,7 +20,13 @@
   </url>
   <url>
     <loc>https://softcrate.de/office-2024-ltsc.html</loc>
-    <lastmod>2026-01-24</lastmod>
+    <lastmod>2026-01-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://softcrate.de/office-2024-pro-plus.html</loc>
+    <lastmod>2026-01-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
