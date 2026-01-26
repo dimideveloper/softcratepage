@@ -345,7 +345,8 @@
                 });
                 const res = await response.json();
                 if (response.ok) {
-                    alert(`Erfolg! ${res.added_to_stock} Keys hinzugefügt.`);
+                    const message = `Erfolg!\n• ${res.added_to_stock} Keys ins Lager aufgenommen\n• ${res.fulfilled_backorders} Nachlieferungen (Offene Bestellungen) versendet`;
+                    alert(message);
                     viewKeys();
                     document.getElementById('keys-input').value = '';
                 } else {
