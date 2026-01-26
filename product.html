@@ -271,27 +271,76 @@
             document.getElementById('terms-checkbox').checked = false;
         }
 
+        async function handlePurchase(details, productSlug) {
+            const email = document.getElementById('customer-email').value || (details.payer ? details.payer.email_address : '');
+
+            // Show loading state
+            const container = document.getElementById('paypal-button-container');
+            container.innerHTML = '<div class="flex flex-col items-center py-4"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-2"></div><p class="text-xs font-bold text-blue-600 uppercase tracking-widest">Verarbeite Bestellung...</p></div>';
+
+            try {
+                // Call our capture API
+                const response = await fetch('/api/paypal-capture', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        orderID: details.id,
+                        email: email
+                    })
+                });
+
+                if (response.ok) {
+                    // Success! Redirect to thank you page
+                    localStorage.removeItem('cart');
+                    window.location.href = `danke.html?email=${encodeURIComponent(email)}&product=${productSlug}`;
+                } else {
+                    const error = await response.json();
+                    throw new Error(error.message || 'Capture failed');
+                }
+            } catch (error) {
+                console.error('Purchase handling failed:', error);
+                alert('Es gab ein Problem bei der Verarbeitung deiner Bestellung. Bitte kontaktiere unseren Support: support@softcrate.de');
+                // Re-render buttons or show error
+                location.reload();
+            }
+        }
+
         function togglePayButton() {
             const isChecked = document.getElementById('terms-checkbox').checked;
             const container = document.getElementById('paypal-button-container');
+            const emailInput = document.getElementById('customer-email');
 
             if (isChecked) {
+                if (!emailInput.value || !emailInput.value.includes('@')) {
+                    alert('Bitte gib zuerst eine gültige E-Mail Adresse ein.');
+                    document.getElementById('terms-checkbox').checked = false;
+                    return;
+                }
+
                 container.classList.remove('opacity-50', 'pointer-events-none');
 
-                // Init PayPal if empty
                 if (!container.innerHTML) {
                     paypal.Buttons({
                         createOrder: function (data, actions) {
                             return actions.order.create({
                                 purchase_units: [{
-                                    amount: { value: currentProduct.price.toString() },
-                                    description: currentProduct.slug // Pass slug as metadata/desc
+                                    amount: {
+                                        value: currentProduct.price.toString(),
+                                        currency_code: 'EUR'
+                                    },
+                                    description: currentProduct.name,
+                                    custom_id: JSON.stringify({
+                                        items: [{
+                                            name: currentProduct.name,
+                                            slug: currentProduct.slug,
+                                            price: currentProduct.price
+                                        }]
+                                    })
                                 }]
                             });
                         },
                         onApprove: function (data, actions) {
                             return actions.order.capture().then(function (details) {
-                                // Call backend
                                 handlePurchase(details, currentProduct.slug);
                             });
                         }
@@ -300,13 +349,6 @@
             } else {
                 container.classList.add('opacity-50', 'pointer-events-none');
             }
-        }
-
-        async function handlePurchase(details, productSlug) {
-            const email = document.getElementById('customer-email').value || details.payer.email_address;
-            // Here we would call the verification/delivery API
-            // For now, redirect to success
-            window.location.href = `danke.html?email=${encodeURIComponent(email)}&product=${productSlug}`;
         }
 
         loadProduct();

@@ -106,7 +106,7 @@ export async function onRequestPost(context) {
     <div class="product-info">
       <div class="info-row">
         <span class="info-label">Produkt</span>
-        <span class="info-value">${order.product}</span>
+        <span class="info-value">${order.product || order.product_slug || 'Ihre Software'}</span>
       </div>
       <div class="info-row">
         <span class="info-label">Status</span>
@@ -156,7 +156,14 @@ export async function onRequestPost(context) {
     }
 
     // 3. Add remaining keys to stock
-    const existingKeys = await env.LICENSE_KEYS.get(product, 'json') || [];
+    let existingKeys = [];
+    try {
+      existingKeys = await env.LICENSE_KEYS.get(product, 'json') || [];
+      if (!Array.isArray(existingKeys)) existingKeys = [];
+    } catch (e) {
+      console.warn('Existing keys fetch failed, starting fresh');
+    }
+
     const updatedKeys = [...existingKeys, ...keysArray];
     await env.LICENSE_KEYS.put(product, JSON.stringify(updatedKeys));
 

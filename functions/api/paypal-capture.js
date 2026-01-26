@@ -69,14 +69,23 @@ export async function onRequestPost(context) {
       try {
         const purchaseUnit = captureData.purchase_units?.[0];
         if (purchaseUnit?.custom_id) {
-          const customData = JSON.parse(purchaseUnit.custom_id);
-          if (customData.items && customData.items.length > 0) {
-            const firstItem = customData.items[0];
-            productName = firstItem.name || productName;
-            productSlug = firstItem.slug || firstItem.name?.toLowerCase().replace(/\s+/g, '-') || productSlug;
-            productPrice = firstItem.price?.toString() || productPrice;
-            itemAttributes = firstItem.attributes || null;
+          try {
+            const customData = JSON.parse(purchaseUnit.custom_id);
+            if (customData.items && customData.items.length > 0) {
+              const firstItem = customData.items[0];
+              productName = firstItem.name || productName;
+              productSlug = firstItem.slug || firstItem.name?.toLowerCase().replace(/\s+/g, '-') || productSlug;
+              productPrice = firstItem.price?.toString() || productPrice;
+              itemAttributes = firstItem.attributes || null;
+            }
+          } catch (pe) {
+            console.warn('Failed to parse custom_id, using description as fallback');
+            productName = purchaseUnit.description || productName;
+            productSlug = purchaseUnit.description?.toLowerCase().replace(/\s+/g, '-') || productSlug;
           }
+        } else if (purchaseUnit?.description) {
+          productName = purchaseUnit.description;
+          productSlug = purchaseUnit.description.toLowerCase().replace(/\s+/g, '-');
         }
 
         if (purchaseUnit?.amount) {
@@ -368,7 +377,7 @@ export async function onRequestPost(context) {
     <div class="product-info">
       <div class="info-row">
         <span class="info-label">Produkt</span>
-        <span class="info-value">${env.PRODUCT_NAME || 'Digitales Produkt'}</span>
+        <span class="info-value">${productName || 'Ihre Software Bestellung'}</span>
       </div>
       <div class="info-row">
         <span class="info-label">Status</span>
