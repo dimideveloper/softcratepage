@@ -51,13 +51,17 @@ export async function onRequestPost(context) {
         });
 
     } catch (error) {
+        console.error('ViewOrders Critical Error:', error);
         return new Response(JSON.stringify({
             error: 'Server Error',
             message: error.message,
             stack: error.stack
         }), {
             status: 500,
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
         });
     }
 }

@@ -336,12 +336,25 @@
             const keys = document.getElementById('keys-input').value.split('\n').filter(k => k.trim());
             if (keys.length === 0) return alert('Keine Keys eingegeben');
 
-            const response = await fetch('/api/admin/add-keys', {
-                method: 'POST', body: JSON.stringify({ password, product, keys })
-            });
-            const res = await response.json();
-            if (response.ok) { alert(`Erfolg! ${res.added_to_stock} Keys hinzugefügt.`); viewKeys(); document.getElementById('keys-input').value = ''; }
-            else alert('Fehler: ' + res.error);
+            try {
+                const response = await fetch('/api/admin/add-keys', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password, product, keys })
+                });
+                const res = await response.json();
+                if (response.ok) {
+                    alert(`Erfolg! ${res.added_to_stock} Keys hinzugefügt.`);
+                    viewKeys();
+                    document.getElementById('keys-input').value = '';
+                } else {
+                    alert('Fehler: ' + (res.message || res.error || 'Serverfehler'));
+                    console.error('AddKeys Error Detail:', res);
+                }
+            } catch (err) {
+                alert('Netzwerkfehler: ' + err.message);
+                console.error(err);
+            }
         }
 
         async function deleteProduct(slug) {

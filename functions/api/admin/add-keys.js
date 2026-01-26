@@ -20,8 +20,15 @@ export async function onRequestPost(context) {
       });
     }
 
+    const jsonHeaders = {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS'
+    };
+
     if (!env.ORDERS || !env.LICENSE_KEYS) {
-      throw new Error('KV bindings (ORDERS or LICENSE_KEYS) missing');
+      throw new Error('KV bindings (ORDERS or LICENSE_KEYS) missing in environment');
     }
 
     // 1. Fetch ALL orders
@@ -136,22 +143,24 @@ export async function onRequestPost(context) {
 </html>
                 `;
 
-      try {
-        await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${env.RESEND_API_KEY}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            from: 'Softcrate <noreply@softcrate.de>',
-            to: [order.email],
-            subject: '🌟 Ihr Lizenzschlüssel ist da! (Softcrate Nachlieferung)',
-            html: emailHtml
-          })
-        });
-      } catch (e) {
-        console.error('Failed to send fulfillment email', e);
+      if (env.RESEND_API_KEY && order.email) {
+        try {
+          await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              from: 'Softcrate <noreply@softcrate.de>',
+              to: [order.email],
+              subject: '🌟 Ihr Lizenzschlüssel ist da! (Softcrate Nachlieferung)',
+              html: emailHtml
+            })
+          });
+        } catch (e) {
+          console.error('Failed to send fulfillment email', e);
+        }
       }
     }
 
@@ -181,12 +190,17 @@ export async function onRequestPost(context) {
     });
 
   } catch (error) {
+    console.error('AddKeys Critical Error:', error);
     return new Response(JSON.stringify({
       error: 'Failed to add keys',
-      message: error.message
+      message: error.message,
+      stack: error.stack
     }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' }
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
     });
   }
 }
