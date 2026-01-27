@@ -14,10 +14,18 @@ export async function onRequestPost(context) {
             return new Response(JSON.stringify({ error: 'Missing orderId or product' }), { status: 400 });
         }
 
-        // Get order
-        const order = await env.ORDERS.get(orderId, 'json');
+        // Get order (try both raw ID and order_ prefix if needed)
+        let order = await env.ORDERS.get(orderId, 'json');
+
+        if (!order && !orderId.startsWith('order_')) {
+            order = await env.ORDERS.get(`order_${orderId}`, 'json');
+        }
+
         if (!order) {
-            return new Response(JSON.stringify({ error: 'Order not found' }), { status: 404 });
+            return new Response(JSON.stringify({ error: 'Order not found: ' + orderId }), {
+                status: 404,
+                headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+            });
         }
 
         // Get keys for the selected product
@@ -81,10 +89,15 @@ export async function onRequestPost(context) {
             });
         }
 
-        return new Response(JSON.stringify({ success: true }));
+        return new Response(JSON.stringify({ success: true }), {
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+        });
 
     } catch (error) {
-        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+        return new Response(JSON.stringify({ error: error.message }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+        });
     }
 }
 
