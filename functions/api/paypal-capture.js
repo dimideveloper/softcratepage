@@ -67,13 +67,32 @@ export async function onRequestPost(context) {
       let customerAddress = null;
 
       try {
-        const purchaseUnit = captureData.purchase_units?.[0];
+        let purchaseUnit = captureData.purchase_units?.[0];
+
+        // If capture response is missing structure, or we want to be extra safe,
+        // we can fetch the full order details from PayPal
+        if (!purchaseUnit?.custom_id && !purchaseUnit?.description) {
+          console.log('Capture response missing product info, fetching full order details...');
+          const orderResponse = await fetch(`${PAYPAL_API}/v2/checkout/orders/${orderID}`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${access_token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+          if (orderResponse.ok) {
+            const fullOrder = await orderResponse.json();
+            purchaseUnit = fullOrder.purchase_units?.[0] || purchaseUnit;
+          }
+        }
+
         if (purchaseUnit?.custom_id) {
           try {
             const customData = JSON.parse(purchaseUnit.custom_id);
             if (customData.items && customData.items.length > 0) {
               const firstItem = customData.items[0];
               productName = firstItem.name || productName;
+              // Ensure we use the slug from checkout if available
               productSlug = firstItem.slug || firstItem.name?.toLowerCase().replace(/\s+/g, '-') || productSlug;
               productPrice = firstItem.price?.toString() || productPrice;
               itemAttributes = firstItem.attributes || null;
@@ -86,6 +105,11 @@ export async function onRequestPost(context) {
         } else if (purchaseUnit?.description) {
           productName = purchaseUnit.description;
           productSlug = purchaseUnit.description.toLowerCase().replace(/\s+/g, '-');
+        }
+
+        // Final slug correction: if it's "office-2024-professional-plus-ltsc", map it to "office-2024-ltsc"
+        if (productSlug === 'office-2024-professional-plus-ltsc') {
+          productSlug = 'office-2024-ltsc';
         }
 
         if (purchaseUnit?.amount) {
