@@ -110,15 +110,22 @@ export async function onRequestPost(context) {
       // Get available keys from KV
       const availableKeys = await env.LICENSE_KEYS.get(productSlug, 'json') || [];
 
-      // Download links mapping
-      const DOWNLOAD_LINKS = {
+      // Download links mapping (with dynamic KV overrides)
+      let ALL_DOWNLOAD_LINKS = {
         'office-2024-ltsc': 'https://officecdn.microsoft.com/pr/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/de-de/ProPlus2024Retail.img',
         'office-2024-pro-plus': 'https://officecdn.microsoft.com/pr/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/de-de/ProPlus2024Retail.img',
         'windows-11-pro': 'https://www.microsoft.com/software-download/windows11',
         'windows-10-pro': 'https://www.microsoft.com/software-download/windows10'
       };
 
-      const downloadLink = DOWNLOAD_LINKS[productSlug] || null;
+      try {
+        const dynamicLinks = await env.LICENSE_KEYS.get('DOWNLOAD_LINKS', 'json') || {};
+        ALL_DOWNLOAD_LINKS = { ...ALL_DOWNLOAD_LINKS, ...dynamicLinks };
+      } catch (e) {
+        console.warn('Failed to fetch dynamic DOWNLOAD_LINKS', e);
+      }
+
+      const downloadLink = ALL_DOWNLOAD_LINKS[productSlug] || null;
 
       let assignedKey = null;
       let orderStatus = 'waiting_for_stock';

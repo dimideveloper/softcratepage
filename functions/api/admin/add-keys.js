@@ -18,7 +18,7 @@ export async function onRequestPost(context) {
       });
     }
 
-    const { password, product, keys } = body;
+    const { password, product, keys, downloadLink } = body;
 
     lastStep = 'auth_check';
     if (password !== env.ADMIN_PASSWORD) {
@@ -66,13 +66,20 @@ export async function onRequestPost(context) {
     let keysArray = [...keys];
 
     lastStep = 'fulfillment_loop';
-    // Download links mapping
-    const DOWNLOAD_LINKS = {
+    // Fetch dynamic download links from KV
+    let DOWNLOAD_LINKS = {
       'office-2024-ltsc': 'https://officecdn.microsoft.com/pr/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/de-de/ProPlus2024Retail.img',
       'office-2024-pro-plus': 'https://officecdn.microsoft.com/pr/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/de-de/ProPlus2024Retail.img',
       'windows-11-pro': 'https://www.microsoft.com/software-download/windows11',
       'windows-10-pro': 'https://www.microsoft.com/software-download/windows10'
     };
+
+    try {
+      const kvLinks = await env.LICENSE_KEYS.get('DOWNLOAD_LINKS', 'json') || {};
+      DOWNLOAD_LINKS = { ...DOWNLOAD_LINKS, ...kvLinks };
+    } catch (e) {
+      console.warn('Failed to fetch dynamic DOWNLOAD_LINKS', e);
+    }
 
     for (const order of waitingOrders) {
       if (keysArray.length === 0) break;
@@ -141,6 +148,19 @@ export async function onRequestPost(context) {
 
     const updatedKeys = [...existingKeys, ...keysArray];
     await env.LICENSE_KEYS.put(product, JSON.stringify(updatedKeys));
+
+    // Save/Update Download Link if provided
+    if (downloadLink !== undefined) {
+      lastStep = 'update_download_link';
+      let downloadLinks = {};
+      try {
+        downloadLinks = await env.LICENSE_KEYS.get('DOWNLOAD_LINKS', 'json') || {};
+      } catch (e) {
+        console.warn('Failed to fetch DOWNLOAD_LINKS', e);
+      }
+      downloadLinks[product] = downloadLink;
+      await env.LICENSE_KEYS.put('DOWNLOAD_LINKS', JSON.stringify(downloadLinks));
+    }
 
     return new Response(JSON.stringify({
       success: true,

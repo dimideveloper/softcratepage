@@ -159,8 +159,15 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-8">
                     <h3 class="font-bold mb-4 flex items-center"><i class="fas fa-plus-circle text-green-600 mr-2"></i>
                         Keys hinzufügen</h3>
-                    <select id="product-select"
+                    <select id="product-select" onchange="updateDownloadLinkField()"
                         class="border-2 border-gray-100 p-3 rounded-lg w-full mb-4 bg-white"></select>
+                    <div id="download-link-box" class="mb-4">
+                        <label
+                            class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1">Download-Link
+                            (.exe / .img)</label>
+                        <input type="text" id="download-link-input" placeholder="https://..."
+                            class="border-2 border-gray-100 p-3 rounded-lg w-full focus:border-blue-500 outline-none transition-all">
+                    </div>
                     <textarea id="keys-input" placeholder="Keys (einer pro Zeile)"
                         class="border-2 border-gray-100 p-4 rounded-lg w-full h-32 mb-4 font-mono text-sm focus:border-green-500 outline-none"></textarea>
                     <button onclick="addKeys()"
@@ -309,6 +316,20 @@
                 opts += `<option value="${slug}">${data.name || slug} (${data.available})</option>`;
             }
             select.innerHTML = opts;
+
+            // Store inventory globally for quick access
+            window.currentInventory = inventory;
+            updateDownloadLinkField();
+        }
+
+        function updateDownloadLinkField() {
+            const product = document.getElementById('product-select').value;
+            const input = document.getElementById('download-link-input');
+            if (window.currentInventory && window.currentInventory[product]) {
+                input.value = window.currentInventory[product].download_link || '';
+            } else {
+                input.value = '';
+            }
         }
 
         function renderKeysGrid(inventory, elementId, simple = false) {
@@ -370,14 +391,16 @@
 
         async function addKeys() {
             const product = document.getElementById('product-select').value;
+            const downloadLink = document.getElementById('download-link-input').value.trim();
             const keys = document.getElementById('keys-input').value.split('\n').filter(k => k.trim());
-            if (keys.length === 0) return alert('Keine Keys eingegeben');
+
+            if (keys.length === 0 && !downloadLink) return alert('Keine Keys oder Link eingegeben');
 
             try {
                 const response = await fetch('/api/admin/add-keys', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password, product, keys })
+                    body: JSON.stringify({ password, product, keys, downloadLink })
                 });
                 const res = await response.json();
                 if (response.ok) {

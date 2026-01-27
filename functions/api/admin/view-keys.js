@@ -33,6 +33,12 @@ export async function onRequestPost(context) {
 
         const productSlugs = [...new Set([...defaultProducts, ...customProducts.map(p => p.slug)])];
         const inventory = {};
+        let DOWNLOAD_LINKS = {};
+        try {
+            DOWNLOAD_LINKS = await env.LICENSE_KEYS.get('DOWNLOAD_LINKS', 'json') || {};
+        } catch (e) {
+            console.warn('Failed to fetch DOWNLOAD_LINKS', e);
+        }
 
         if (!env.LICENSE_KEYS) {
             console.error('KV Error: LICENSE_KEYS binding missing');
@@ -47,7 +53,8 @@ export async function onRequestPost(context) {
             inventory[slug] = {
                 name: metadata.name,
                 available: keys.length,
-                keys: keys
+                keys: keys,
+                download_link: DOWNLOAD_LINKS[slug] || ''
             };
         }
 
