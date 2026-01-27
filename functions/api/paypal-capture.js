@@ -110,17 +110,24 @@ export async function onRequestPost(context) {
       // Get available keys from KV
       const availableKeys = await env.LICENSE_KEYS.get(productSlug, 'json') || [];
 
+      // Download links mapping
+      const DOWNLOAD_LINKS = {
+        'office-2024-ltsc': 'https://officecdn.microsoft.com/pr/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/de-de/ProPlus2024Retail.img',
+        'office-2024-pro-plus': 'https://officecdn.microsoft.com/pr/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/de-de/ProPlus2024Retail.img',
+        'windows-11-pro': 'https://www.microsoft.com/software-download/windows11',
+        'windows-10-pro': 'https://www.microsoft.com/software-download/windows10'
+      };
+
+      const downloadLink = DOWNLOAD_LINKS[productSlug] || null;
+
       let assignedKey = null;
       let orderStatus = 'waiting_for_stock';
-      let emailSubject = '📦 Wir haben Ihre Bestellung erhalten (Warteliste)';
-      let emailHtml = '';
 
       if (availableKeys.length > 0) {
         // Key available - assign immediately
         assignedKey = availableKeys.shift();
         await env.LICENSE_KEYS.put(productSlug, JSON.stringify(availableKeys));
         orderStatus = 'completed';
-        emailSubject = '🎉 Ihre Softcrate Bestellung - Lizenzschlüssel';
       }
 
       // Save order to KV with proper order number
@@ -128,6 +135,13 @@ export async function onRequestPost(context) {
       const dateStr = now.toISOString().slice(0, 10).replace(/-/g, ''); // YYYYMMDD
       const randomNum = Math.floor(1000 + Math.random() * 9000); // 4-digit random
       const orderNumber = `ORD-${dateStr}-${randomNum}`;
+
+      // Improved Email Subjects for Admin Visibility
+      const emailSubject = orderStatus === 'completed'
+        ? `[NEUE BESTELLUNG] ${orderNumber} - ${productName} (Sofort-Versand)`
+        : `[WARTE-LISTE] ${orderNumber} - ${productName}`;
+
+      let emailHtml = '';
       const orderId = `order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
       await env.ORDERS.put(orderId, JSON.stringify({
@@ -290,8 +304,13 @@ export async function onRequestPost(context) {
     <p class="intro-text">Ihre Zahlung wurde bestätigt. Hier ist Ihr Aktivierungsschlüssel. Eine Rechnung finden Sie im Anhang.</p>
     
     <div class="key-container">
-      <div class="key-label">Lizenzschlüssel</div>
+      <div class="key-label">Produktschlüssel & Download</div>
       <div class="license-key">${assignedKey}</div>
+      ${downloadLink ? `
+      <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e5e5e5; display: block;">
+        <a href="${downloadLink}" style="color: #0071e3; text-decoration: none; font-weight: 600; font-size: 15px;">📥 Installer (.exe) herunterladen</a>
+      </div>
+      ` : ''}
     </div>
 
     <div class="product-info">
@@ -373,6 +392,7 @@ export async function onRequestPost(context) {
         <br><br>
         Sie müssen nichts weiter tun.
     </p>
+
 
     <div class="product-info">
       <div class="info-row">

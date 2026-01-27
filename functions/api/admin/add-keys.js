@@ -66,6 +66,14 @@ export async function onRequestPost(context) {
     let keysArray = [...keys];
 
     lastStep = 'fulfillment_loop';
+    // Download links mapping
+    const DOWNLOAD_LINKS = {
+      'office-2024-ltsc': 'https://officecdn.microsoft.com/pr/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/de-de/ProPlus2024Retail.img',
+      'office-2024-pro-plus': 'https://officecdn.microsoft.com/pr/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/de-de/ProPlus2024Retail.img',
+      'windows-11-pro': 'https://www.microsoft.com/software-download/windows11',
+      'windows-10-pro': 'https://www.microsoft.com/software-download/windows10'
+    };
+
     for (const order of waitingOrders) {
       if (keysArray.length === 0) break;
 
@@ -82,8 +90,26 @@ export async function onRequestPost(context) {
       lastStep = `sending_email_${order.key}`;
       if (env.RESEND_API_KEY && order.email) {
         try {
-          // Construct basic HTML for speed/safety
-          const emailHtml = `<h1>Key Ready</h1><p>Product: ${order.product || order.product_slug}</p><p>Key: ${assignKey}</p>`;
+          const downloadLink = DOWNLOAD_LINKS[order.product_slug] || null;
+
+          const emailHtml = `
+            <div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; color: #1d1d1f;">
+              <h1 style="font-size: 32px; font-weight: 700;">Ihr Key ist da!</h1>
+              <p style="font-size: 16px; color: #86868b;">Vielen Dank für Ihre Geduld. Hier ist Ihr Lizenzschlüssel für <strong>${order.product || order.product_slug}</strong>:</p>
+              
+              <div style="background: #f5f5f7; border-radius: 12px; padding: 24px; text-align: center; margin: 32px 0;">
+                <p style="font-size: 12px; text-transform: uppercase; color: #86868b; margin-bottom: 8px;">Produktschlüssel & Download</p>
+                <code style="font-size: 20px; font-weight: 700; color: #0071e3; letter-spacing: 1px;">${assignKey}</code>
+                ${downloadLink ? `
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e5e5e5; display: block;">
+                  <a href="${downloadLink}" style="color: #0071e3; text-decoration: none; font-weight: 600; font-size: 15px;">📥 Installer (.exe) herunterladen</a>
+                </div>
+                ` : ''}
+              </div>
+
+              <p style="font-size: 12px; color: #86868b; text-align: center; margin-top: 60px;">&copy; 2026 Softcrate Digital Solutions</p>
+            </div>
+          `;
 
           await fetch('https://api.resend.com/emails', {
             method: 'POST',
@@ -94,7 +120,7 @@ export async function onRequestPost(context) {
             body: JSON.stringify({
               from: 'Softcrate <noreply@softcrate.de>',
               to: [order.email],
-              subject: '🌟 Ihr Lizenzschlüssel ist da!',
+              subject: '🌟 Ihr Lizenzschlüssel ist da! (' + (order.product || order.product_slug) + ')',
               html: emailHtml
             })
           });
