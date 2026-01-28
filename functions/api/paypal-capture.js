@@ -88,19 +88,24 @@ export async function onRequestPost(context) {
 
         if (purchaseUnit?.custom_id) {
           try {
-            const customData = JSON.parse(purchaseUnit.custom_id);
+            let customIdRaw = purchaseUnit.custom_id;
+            if (typeof customIdRaw === "string" && customIdRaw.startsWith("kv:")) {
+              const kvKey = `temp_checkout_${customIdRaw.substring(3)}`;
+              const kvData = await env.ORDERS.get(kvKey);
+              if (kvData) customIdRaw = kvData;
+            }
+            const customData = JSON.parse(customIdRaw);
             if (customData.items && customData.items.length > 0) {
               const firstItem = customData.items[0];
               productName = firstItem.name || productName;
-              // Ensure we use the slug from checkout if available
-              productSlug = firstItem.slug || firstItem.name?.toLowerCase().replace(/\s+/g, '-') || productSlug;
+              productSlug = firstItem.slug || firstItem.name?.toLowerCase().replace(/\s+/g, "-") || productSlug;
               productPrice = firstItem.price?.toString() || productPrice;
               itemAttributes = firstItem.attributes || null;
             }
           } catch (pe) {
-            console.warn('Failed to parse custom_id, using description as fallback');
+            console.warn("Failed to parse custom_id, using description as fallback");
             productName = purchaseUnit.description || productName;
-            productSlug = purchaseUnit.description?.toLowerCase().replace(/\s+/g, '-') || productSlug;
+            productSlug = purchaseUnit.description?.toLowerCase().replace(/\s+/g, "-") || productSlug;
           }
         } else if (purchaseUnit?.description) {
           productName = purchaseUnit.description;
@@ -550,3 +555,4 @@ export async function onRequestOptions() {
     }
   });
 }
+

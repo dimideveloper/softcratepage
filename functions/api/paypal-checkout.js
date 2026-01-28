@@ -54,6 +54,24 @@ export async function onRequestPost(context) {
 
         const { access_token } = await authResponse.json();
 
+        // Prepare custom_id
+        let customId = JSON.stringify({ email, items });
+
+        // PayPal custom_id limit is 127 characters. 
+        // If it's too long, we store it in KV and pass the KV key.
+        if (customId.length > 120) {
+            const tempId = `checkout_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+            if (env.ORDERS) {
+                // Store with 3 hour expiration (Cloudflare KV put option: expirationTtl in seconds)
+                await env.ORDERS.put(`temp_checkout_${tempId}`, customId, { expirationTtl: 10800 });
+                customId = `kv:${tempId}`;
+            } else {
+                console.warn('ORDERS KV not bound, cannot use fallback for long custom_id');
+                // Fallback: try to truncate items if KV is missing (not ideal but better than crash)
+                customId = JSON.stringify({ email, items: items.map(i => ({ n: i.name.substring(0, 10), s: i.slug })) }).substring(0, 127);
+            }
+        }
+
         // Create PayPal order
         const orderData = {
             intent: 'CAPTURE',
@@ -62,8 +80,8 @@ export async function onRequestPost(context) {
                     currency_code: env.PRODUCT_CURRENCY || 'EUR',
                     value: total.toFixed(2)
                 },
-                description: items.map(item => item.name).join(', '),
-                custom_id: JSON.stringify({ email, items }) // Store customer data
+                description: items.map(item => item.name).join(', ').substring(0, 127),
+                custom_id: customId
             }],
             application_context: {
                 brand_name: 'Softcrate',
@@ -84,8 +102,8 @@ export async function onRequestPost(context) {
         });
 
         if (!orderResponse.ok) {
-            const error = await orderResponse.text();
-            throw new Error(`PayPal order creation failed: ${error}`);
+            const error = await orderResponse.json();
+            throw new Error(`PayPal API Error: ${JSON.stringify(error)}`);
         }
 
         const order = await orderResponse.json();
@@ -94,7 +112,7 @@ export async function onRequestPost(context) {
         const approvalUrl = order.links.find(link => link.rel === 'approve')?.href;
 
         if (!approvalUrl) {
-            throw new Error('No approval URL found');
+            throw new Error('No approval URL found in PayPal response');
         }
 
         return new Response(JSON.stringify({
@@ -111,7 +129,8 @@ export async function onRequestPost(context) {
         console.error('PayPal checkout error:', error);
         return new Response(JSON.stringify({
             error: 'Checkout failed',
-            message: error.message
+            message: error.message,
+            debug: error.stack // Add stack for easier debugging during fix verification
         }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }
