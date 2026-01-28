@@ -363,8 +363,12 @@
                             <div class="relative">
                                 <input type="text" id="amazon-code" placeholder="Gutscheincode eingeben"
                                     class="input-field pr-12 font-mono" />
-                                <i id="voucher-icon"
-                                    class="fas fa-gift absolute right-4 top-1/2 -translate-y-1/2 text-zinc-300 transition-all"></i>
+                                <div id="voucher-icon-wrapper"
+                                    class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center">
+                                    <img id="voucher-img" src="idtv3PKrZg_1769633759375.png" alt="Voucher Logo"
+                                        class="w-full h-full object-contain">
+                                    <i id="voucher-icon" class="fas fa-gift text-zinc-300 hidden"></i>
+                                </div>
                             </div>
                             <p class="text-[11px] text-zinc-400 mt-3 leading-relaxed">
                                 <i class="fas fa-info-circle mr-1"></i> Der Code wird nach der Bestellung von uns
@@ -708,14 +712,19 @@
 
                 // Dynamic labels/placeholders
                 const details = {
-                    amazon: { label: 'Amazon Gutschein', icon: 'fa-amazon', color: 'text-orange-500', isFab: true },
-                    psc: { label: 'Paysafecard PIN', icon: 'fa-gift', color: 'text-blue-400', isFab: false }
+                    amazon: { label: 'Amazon Gutschein', color: 'text-orange-500' },
+                    psc: { label: 'Paysafecard PIN', color: 'text-blue-400' }
                 };
 
                 const d = details[method];
                 voucherLabel.textContent = d.label;
                 voucherInput.placeholder = `${d.label} eingeben...`;
-                voucherIcon.className = `${d.isFab ? 'fab' : 'fas'} ${d.icon} absolute right-4 top-1/2 -translate-y-1/2 ${d.color} transition-all`;
+
+                // Use the custom logo for both for consistency as per request
+                const vImg = document.getElementById('voucher-img');
+                const vIcon = document.getElementById('voucher-icon');
+                if (vImg) vImg.classList.remove('hidden');
+                if (vIcon) vIcon.classList.add('hidden');
             }
             updateSummary();
         }
