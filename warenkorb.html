@@ -187,6 +187,24 @@
         .step-line-active {
             background: var(--text-main) !important;
         }
+
+        /* Payment Selector Styles */
+        .payment-method-btn {
+            border: 2px solid rgba(0, 0, 0, 0.05);
+            background: #f5f5f7;
+            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .payment-method-btn.active {
+            border-color: var(--accent);
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 113, 227, 0.08);
+        }
+
+        .payment-method-btn:hover:not(.active) {
+            border-color: rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+        }
     </style>
 </head>
 
@@ -307,6 +325,42 @@
                             </p>
                         </div>
 
+                        <!-- Payment Method Toggle -->
+                        <div class="mb-8">
+                            <label
+                                class="text-[11px] font-black text-zinc-400 uppercase tracking-widest mb-3 block">Zahlungsart</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button type="button" onclick="setPaymentMethod('paypal')" id="method-paypal"
+                                    class="payment-method-btn active p-4 rounded-xl flex flex-col items-center gap-2 group">
+                                    <i
+                                        class="fab fa-paypal text-xl text-blue-600 transition-transform group-hover:scale-110"></i>
+                                    <span class="text-[13px] font-bold">PayPal</span>
+                                </button>
+                                <button type="button" onclick="setPaymentMethod('amazon')" id="method-amazon"
+                                    class="payment-method-btn p-4 rounded-xl flex flex-col items-center gap-2 group">
+                                    <i
+                                        class="fab fa-amazon text-xl text-orange-500 transition-transform group-hover:scale-110"></i>
+                                    <span class="text-[13px] font-bold">Amazon GC</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Amazon Code Input (Initially Hidden) -->
+                        <div id="amazon-code-container" class="mb-8 hidden animate-entrance">
+                            <label
+                                class="text-[11px] font-black text-zinc-400 uppercase tracking-widest mb-3 block">Amazon
+                                Gutscheincode</label>
+                            <div class="relative">
+                                <input type="text" id="amazon-code" placeholder="XXXX-XXXXXX-XXXX"
+                                    class="input-field pr-12 font-mono" />
+                                <i class="fas fa-gift absolute right-4 top-1/2 -translate-y-1/2 text-zinc-300"></i>
+                            </div>
+                            <p class="text-[11px] text-zinc-400 mt-3 leading-relaxed">
+                                <i class="fas fa-info-circle mr-1"></i> Der Code wird nach der Bestellung manuell
+                                geprüft und die Lizenz per E-Mail versendet.
+                            </p>
+                        </div>
+
                         <!-- T&C Checkbox -->
                         <div class="mb-8 flex items-start gap-3">
                             <input type="checkbox" id="terms-checkbox" onchange="updateSummary()"
@@ -320,9 +374,9 @@
                             </label>
                         </div>
 
-                        <button id="checkout-btn" onclick="startCheckout()" class="apple-btn w-full transition-all"
-                            disabled>
-                            Sicher bezahlen
+                        <button id="checkout-btn" onclick="handleCheckoutClick()"
+                            class="apple-btn w-full transition-all" disabled>
+                            <span id="btn-text">Sicher bezahlen</span>
                         </button>
 
                         <div class="mt-8 pt-6 border-t border-black/[0.05]">
@@ -597,12 +651,59 @@
             // Enable/disable checkout button
             const email = document.getElementById('checkout-email').value;
             const termsAccepted = document.getElementById('terms-checkbox').checked;
+            const amazonCode = document.getElementById('amazon-code').value;
+
             const checkoutBtn = document.getElementById('checkout-btn');
-            checkoutBtn.disabled = cart.length === 0 || !email.includes('@') || !termsAccepted;
+
+            let isValid = cart.length > 0 && email.includes('@') && termsAccepted;
+
+            if (selectedPaymentMethod === 'amazon') {
+                // Basic Amazon Code Validation (14-16 chars, alphanumeric)
+                const codeRegex = /^[A-Z0-9]{4}-[A-Z0-9]{6}-[A-Z0-9]{4,5}$/i;
+                const simpleCodeRegex = /^[A-Z0-9]{14,16}$/i;
+                const isCodeValid = codeRegex.test(amazonCode.trim().replace(/\s/g, '')) || simpleCodeRegex.test(amazonCode.trim().replace(/\s/g, ''));
+                isValid = isValid && isCodeValid;
+            }
+
+            checkoutBtn.disabled = !isValid;
         }
 
         // Email validation
         document.getElementById('checkout-email').addEventListener('input', updateSummary);
+        document.getElementById('amazon-code').addEventListener('input', updateSummary);
+
+        let selectedPaymentMethod = 'paypal';
+
+        function setPaymentMethod(method) {
+            selectedPaymentMethod = method;
+
+            // UI Updates
+            const paypalBtn = document.getElementById('method-paypal');
+            const amazonBtn = document.getElementById('method-amazon');
+            const amazonContainer = document.getElementById('amazon-code-container');
+            const btnText = document.getElementById('btn-text');
+
+            if (method === 'paypal') {
+                paypalBtn.classList.add('active');
+                amazonBtn.classList.remove('active');
+                amazonContainer.classList.add('hidden');
+                btnText.textContent = 'Sicher bezahlen';
+            } else {
+                amazonBtn.classList.add('active');
+                paypalBtn.classList.remove('active');
+                amazonContainer.classList.remove('hidden');
+                btnText.textContent = 'Bestellung aufgeben';
+            }
+            updateSummary();
+        }
+
+        function handleCheckoutClick() {
+            if (selectedPaymentMethod === 'paypal') {
+                startCheckout();
+            } else {
+                startAmazonCheckout();
+            }
+        }
 
         // Start checkout
         async function startCheckout() {
@@ -670,6 +771,58 @@
             } catch (error) {
                 console.error('Checkout fehlgeschlagen', error);
                 alert(`Checkout fehlgeschlagen: ${error.message}`);
+                document.getElementById('loading-overlay').classList.add('hidden');
+                document.getElementById('loading-overlay').classList.remove('flex');
+            }
+        }
+
+        async function startAmazonCheckout() {
+            const email = document.getElementById('checkout-email').value;
+            const amazonCode = document.getElementById('amazon-code').value;
+            const cart = loadCart();
+
+            if (cart.length === 0) return;
+
+            // Show loading
+            document.getElementById('loading-overlay').classList.remove('hidden');
+            document.getElementById('loading-overlay').classList.add('flex');
+            document.querySelector('#loading-overlay p:first-of-type').textContent = 'Code wird übermittelt...';
+
+            try {
+                localStorage.setItem('checkout_email', email);
+
+                const response = await fetch(`${API_BASE}/api/amazon-checkout`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: email,
+                        amazonCode: amazonCode.trim(),
+                        items: cart.map(item => ({
+                            name: item.name,
+                            price: parseFloat(item.price),
+                            quantity: item.quantity,
+                            slug: item.slug || item.name.toLowerCase().replace(/\s+/g, '-'),
+                            attributes: item.attributes
+                        }))
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.message || 'Übermittlung fehlgeschlagen');
+                }
+
+                const data = await response.json();
+
+                // Clear cart on success
+                localStorage.removeItem('cart');
+
+                // Redirect to success page or show success message
+                window.location.href = `danke.html?orderId=${data.orderId}&method=amazon`;
+
+            } catch (error) {
+                console.error('Amazon Checkout fehlgeschlagen', error);
+                alert(`Fehler: ${error.message}`);
                 document.getElementById('loading-overlay').classList.add('hidden');
                 document.getElementById('loading-overlay').classList.remove('flex');
             }
