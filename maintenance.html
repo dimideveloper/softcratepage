@@ -7,45 +7,220 @@
     <title>Wartungsarbeiten | Softcrate</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #fbfbfd;
+            color: #1d1d1f;
+            overflow-x: hidden;
+        }
+
+        /* Mesh Gradient Background */
+        .mesh-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-color: #ffffff;
+            background-image:
+                radial-gradient(at 0% 0%, hsla(217, 100%, 95%, 1) 0, transparent 50%),
+                radial-gradient(at 50% 0%, hsla(240, 100%, 98%, 1) 0, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(210, 100%, 96%, 1) 0, transparent 50%),
+                radial-gradient(at 50% 100%, hsla(220, 100%, 97%, 1) 0, transparent 50%);
+            animation: mesh-fade 10s ease infinite alternate;
+        }
+
+        @keyframes mesh-fade {
+            0% {
+                opacity: 0.8;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.04);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-15px) rotate(2deg);
+            }
+
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+        }
+
+        .pulse-soft {
+            animation: pulse-soft 2s infinite;
+        }
+
+        @keyframes pulse-soft {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
     </style>
 </head>
 
-<body class="bg-zinc-50 flex items-center justify-center min-h-screen p-4">
+<body class="min-h-screen flex flex-col">
 
-    <div class="text-center max-w-lg mx-auto">
-        <div class="mb-8 relative inline-block">
-            <div class="w-20 h-20 bg-blue-100 rounded-3xl flex items-center justify-center mx-auto relative z-10">
-                <i class="fas fa-tools text-3xl text-blue-600"></i>
+    <div class="mesh-bg"></div>
+
+    <!-- Navigation (Simple) -->
+    <nav class="p-8 flex justify-between items-center max-w-7xl mx-auto w-full">
+        <div class="text-[21px] font-black tracking-tight text-zinc-900 select-none">
+            Softcrate<span class="text-blue-600">.</span>
+        </div>
+        <div class="hidden md:flex gap-8 text-[13px] font-medium text-zinc-500">
+            <span>Server Status: <span class="text-blue-600 font-bold">Optimizing</span></span>
+        </div>
+    </nav>
+
+    <main class="flex-grow flex items-center justify-center px-6 py-20">
+        <div class="max-w-4xl w-full text-center">
+
+            <!-- Hero Icon -->
+            <div class="reveal mb-12" style="animation-delay: 0.1s;">
+                <div class="floating inline-block">
+                    <div
+                        class="w-32 h-32 bg-white rounded-[40px] shadow-2xl flex items-center justify-center relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-blue-600 opacity-0 group-hover:opacity-10 transition-opacity">
+                        </div>
+                        <i class="fas fa-hammer text-5xl text-blue-600"></i>
+                    </div>
+                </div>
             </div>
-            <div class="absolute -inset-2 bg-blue-600/10 rounded-[30px] blur-lg"></div>
-        </div>
 
-        <h1 class="text-4xl font-black text-zinc-900 mb-4 tracking-tight">Wartungsarbeiten</h1>
-        <p class="text-lg text-zinc-500 mb-8 leading-relaxed font-medium">
-            Wir aktualisieren gerade unser System, um Ihr Einkaufserlebnis noch besser zu machen. <br
-                class="hidden md:block">
-            Wir sind in Kürze wieder für Sie da.
-        </p>
+            <!-- Main Text -->
+            <div class="reveal" style="animation-delay: 0.3s;">
+                <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-zinc-950 mb-8 leading-[0.95]">
+                    Wir machen <br /> <span
+                        class="text-blue-600 underline decoration-blue-100 underline-offset-8">Platz</span> für Neues.
+                </h1>
+                <p class="text-xl md:text-2xl text-zinc-500 font-medium mb-12 max-w-2xl mx-auto leading-relaxed">
+                    Softcrate erhält gerade ein wichtiges Core-Update. Wir optimieren unsere Datenbanken und
+                    Checkout-Systeme für Sie.
+                </p>
+            </div>
 
-        <div class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-zinc-200 shadow-sm">
-            <span class="relative flex h-3 w-3">
-                <span
-                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
-            </span>
-            <span class="text-sm font-bold text-zinc-600">System Update läuft...</span>
-        </div>
+            <!-- Status Badge -->
+            <div class="reveal mb-20" style="animation-delay: 0.5s;">
+                <div
+                    class="glass inline-flex items-center gap-3 px-6 py-3 rounded-full border border-white/50 shadow-sm">
+                    <span class="relative flex h-3 w-3">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+                    </span>
+                    <span class="text-sm font-bold text-zinc-700 tracking-wide uppercase">System-Update läuft: 84%
+                        abgeschlossen</span>
+                </div>
+            </div>
 
-        <div class="mt-12 text-sm text-zinc-400 font-medium">
-            &copy; 2026 Softcrate Digital Solutions
+            <!-- Feature Grid -->
+            <div class="reveal grid md:grid-cols-3 gap-8 text-left" style="animation-delay: 0.7s;">
+                <div
+                    class="glass p-8 rounded-3xl border border-white/40 shadow-xl shadow-blue-900/5 hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-12 h-12 bg-blue-600/10 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-bolt text-blue-600"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-zinc-900 mb-2">Schnellerer Checkout</h3>
+                    <p class="text-sm text-zinc-500 leading-relaxed">Wir optimieren unsere PayPal-Integration für eine
+                        noch flüssigere Abwicklung.</p>
+                </div>
+
+                <div
+                    class="glass p-8 rounded-3xl border border-white/40 shadow-xl shadow-blue-900/5 hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-12 h-12 bg-purple-600/10 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-database text-purple-600"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-zinc-900 mb-2">Bestands-Update</h3>
+                    <p class="text-sm text-zinc-500 leading-relaxed">Neue Keys für Office 2024 und Windows 11 werden
+                        gerade in das System eingepflegt.</p>
+                </div>
+
+                <div
+                    class="glass p-8 rounded-3xl border border-white/40 shadow-xl shadow-blue-900/5 hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-12 h-12 bg-emerald-600/10 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-shield-alt text-emerald-600"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-zinc-900 mb-2">Sicherheits-Patches</h3>
+                    <p class="text-sm text-zinc-500 leading-relaxed">Wir implementieren die neuesten SSL-Standards für
+                        maximalen Datenschutz.</p>
+                </div>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="reveal mt-24 text-center" style="animation-delay: 0.9s;">
+                <p class="text-zinc-400 font-bold uppercase tracking-widest text-[10px] mb-6">Hilfe & Support benötigt?
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="mailto:support@softcrate.de"
+                        class="w-full sm:w-auto bg-zinc-900 text-white px-10 py-4 rounded-full font-bold hover:bg-black transition-all shadow-2xl shadow-zinc-900/20 flex items-center justify-center gap-3">
+                        <i class="fas fa-envelope"></i> support@softcrate.de
+                    </a>
+                    <a href="https://softcrate.de/support-aktivierung.html"
+                        class="w-full sm:w-auto glass text-zinc-700 px-10 py-4 rounded-full font-bold hover:bg-white transition-all flex items-center justify-center gap-3">
+                        <i class="fas fa-info-circle"></i> Hilfe-Center
+                    </a>
+                </div>
+            </div>
+
         </div>
-    </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="p-12 text-center reveal" style="animation-delay: 1.1s;">
+        <div class="max-w-7xl mx-auto border-t border-zinc-200/50 pt-8">
+            <p class="text-[13px] text-zinc-400 font-medium tracking-tight">
+                &copy; 2026 Softcrate Digital Solutions. Premium Software Delivery.
+            </p>
+        </div>
+    </footer>
 
 </body>
 
