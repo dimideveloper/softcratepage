@@ -164,9 +164,9 @@
                 </div>
                 <script>
                     const now = new Date();
-                    now.setMinutes(now.getMinutes() + 25);
-                    const timeStr = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
-                    document.getElementById('return-time').textContent = 'heute gegen ' + timeStr + ' Uhr';
+                    now.setDate(now.getDate() + 3);
+                    const dateStr = now.toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: 'long' });
+                    document.getElementById('return-time').textContent = 'am ' + dateStr;
                 </script>
             </div>
 
