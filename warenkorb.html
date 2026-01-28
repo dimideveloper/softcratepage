@@ -328,36 +328,59 @@
                         <!-- Payment Method Toggle -->
                         <div class="mb-8">
                             <label
-                                class="text-[11px] font-black text-zinc-400 uppercase tracking-widest mb-3 block">Zahlungsart</label>
+                                class="text-[11px] font-black text-zinc-400 uppercase tracking-widest mb-3 block">Zahlungsart
+                                wählen</label>
+
+                            <!-- PayPal Primary -->
+                            <button type="button" onclick="setPaymentMethod('paypal')" id="method-paypal"
+                                class="payment-method-btn active w-full p-4 rounded-xl flex items-center justify-center gap-3 mb-3 group">
+                                <i
+                                    class="fab fa-paypal text-xl text-blue-600 transition-transform group-hover:scale-110"></i>
+                                <span class="text-[15px] font-bold">PayPal</span>
+                            </button>
+
+                            <!-- Gift Card Grid -->
                             <div class="grid grid-cols-2 gap-3">
-                                <button type="button" onclick="setPaymentMethod('paypal')" id="method-paypal"
-                                    class="payment-method-btn active p-4 rounded-xl flex flex-col items-center gap-2 group">
-                                    <i
-                                        class="fab fa-paypal text-xl text-blue-600 transition-transform group-hover:scale-110"></i>
-                                    <span class="text-[13px] font-bold">PayPal</span>
-                                </button>
                                 <button type="button" onclick="setPaymentMethod('amazon')" id="method-amazon"
-                                    class="payment-method-btn p-4 rounded-xl flex flex-col items-center gap-2 group">
+                                    class="payment-method-btn p-3 rounded-xl flex flex-col items-center gap-1 group">
                                     <i
-                                        class="fab fa-amazon text-xl text-orange-500 transition-transform group-hover:scale-110"></i>
-                                    <span class="text-[13px] font-bold">Amazon GC</span>
+                                        class="fab fa-amazon text-lg text-orange-500 transition-transform group-hover:scale-110"></i>
+                                    <span class="text-[11px] font-bold">Amazon</span>
+                                </button>
+                                <button type="button" onclick="setPaymentMethod('psc')" id="method-psc"
+                                    class="payment-method-btn p-3 rounded-xl flex flex-col items-center gap-1 group">
+                                    <i
+                                        class="fas fa-shuttle-space text-lg text-blue-400 rotate-90 transition-transform group-hover:scale-110"></i>
+                                    <span class="text-[11px] font-bold">Paysafecard</span>
+                                </button>
+                                <button type="button" onclick="setPaymentMethod('apple')" id="method-apple"
+                                    class="payment-method-btn p-3 rounded-xl flex flex-col items-center gap-1 group">
+                                    <i
+                                        class="fab fa-apple text-lg text-zinc-900 transition-transform group-hover:scale-110"></i>
+                                    <span class="text-[11px] font-bold">Apple</span>
+                                </button>
+                                <button type="button" onclick="setPaymentMethod('google')" id="method-google"
+                                    class="payment-method-btn p-3 rounded-xl flex flex-col items-center gap-1 group">
+                                    <i
+                                        class="fab fa-google-play text-lg text-emerald-500 transition-transform group-hover:scale-110"></i>
+                                    <span class="text-[11px] font-bold">Google Play</span>
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Amazon Code Input (Initially Hidden) -->
+                        <!-- Gift Card/Voucher Code Input -->
                         <div id="amazon-code-container" class="mb-8 hidden animate-entrance">
-                            <label
-                                class="text-[11px] font-black text-zinc-400 uppercase tracking-widest mb-3 block">Amazon
-                                Gutscheincode</label>
+                            <label id="voucher-label"
+                                class="text-[11px] font-black text-zinc-400 uppercase tracking-widest mb-3 block">Gutscheincode</label>
                             <div class="relative">
-                                <input type="text" id="amazon-code" placeholder="XXXX-XXXXXX-XXXX"
+                                <input type="text" id="amazon-code" placeholder="Gutscheincode eingeben"
                                     class="input-field pr-12 font-mono" />
-                                <i class="fas fa-gift absolute right-4 top-1/2 -translate-y-1/2 text-zinc-300"></i>
+                                <i id="voucher-icon"
+                                    class="fas fa-gift absolute right-4 top-1/2 -translate-y-1/2 text-zinc-300 transition-all"></i>
                             </div>
                             <p class="text-[11px] text-zinc-400 mt-3 leading-relaxed">
-                                <i class="fas fa-info-circle mr-1"></i> Der Code wird nach der Bestellung manuell
-                                geprüft und die Lizenz per E-Mail versendet.
+                                <i class="fas fa-info-circle mr-1"></i> Der Code wird nach der Bestellung von uns
+                                geprüft. Die Lizenz folgt per E-Mail, sobald der Code verifiziert wurde.
                             </p>
                         </div>
 
@@ -657,11 +680,9 @@
 
             let isValid = cart.length > 0 && email.includes('@') && termsAccepted;
 
-            if (selectedPaymentMethod === 'amazon') {
-                // Basic Amazon Code Validation (14-16 chars, alphanumeric)
-                const codeRegex = /^[A-Z0-9]{4}-[A-Z0-9]{6}-[A-Z0-9]{4,5}$/i;
-                const simpleCodeRegex = /^[A-Z0-9]{14,16}$/i;
-                const isCodeValid = codeRegex.test(amazonCode.trim().replace(/\s/g, '')) || simpleCodeRegex.test(amazonCode.trim().replace(/\s/g, ''));
+            if (selectedPaymentMethod !== 'paypal') {
+                // Simplified validation: at least 10 chars for any voucher
+                const isCodeValid = amazonCode.trim().length >= 10;
                 isValid = isValid && isCodeValid;
             }
 
@@ -678,21 +699,38 @@
             selectedPaymentMethod = method;
 
             // UI Updates
-            const paypalBtn = document.getElementById('method-paypal');
-            const amazonBtn = document.getElementById('method-amazon');
+            const methods = ['paypal', 'amazon', 'psc', 'apple', 'google'];
+            methods.forEach(m => {
+                const btn = document.getElementById(`method-${m}`);
+                if (btn) btn.classList.toggle('active', m === method);
+            });
+
             const amazonContainer = document.getElementById('amazon-code-container');
             const btnText = document.getElementById('btn-text');
+            const voucherLabel = document.getElementById('voucher-label');
+            const voucherIcon = document.getElementById('voucher-icon');
+            const voucherInput = document.getElementById('amazon-code');
 
             if (method === 'paypal') {
-                paypalBtn.classList.add('active');
-                amazonBtn.classList.remove('active');
                 amazonContainer.classList.add('hidden');
                 btnText.textContent = 'Sicher bezahlen';
             } else {
-                amazonBtn.classList.add('active');
-                paypalBtn.classList.remove('active');
                 amazonContainer.classList.remove('hidden');
                 btnText.textContent = 'Bestellung aufgeben';
+
+                // Dynamic labels/placeholders
+                const details = {
+                    amazon: { label: 'Amazon Gutschein', icon: 'fa-amazon', color: 'text-orange-500' },
+                    psc: { label: 'Paysafecard PIN', icon: 'fa-shuttle-space', color: 'text-blue-400' },
+                    apple: { label: 'Apple Gift Card', icon: 'fa-apple', color: 'text-zinc-900' },
+                    google: { label: 'Google Play Code', icon: 'fa-google-play', color: 'text-emerald-500' }
+                };
+
+                const d = details[method];
+                voucherLabel.textContent = d.label;
+                voucherInput.placeholder = `${d.label} eingeben...`;
+                voucherIcon.className = `fab ${d.icon} absolute right-4 top-1/2 -translate-y-1/2 ${d.color} transition-all`;
+                if (method === 'psc') voucherIcon.className = `fas fa-shuttle-space absolute right-4 top-1/2 -translate-y-1/2 ${d.color} rotate-90 transition-all`;
             }
             updateSummary();
         }
@@ -791,7 +829,7 @@
             try {
                 localStorage.setItem('checkout_email', email);
 
-                const response = await fetch(`${API_BASE}/api/amazon-checkout`, {
+                const response = await fetch(`${API_BASE}/api/giftcard-checkout`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -821,7 +859,7 @@
                 window.location.href = `danke.html?orderId=${data.orderId}&method=amazon`;
 
             } catch (error) {
-                console.error('Amazon Checkout fehlgeschlagen', error);
+                console.error('Voucher Checkout fehlgeschlagen', error);
                 alert(`Fehler: ${error.message}`);
                 document.getElementById('loading-overlay').classList.add('hidden');
                 document.getElementById('loading-overlay').classList.remove('flex');

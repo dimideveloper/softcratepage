@@ -555,6 +555,26 @@
             renderOrders(allOrders);
         }
 
+        function getVoucherIcon(method) {
+            const icons = {
+                amazon: 'fab fa-amazon',
+                psc: 'fas fa-shuttle-space rotate-90',
+                apple: 'fab fa-apple',
+                google: 'fab fa-google-play'
+            };
+            return icons[method] || 'fas fa-gift';
+        }
+
+        function getVoucherColor(method) {
+            const colors = {
+                amazon: 'text-orange-500',
+                psc: 'text-blue-400',
+                apple: 'text-zinc-900',
+                google: 'text-emerald-500'
+            };
+            return colors[method] || 'text-gray-500';
+        }
+
         function renderOrders(orders) {
             const container = document.getElementById('orders-display');
             if (!orders || orders.length === 0) {
@@ -615,7 +635,10 @@
                         <td class="p-3">${statusDropdown}</td>
                         <td class="p-3 text-gray-600">
                             ${o.product}
-                            ${o.amazon_code ? `<div class="text-[10px] text-orange-500 font-mono mt-1"><i class="fab fa-amazon mr-1"></i>${o.amazon_code}</div>` : ''}
+                            ${o.amazon_code ? `
+                                <div class="text-[10px] font-mono mt-1 ${getVoucherColor(o.voucher_type || o.payment_method)}">
+                                    <i class="${getVoucherIcon(o.voucher_type || o.payment_method)} mr-1"></i>${o.amazon_code}
+                                </div>` : ''}
                         </td>
                         <td class="p-3">
                             <div class="flex items-center gap-2">
@@ -642,6 +665,10 @@
                         <div>
                             <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">${o.customer_name || 'Kunde'}</p>
                             <p class="text-sm font-bold text-gray-900">${o.product}</p>
+                            ${o.amazon_code ? `
+                                <div class="text-[10px] font-mono p-2 bg-gray-50 rounded border border-gray-100 mb-1 ${getVoucherColor(o.voucher_type || o.payment_method)}">
+                                    <i class="${getVoucherIcon(o.voucher_type || o.payment_method)} mr-1"></i>${o.amazon_code}
+                                </div>` : ''}
                             <p class="text-xs text-gray-500">${o.email}</p>
                         </div>
                         ${o.license_key ? `<div class="bg-gray-50 p-2 rounded border border-gray-100"><code class="text-xs text-blue-600 font-mono">${o.license_key}</code></div>` : ''}
