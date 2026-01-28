@@ -103,8 +103,14 @@ export async function onRequestPost(context) {
         });
 
         if (!orderResponse.ok) {
-            const error = await orderResponse.json();
-            throw new Error(`PayPal API Error: ${JSON.stringify(error)}`);
+            let errorDetail;
+            try {
+                const errorJson = await orderResponse.json();
+                errorDetail = JSON.stringify(errorJson);
+            } catch (e) {
+                errorDetail = await orderResponse.text();
+            }
+            throw new Error(`PayPal API Error (${orderResponse.status}): ${errorDetail}`);
         }
 
         const order = await orderResponse.json();

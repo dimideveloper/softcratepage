@@ -655,7 +655,9 @@
 
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({}));
-                    throw new Error(errorData.error || 'Checkout fehlgeschlagen');
+                    const fullError = errorData.message || errorData.error || 'Checkout fehlgeschlagen';
+                    const debugInfo = errorData.debug ? `\n\nDebug: ${errorData.debug.substring(0, 200)}...` : '';
+                    throw new Error(`${fullError}${debugInfo}`);
                 }
 
                 const data = await response.json();
