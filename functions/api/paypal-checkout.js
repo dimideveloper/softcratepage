@@ -49,7 +49,8 @@ export async function onRequestPost(context) {
         });
 
         if (!authResponse.ok) {
-            throw new Error('PayPal authentication failed');
+            const authError = await authResponse.text();
+            throw new Error(`PayPal authentication failed (${authResponse.status}): ${authError}`);
         }
 
         const { access_token } = await authResponse.json();
