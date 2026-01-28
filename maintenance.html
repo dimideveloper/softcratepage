@@ -116,7 +116,11 @@
             Softcrate<span class="text-blue-600">.</span>
         </div>
         <div class="hidden md:flex gap-8 text-[13px] font-medium text-zinc-500">
-            <span>Server Status: <span class="text-blue-600 font-bold">Optimizing</span></span>
+            <div class="flex items-center gap-2">
+                <span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+                <span>System-Status: <span
+                        class="text-zinc-900 font-bold uppercase tracking-wider">Wartungsmodus</span></span>
+            </div>
         </div>
     </nav>
 
@@ -137,60 +141,79 @@
 
             <!-- Main Text -->
             <div class="reveal" style="animation-delay: 0.3s;">
-                <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-zinc-950 mb-8 leading-[0.95]">
-                    Wir machen <br /> <span
-                        class="text-blue-600 underline decoration-blue-100 underline-offset-8">Platz</span> für Neues.
+                <h1 class="text-6xl md:text-8xl font-black tracking-tighter text-zinc-950 mb-8 leading-[0.9]">
+                    Wir skalieren <br /> <span class="text-blue-600">für Sie.</span>
                 </h1>
                 <p class="text-xl md:text-2xl text-zinc-500 font-medium mb-12 max-w-2xl mx-auto leading-relaxed">
-                    Softcrate erhält gerade ein wichtiges Core-Update. Wir optimieren unsere Datenbanken und
-                    Checkout-Systeme für Sie.
+                    Softcrate erhält gerade ein wichtiges Backend-Upgrade zur Verbesserung der Key-Auslieferung und
+                    Server-Resilienz.
                 </p>
             </div>
 
             <!-- Status Badge -->
-            <div class="reveal mb-20" style="animation-delay: 0.5s;">
+            <div class="reveal mb-24" style="animation-delay: 0.5s;">
                 <div
-                    class="glass inline-flex items-center gap-3 px-6 py-3 rounded-full border border-white/50 shadow-sm">
+                    class="glass inline-flex items-center gap-4 px-8 py-4 rounded-full border border-white/50 shadow-md">
                     <span class="relative flex h-3 w-3">
                         <span
                             class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
                     </span>
-                    <span class="text-sm font-bold text-zinc-700 tracking-wide uppercase">System-Update läuft: 84%
-                        abgeschlossen</span>
+                    <span class="text-sm font-bold text-zinc-900 tracking-wide uppercase">Voraussichtliche Rückkehr:
+                        <span id="return-time">heute ca. 19:15 Uhr</span></span>
                 </div>
+                <script>
+                    const now = new Date();
+                    now.setMinutes(now.getMinutes() + 25);
+                    const timeStr = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+                    document.getElementById('return-time').textContent = 'heute gegen ' + timeStr + ' Uhr';
+                </script>
             </div>
 
             <!-- Feature Grid -->
-            <div class="reveal grid md:grid-cols-3 gap-8 text-left" style="animation-delay: 0.7s;">
+            <div class="reveal grid md:grid-cols-3 gap-8 text-left mb-24" style="animation-delay: 0.7s;">
                 <div
-                    class="glass p-8 rounded-3xl border border-white/40 shadow-xl shadow-blue-900/5 hover:-translate-y-1 transition-all duration-300">
-                    <div class="w-12 h-12 bg-blue-600/10 rounded-2xl flex items-center justify-center mb-6">
+                    class="glass p-10 rounded-[2.5rem] border border-white/40 shadow-xl shadow-blue-900/5 hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-14 h-14 bg-blue-600/10 rounded-2xl flex items-center justify-center mb-8">
                         <i class="fas fa-bolt text-blue-600"></i>
                     </div>
-                    <h3 class="text-lg font-bold text-zinc-900 mb-2">Schnellerer Checkout</h3>
-                    <p class="text-sm text-zinc-500 leading-relaxed">Wir optimieren unsere PayPal-Integration für eine
-                        noch flüssigere Abwicklung.</p>
+                    <h3 class="text-xl font-bold text-zinc-900 mb-2">Key-Flow 2.0</h3>
+                    <p class="text-sm text-zinc-500 leading-relaxed font-medium">Wir migrieren unsere Datenbanken auf
+                        NVMe-Cluster für eine E-Mail-Auslieferung in unter 500ms.</p>
                 </div>
 
                 <div
-                    class="glass p-8 rounded-3xl border border-white/40 shadow-xl shadow-blue-900/5 hover:-translate-y-1 transition-all duration-300">
-                    <div class="w-12 h-12 bg-purple-600/10 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-database text-purple-600"></i>
+                    class="glass p-10 rounded-[2.5rem] border border-white/40 shadow-xl shadow-blue-900/5 hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-14 h-14 bg-purple-600/10 rounded-2xl flex items-center justify-center mb-8">
+                        <i class="fas fa-shield-halved text-purple-600"></i>
                     </div>
-                    <h3 class="text-lg font-bold text-zinc-900 mb-2">Bestands-Update</h3>
-                    <p class="text-sm text-zinc-500 leading-relaxed">Neue Keys für Office 2024 und Windows 11 werden
-                        gerade in das System eingepflegt.</p>
+                    <h3 class="text-xl font-bold text-zinc-900 mb-2">Sicherheits-Audit</h3>
+                    <p class="text-sm text-zinc-500 leading-relaxed font-medium">Implementierung neuer
+                        Verschlüsselungs-Layer zum Schutz Ihrer digitalen Lizenzen und Kundendaten.</p>
                 </div>
 
                 <div
-                    class="glass p-8 rounded-3xl border border-white/40 shadow-xl shadow-blue-900/5 hover:-translate-y-1 transition-all duration-300">
-                    <div class="w-12 h-12 bg-emerald-600/10 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-shield-alt text-emerald-600"></i>
+                    class="glass p-10 rounded-[2.5rem] border border-white/40 shadow-xl shadow-blue-900/5 hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-14 h-14 bg-emerald-600/10 rounded-2xl flex items-center justify-center mb-8">
+                        <i class="fas fa-check-circle text-emerald-600"></i>
                     </div>
-                    <h3 class="text-lg font-bold text-zinc-900 mb-2">Sicherheits-Patches</h3>
-                    <p class="text-sm text-zinc-500 leading-relaxed">Wir implementieren die neuesten SSL-Standards für
-                        maximalen Datenschutz.</p>
+                    <h3 class="text-xl font-bold text-zinc-900 mb-2">Service-Check</h3>
+                    <p class="text-sm text-zinc-500 leading-relaxed font-medium">Umfassende Prüfung aller
+                        Schnittstellen, um eine 100%ige Aktivierungsgarantie zu gewährleisten.</p>
+                </div>
+            </div>
+
+            <!-- Trust Bar -->
+            <div class="reveal flex flex-wrap justify-center items-center gap-12 opacity-30 grayscale hover:grayscale-0 transition-all duration-700 mb-20"
+                style="animation-delay: 0.8s;">
+                <div class="flex items-center gap-3 font-bold text-zinc-500 text-xs tracking-widest uppercase">
+                    <i class="fas fa-lock text-lg"></i> SSL Secure
+                </div>
+                <div class="flex items-center gap-3 font-bold text-zinc-500 text-xs tracking-widest uppercase">
+                    <i class="fab fa-paypal text-lg"></i> PayPal Verified
+                </div>
+                <div class="flex items-center gap-3 font-bold text-zinc-500 text-xs tracking-widest uppercase">
+                    <i class="fas fa-certificate text-lg"></i> Official Partner
                 </div>
             </div>
 
