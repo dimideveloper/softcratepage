@@ -566,6 +566,7 @@
             const statusOptions = [
                 { value: 'completed', label: 'Erledigt', color: 'green' },
                 { value: 'waiting_for_stock', label: 'Wartet auf Key', color: 'yellow' },
+                { value: 'pending_amazon', label: 'Amazon Gutschein', color: 'orange' },
                 { value: 'refunded', label: 'Rückerstattet', color: 'red' },
                 { value: 'cancelled', label: 'Storniert', color: 'gray' }
             ];
@@ -612,11 +613,14 @@
                             <div class="text-xs text-gray-500">${o.email}</div>
                         </td>
                         <td class="p-3">${statusDropdown}</td>
-                        <td class="p-3 text-gray-600">${o.product}</td>
+                        <td class="p-3 text-gray-600">
+                            ${o.product}
+                            ${o.amazon_code ? `<div class="text-[10px] text-orange-500 font-mono mt-1"><i class="fab fa-amazon mr-1"></i>${o.amazon_code}</div>` : ''}
+                        </td>
                         <td class="p-3">
                             <div class="flex items-center gap-2">
                                 <code class="bg-gray-100 text-blue-600 px-2 py-1 rounded text-xs font-mono">${o.license_key || '-'}</code>
-                                ${o.status === 'waiting_for_stock' ? `<button onclick="openManualFulfill('${o.id || o.order_number || idx}')" class="text-[10px] bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 transition font-bold"><i class="fas fa-key mr-1"></i> Zuweisen</button>` : ''}
+                                ${['waiting_for_stock', 'pending_amazon'].includes(o.status) ? `<button onclick="openManualFulfill('${o.id || o.order_number || idx}')" class="text-[10px] bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 transition font-bold"><i class="fas fa-key mr-1"></i> Zuweisen</button>` : ''}
                             </div>
                         </td>
                     </tr>
@@ -632,7 +636,7 @@
                             </div>
                             <div class="flex flex-col items-end gap-2">
                                 ${statusDropdown}
-                                ${o.status === 'waiting_for_stock' ? `<button onclick="openManualFulfill('${o.id || o.order_number || idx}')" class="text-[10px] bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 transition font-bold"><i class="fas fa-key mr-1"></i> Key Zuweisen</button>` : ''}
+                                ${['waiting_for_stock', 'pending_amazon'].includes(o.status) ? `<button onclick="openManualFulfill('${o.id || o.order_number || idx}')" class="text-[10px] bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 transition font-bold"><i class="fas fa-key mr-1"></i> Key Zuweisen</button>` : ''}
                             </div>
                         </div>
                         <div>
