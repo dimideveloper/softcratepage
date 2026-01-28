@@ -349,21 +349,9 @@
                                 </button>
                                 <button type="button" onclick="setPaymentMethod('psc')" id="method-psc"
                                     class="payment-method-btn p-3 rounded-xl flex flex-col items-center gap-1 group">
-                                    <i
-                                        class="fas fa-shuttle-space text-lg text-blue-400 rotate-90 transition-transform group-hover:scale-110"></i>
+                                    <img src="8395-paysafecard_102476.webp" alt="Paysafecard"
+                                        class="h-5 object-contain transition-transform group-hover:scale-110">
                                     <span class="text-[11px] font-bold">Paysafecard</span>
-                                </button>
-                                <button type="button" onclick="setPaymentMethod('apple')" id="method-apple"
-                                    class="payment-method-btn p-3 rounded-xl flex flex-col items-center gap-1 group">
-                                    <i
-                                        class="fab fa-apple text-lg text-zinc-900 transition-transform group-hover:scale-110"></i>
-                                    <span class="text-[11px] font-bold">Apple</span>
-                                </button>
-                                <button type="button" onclick="setPaymentMethod('google')" id="method-google"
-                                    class="payment-method-btn p-3 rounded-xl flex flex-col items-center gap-1 group">
-                                    <i
-                                        class="fab fa-google-play text-lg text-emerald-500 transition-transform group-hover:scale-110"></i>
-                                    <span class="text-[11px] font-bold">Google Play</span>
                                 </button>
                             </div>
                         </div>
@@ -699,7 +687,7 @@
             selectedPaymentMethod = method;
 
             // UI Updates
-            const methods = ['paypal', 'amazon', 'psc', 'apple', 'google'];
+            const methods = ['paypal', 'amazon', 'psc'];
             methods.forEach(m => {
                 const btn = document.getElementById(`method-${m}`);
                 if (btn) btn.classList.toggle('active', m === method);
@@ -708,8 +696,8 @@
             const amazonContainer = document.getElementById('amazon-code-container');
             const btnText = document.getElementById('btn-text');
             const voucherLabel = document.getElementById('voucher-label');
-            const voucherIcon = document.getElementById('voucher-icon');
             const voucherInput = document.getElementById('amazon-code');
+            const voucherIcon = document.getElementById('voucher-icon');
 
             if (method === 'paypal') {
                 amazonContainer.classList.add('hidden');
@@ -720,17 +708,14 @@
 
                 // Dynamic labels/placeholders
                 const details = {
-                    amazon: { label: 'Amazon Gutschein', icon: 'fa-amazon', color: 'text-orange-500' },
-                    psc: { label: 'Paysafecard PIN', icon: 'fa-shuttle-space', color: 'text-blue-400' },
-                    apple: { label: 'Apple Gift Card', icon: 'fa-apple', color: 'text-zinc-900' },
-                    google: { label: 'Google Play Code', icon: 'fa-google-play', color: 'text-emerald-500' }
+                    amazon: { label: 'Amazon Gutschein', icon: 'fa-amazon', color: 'text-orange-500', isFab: true },
+                    psc: { label: 'Paysafecard PIN', icon: 'fa-gift', color: 'text-blue-400', isFab: false }
                 };
 
                 const d = details[method];
                 voucherLabel.textContent = d.label;
                 voucherInput.placeholder = `${d.label} eingeben...`;
-                voucherIcon.className = `fab ${d.icon} absolute right-4 top-1/2 -translate-y-1/2 ${d.color} transition-all`;
-                if (method === 'psc') voucherIcon.className = `fas fa-shuttle-space absolute right-4 top-1/2 -translate-y-1/2 ${d.color} rotate-90 transition-all`;
+                voucherIcon.className = `${d.isFab ? 'fab' : 'fas'} ${d.icon} absolute right-4 top-1/2 -translate-y-1/2 ${d.color} transition-all`;
             }
             updateSummary();
         }
