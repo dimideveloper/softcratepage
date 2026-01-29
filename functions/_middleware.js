@@ -35,9 +35,10 @@ export async function onRequest(context) {
     if (isMaintenance && !isAdmin) {
         // Exclude static assets and the maintenance page itself from redirects
         const isMaintenanceUrl = pathname === '/maintenance.html' || pathname === '/maintenance';
-        const isStaticAsset = /\.(css|js|png|jpg|jpeg|svg|ico|webp|webmanifest|xml)$/i.test(pathname);
+        const isStaticAsset = /\.(css|js|png|jpg|jpeg|svg|ico|webp|webmanifest|xml|zip)$/i.test(pathname);
+        const isDownloadPage = pathname.includes('/download-');
 
-        if (!isMaintenanceUrl && !isStaticAsset) {
+        if (!isMaintenanceUrl && !isStaticAsset && !isDownloadPage) {
             // Use 307 (Temporary Redirect) to avoid caching issues and protocol loops
             const maintenanceRedirect = new URL('/maintenance.html', url.origin);
             return Response.redirect(maintenanceRedirect.toString(), 307);
