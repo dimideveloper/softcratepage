@@ -733,7 +733,7 @@
             }
         }
 
-        // Start checkout
+        // Start checkout with classic PayPal form
         async function startCheckout() {
             const email = document.getElementById('checkout-email').value;
             const cart = loadCart();
@@ -756,52 +756,56 @@
             if (bubbles[1]) bubbles[1].classList.add('active');
             if (lines[0]) lines[0].classList.add('step-line-active');
 
-            // Show loading
-            document.getElementById('loading-overlay').classList.remove('hidden');
-            document.getElementById('loading-overlay').classList.add('flex');
+            // Store email in localStorage
+            localStorage.setItem('checkout_email', email);
 
-            try {
-                // Store email in localStorage for later use
-                localStorage.setItem('checkout_email', email);
+            // Calculate total
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-                // Create PayPal order
-                const response = await fetch(`${API_BASE}/api/paypal-checkout`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                        items: cart.map(item => ({
-                            name: item.name,
-                            price: parseFloat(item.price),
-                            quantity: item.quantity,
-                            slug: item.slug || item.name.toLowerCase().replace(/\s+/g, '-'),
-                            attributes: item.attributes // Pass through attributes
-                        }))
-                    })
-                });
+            // Prepare custom data for IPN
+            const customData = JSON.stringify({
+                email: email,
+                items: cart.map(item => ({
+                    name: item.name,
+                    price: parseFloat(item.price),
+                    quantity: item.quantity,
+                    slug: item.slug || item.name.toLowerCase().replace(/\s+/g, '-'),
+                    attributes: item.attributes
+                }))
+            });
 
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    const fullError = errorData.message || errorData.error || 'Checkout fehlgeschlagen';
-                    const debugInfo = errorData.debug ? `\n\nDebug: ${errorData.debug.substring(0, 200)}...` : '';
-                    throw new Error(`${fullError}${debugInfo}`);
-                }
+            // Create PayPal form dynamically
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'https://www.paypal.com/cgi-bin/webscr';
+            form.style.display = 'none';
 
-                const data = await response.json();
-                if (!data.approval_url) {
-                    throw new Error('Keine PayPal-URL erhalten');
-                }
+            // Add form fields
+            const fields = {
+                'cmd': '_xclick',
+                'business': 'payments@softcrate.de',
+                'item_name': cart[0].name + (cart.length > 1 ? ` (+${cart.length - 1} weitere)` : ''),
+                'amount': total.toFixed(2),
+                'currency_code': 'EUR',
+                'custom': customData,
+                'notify_url': 'https://softcrate.de/api/paypal-ipn',
+                'return': 'https://softcrate.de/danke.html',
+                'cancel_return': 'https://softcrate.de/fehler.html',
+                'no_shipping': '1',
+                'no_note': '1'
+            };
 
-                // Redirect to PayPal
-                window.location.href = data.approval_url;
-            } catch (error) {
-                console.error('Checkout fehlgeschlagen', error);
-                alert(`Checkout fehlgeschlagen: ${error.message}`);
-                document.getElementById('loading-overlay').classList.add('hidden');
-                document.getElementById('loading-overlay').classList.remove('flex');
+            for (const [name, value] of Object.entries(fields)) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = name;
+                input.value = value;
+                form.appendChild(input);
             }
+
+            // Add form to page and submit
+            document.body.appendChild(form);
+            form.submit();
         }
 
         async function startAmazonCheckout() {
