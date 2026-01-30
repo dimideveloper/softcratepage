@@ -1,7 +1,14 @@
+# Disallow test and admin pages
 User-agent: *
 Disallow: /admin.html
+Disallow: /test-checkout.html
+Disallow: /fehler.html
+Disallow: /maintenance.html
 Disallow: /api/
 Disallow: /functions/
+
+# Allow all other pages
 Allow: /
 
+# Sitemap
 Sitemap: https://softcrate.de/sitemap.xml
