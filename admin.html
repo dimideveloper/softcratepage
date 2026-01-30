@@ -558,7 +558,9 @@
         function getVoucherIcon(method) {
             const icons = {
                 amazon: 'fab fa-amazon',
-                psc: 'fas fa-gift' // Simplified for admin table
+                psc: 'fas fa-shuttle-space rotate-90',
+                apple: 'fab fa-apple',
+                google: 'fab fa-google-play'
             };
             return icons[method] || 'fas fa-gift';
         }
@@ -566,7 +568,9 @@
         function getVoucherColor(method) {
             const colors = {
                 amazon: 'text-orange-500',
-                psc: 'text-blue-400'
+                psc: 'text-blue-400',
+                apple: 'text-zinc-900',
+                google: 'text-emerald-500'
             };
             return colors[method] || 'text-gray-500';
         }
