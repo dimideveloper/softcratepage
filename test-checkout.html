@@ -73,7 +73,7 @@
                 <div class="inline-block bg-zinc-50 px-8 py-4 rounded-2xl border border-zinc-100 mb-10">
                     <span class="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1">Test
                         Preis</span>
-                    <span class="text-4xl font-black">1,00 €</span>
+                    <span class="text-4xl font-black">0,00 €</span>
                 </div>
 
                 <button onclick="addAndGo()" class="w-full apple-btn">
@@ -91,8 +91,8 @@
         function addAndGo() {
             let cart = JSON.parse(localStorage.getItem('cart') || '[]');
             const testProduct = {
-                name: "E2E System Test (1€)",
-                price: 1.00,
+                name: "E2E System Test (KOSTENLOS)",
+                price: 0.00,
                 quantity: 1,
                 slug: "test-product",
                 image: "favicon.png"
