@@ -15,7 +15,9 @@ export async function onRequestPost(context) {
         const type = voucherType || 'amazon'; // Fallback
         const typeLabels = {
             amazon: 'Amazon Gutschein',
-            psc: 'Paysafecard PIN'
+            psc: 'Paysafecard PIN',
+            apple: 'Apple Gift Card',
+            google: 'Google Play Code'
         };
         const typeLabel = typeLabels[type] || 'Gutschein';
 
