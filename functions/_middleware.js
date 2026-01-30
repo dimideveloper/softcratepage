@@ -1,4 +1,4 @@
-// Maintenance Secret updated - triggering redeploy
+// Maintenance mode disabled - Redeploy triggered at 2026-01-30 19:50
 export async function onRequest(context) {
     const { request, env, next } = context;
     const url = new URL(request.url);
