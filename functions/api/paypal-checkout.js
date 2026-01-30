@@ -82,14 +82,20 @@ export async function onRequestPost(context) {
                     value: total.toFixed(2)
                 },
                 description: items.map(item => item.name).join(', ').substring(0, 127),
-                custom_id: customId
+                custom_id: customId,
+                notify_url: 'https://softcrate.de/api/paypal-ipn'
             }],
-            application_context: {
-                brand_name: 'Softcrate',
-                landing_page: 'NO_PREFERENCE',
-                user_action: 'PAY_NOW',
-                return_url: `${env.SUCCESS_URL || 'https://softcrate.de/danke.html'}`,
-                cancel_url: `${env.CANCEL_URL || 'https://softcrate.de/fehler.html'}`
+            payment_source: {
+                paypal: {
+                    experience_context: {
+                        payment_method_preference: 'IMMEDIATE_PAYMENT_REQUIRED',
+                        brand_name: 'Softcrate',
+                        landing_page: 'NO_PREFERENCE',
+                        user_action: 'PAY_NOW',
+                        return_url: `${env.SUCCESS_URL || 'https://softcrate.de/danke.html'}`,
+                        cancel_url: `${env.CANCEL_URL || 'https://softcrate.de/fehler.html'}`
+                    }
+                }
             }
         };
 
